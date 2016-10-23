@@ -1,0 +1,76 @@
+services:
+  menu:
+    public:    true
+    class:     IndexBundle\Model\Menu
+    shared: true
+    arguments: ['%menu%', '@service_container', "@doctrine.orm.entity_manager"]
+
+parameters:
+    menu:
+        Főmenu:
+            url: Index
+            'rank': [public]
+            display: INDEX
+        Strati:
+            url: Strati
+            'rank': [owen, admin]
+            display: Strati
+        Blog:
+          'rank': [public]
+          sub:
+              Blog:
+                  url: Blog
+                  'rank': [public]
+                  display: Blog
+              BlogForms:
+                  url: BlogForms
+                  'rank': [owen, admin]
+                  display: BlogForms
+          display: Blog
+        Evmiliok:
+            url: Evmiliok
+            'rank': [public]
+            sub:
+                Evmiliok:
+                    url: Evmiliok
+                    'rank': [public]
+                    display: Evmiliok
+                Keszítok:
+                    url: create
+                    'rank': [public]
+                    display: Keszítok
+                Tervek:
+                  url: tervek
+                  'rank': [public]
+                  display: Tervek
+                DBStatiszika:
+                  url: dbstatic
+                  'rank': [public]
+                  display: DBStatiszika
+            display: Evmiliok
+        Oldal:
+            url: oldal
+            'rank': [public]
+            sub:
+                Adatbazisok:
+                  url: Adatbazisok
+                  'rank': [public]
+                  display: Adatbazisok
+                HonlapStatistic:
+                  url: HonlapStatistic
+                  'rank': [public]
+                  display: HonlapStatistic
+                OldalTerkep:
+                  url: OldalTerkep
+                  'rank': [public]
+                  display: OldalTerkep
+            display: Oldal
+        Adminisztráció:
+            url: Adminisztráció
+            'rank': [owen, admin]
+            sub:
+                User:
+                    url: User
+                    'rank': [public]
+                    display: User
+            display: Adminisztráció

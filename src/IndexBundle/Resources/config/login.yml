@@ -1,0 +1,6 @@
+services:
+  login:
+    public:    true
+    class:     IndexBundle\Model\Login
+    shared: true
+    arguments: ['@service_container', "@doctrine.orm.entity_manager"]

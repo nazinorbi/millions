@@ -1,0 +1,105 @@
+
+#kor {  
+    font-size: 12px; 
+    color: #000;
+    width: 1105px;
+    height: 890px;
+    font-family: Arial, Helvetica;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-left: 2%;
+}
+#Globes {
+    background-image: url(/Millions/web/Image/Geography/early_jurassic.jpg);
+    width: 408px;
+    height: 204px;
+    background-repeat: round;
+    margin-left: 25%;
+    font-size: 0px;  
+  }
+#Mollewide{
+    width: 408px;
+    height: 204px;
+    background-image: url(/Millions/web/Image/Geography/middle_jurassic2.jpg);
+    background-repeat: round;
+    margin-right: 25%;
+    font-size: 0px;  
+    float: right;
+}
+#isc {
+    overflow-y: auto;
+    border: 1px solid #A9A9A9;
+    height: 820px;
+    width: 1450px;  
+}
+
+#sor{
+    background: #fff;
+}
+div#kor table{
+    color: #000000;
+}
+div#kor a {
+    color: #000033;
+}
+div#kor h1{
+    color: #F5F5F5;
+    font-size: 18px;
+    text-decoration: underline;
+    padding-bottom: 10px;
+    height: 15px;
+    width: 1508px;
+    text-align: center;
+}
+div#terkep {
+    height: 180px;
+    font-size: 14px ;
+    margin-left: 10px;
+    margin-bottom: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+div#terkep {
+    text-align: center;
+}
+
+div#kor a {
+    color: #6F208A;
+    font-style: italic;
+    text-decoration: underline;
+    text-shadow: 1px 1px 2px rgba(13, 3, 153, 0.83);
+}
+div#terkep a.active img{
+    padding: 10px;
+    height: 125px;
+    -background: -moz-radial-gradient(50% 50%, farthest-side, #444, #AFEEEE);
+    -background: -webkit-radial-gradient(50% 50%, farthest-side, #444, #AFEEEE);
+    -background: -oradial-gradient(50% 50%, farthest-side, #444, #AFEEEE); 
+}
+div#terkep input {
+
+}
+div#terkep a img{
+    padding: 10px;    
+}
+div#terkep p {
+    padding-left: 80px;
+}
+.gallery{
+    background-image: url(/WebMillions/Icon/Maps.png);
+    height: 50px;
+}
+.pirobox_gallery{
+    float: right;
+}
+#fuggszoveg2 {
+    display:block;
+    -writing-mode: tb-rl;
+    -moz-transform:rotate(-90deg);
+    -webkit-transform:rotate(270deg);
+    -o-transform:rotate(-90deg);
+    -ms-transform:rotate(-90deg);
+    width: 45px;    
+}

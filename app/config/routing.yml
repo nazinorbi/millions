@@ -1,0 +1,44 @@
+# app:
+#    resource: "@AppBundle/Controller/"
+#    type:     annotation
+
+# index:
+#   resource: "@AppBundle/Controller/"
+#    type:     annotation
+#    defaults: { _controller: AppBundle:Default:index }
+
+index.html:
+    path:   /index.html
+    defaults: { _controller: IndexBundle:Index:index }
+
+Index.html:
+    path:   /Index.html
+    defaults: { _controller: IndexBundle:Index:index }
+
+Index.php:
+    path:  /Index.php
+    defaults: { _controller: IndexBundle:Index:index }
+
+index.php:
+    path:  /index.php
+    defaults: { _controller: IndexBundle:Index:index }
+
+Index:
+    path:  /
+    defaults: { _controller: IndexBundle:Index:index }
+
+index:
+    resource: "@IndexBundle/Controller/"
+    type:     annotation
+    defaults: { _controller: IndexBundle:Index:index }
+
+ajax:
+    resource: "@IndexBundle/Controller/"
+    type:     annotation
+    defaults: { _controller: IndexBundle:Ajax:ajax }
+    requirements:
+        method:  post
+
+Strati:
+    path:  /Strati
+    defaults: { _controller: IndexBundle:Strati:index }

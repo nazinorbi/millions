@@ -1,0 +1,54 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+parameters:
+    locale: en
+
+security:
+    encoders:
+        IndexBundle\Entity\User: sha1
+    providers:
+        database_users:
+            entity: { class: IndexBundle:User, property: userName }
+
+    firewalls:
+             main:
+                # this firewall applies to all URLs
+                pattern: ^/
+
+                # but the firewall does not require login on every page
+                # denying access is done in access_control or in your controllers
+                anonymous: true
+
+                # This allows the user to login by submitting a username and password
+                # Reference: http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+                form_login:
+                    login_path:         /index_login
+
+                    always_use_default_target_path: false
+                    default_target_path: /index_login
+                    use_referer:     false
+                    # The route name that the login form submits to
+                    check_path: /index
+                    # The name of the route where the login form lives
+                    # When the user tries to access a protected page, they are redirected here
+
+                    # Secure the login form against CSRF
+                    # Reference: http://symfony.com/doc/current/cookbook/security/csrf_in_login_form.html
+                    csrf_token_generator: security.csrf.token_manager
+
+                logout:
+                    # The route name the user can go to in order to logout
+                    path: security_logout
+                    # The name of the route to redirect to after logging out
+                    target: homepage
+
+         #access_control:
+            # this is a catch-all for the admin area
+            # additional security lives in the controllers
+           # - { path: '^/(%app_locales%)/admin', roles: ROLE_ADMIN }
+
+        # disables authentication for assets and the profiler, adapt it according to your needs
+       # dev:
+        #    pattern: ^/(_(profiler|wdt)|css|images|js)/
+        #    security: false
+

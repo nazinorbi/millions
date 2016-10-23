@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}Millions{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <meta charset="UTF-8" />
+        <meta http-equiv="Content-Language" content="hu-hu">
+        <meta name="robots" content="NOFOLLOW" />
+        <META name="COPYRIGHT" content="Nazinorbi">
+        <META name="author" content="Nazinorbi">
+
+        <script type="text/javascript" src="{{ asset('web/Js/jquery-3.1.0.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('web/Js/jquery-ui.min.js') }}"></script>
+
+        <link class="css"/>
+        <!-- Add fancybox plugin -->
+        <script type="text/javascript" src="{{ asset('web/Js/fancybox/lib/jquery.mousewheel.js') }}"></script>
+
+        <!-- Add fancyboxBox -->
+        <link rel="stylesheet" href="{{ asset('web/Js/fancybox/source/jquery.fancybox.css') }}" type="text/css" media="screen" />
+        <script type="text/javascript" src="{{ asset('web/Js/fancybox/source/jquery.fancybox.pack.js') }}"></script>
+
+        <!-- Optionally add helpers - button, thumbnail and/or media -->
+        <link rel="stylesheet" href="{{ asset('web/JS/fancybox/source/helpers/jquery.fancybox-buttons.css') }}" type="text/css" media="screen" />
+        <script type="text/javascript" src="{{ asset('web/Js/fancybox/source/helpers/jquery.fancybox-buttons.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('web/Js/fancybox/source/helpers/jquery.fancybox-media.js') }}"></script>
+
+        <link rel="stylesheet" href="{{ asset('web/Js/fancybox/source/helpers/jquery.fancybox-thumbs.css') }}" type="text/css" media="screen" />
+        <script type="text/javascript" src="{{ asset('web/Js/fancybox/source/helpers/jquery.fancybox-thumbs.js') }}"></script>
+
+        <link rel="icon" href="{{ asset('web/Icon/yellow-icon-f.ico') }}" type="image/ico" sizes="32x32"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/style.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('web/css/jqueryUiThemes_1.11.2/ui-lightness/jquery-ui.css') }}"/>
+
+
+        <script type="text/javascript" src="{{ asset('web/Js/Ajax/ajax.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('web/Js/Ajax/container.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('web/Js//menu.js') }}" class="menu" title="menu"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $(".single").fancybox({
+                    helpers: {
+                        title : {
+                            type : 'float'
+                        }
+                    }
+                })
+            });
+        </script>
+        <script class="function"></script>
+        <script>
+            $(document).ready(function() {
+
+                var localozation = window.location.pathname;
+                var pathName= localozation.split("/");
+                var instanceName = pathName[2];
+
+                loadCss(instanceName);
+
+                $.fn.ucFirst = function () {
+                    $.each(this, function () {
+                        var caps = this.value;
+                        caps = caps.charAt(0).toUpperCase() + caps.slice(1);
+                        this.value = caps;
+                    });
+                    return this;
+                };
+
+                $("body").on('click','.ajaxBut', function() {
+                    var instance = $(this).attr('instance'),
+                            href = $(this).attr('href'),
+                            right = false,
+                            select = $(this);
+
+                    loadJS(instance);
+                    ajaxLoad(right, instance, href, select);
+                });
+            });
+        </script>
+        {% block javascripts %}{% endblock %}
+    </head>
+    <body>
+        {% block body %} {% endblock %}
+        <main>
+            <header>
+                {% block header %}
+                    <header>
+                        <img src="{{ asset('web/Image/medullosa_noei.jpg') }}" title="Medullosa noei" height="300" width="260" style="border-top-right-radius: 18px;"/>
+                        {% for headName in headNames %}
+                            <img src="{{ asset(headName.imagePath) }}{{ headName.imageName }}" alt="{{ alt }}" title="{{ title }}" style="border-top-left-radius: 18px;" height="300" width="485"/>
+                        {% endfor %}
+                        <img src="{{ asset('web/Image/EusphenopterisStriata.jpg') }}" alt="carbon kori tájkép" title="carbon kori tájkép" height="300" width="263" style="border-top-right-radius: 18px;"/>
+                    </header>
+                {% endblock %}
+            </header>
+            <nav>
+                <menu class="menuDiv">{% block menu %} {{ menu|raw }} {% endblock %}</menu>
+                {% block login %} {{ login|raw }} {% endblock %}<br><br><br><br><br><br><br><br><br>
+                {% block lang %} {{ lang|raw }} {% endblock %}
+            </nav>
+            <article>
+                <aside class="leftSide"></aside>
+                <aside class="centerSide">
+                    {% block center %} {{ center|raw }} {% endblock %}
+                </aside>
+                <aside class="rightSide"></aside>
+            </article>
+            <footer>
+            </footer>
+        </main>
+    </body>
+</html>

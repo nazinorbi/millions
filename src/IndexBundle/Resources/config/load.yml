@@ -1,0 +1,6 @@
+services:
+  load:
+    public:    true
+    class:     IndexBundle\Model\Load
+    shared: true
+    arguments: ['@service_container']

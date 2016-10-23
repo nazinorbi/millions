@@ -1,0 +1,11 @@
+{% extends 'index.html.twig' %}
+
+{% block header %}
+        <header>
+                <img src="{{ asset('web/Image/medullosa_noei.jpg') }}" title="Medullosa noei" height="300" width="260" style="border-top-right-radius: 18px;"/>
+                {% for head_Name in head_Names %}
+                        <img src="{{ head_Name.image_path }}{{ head_Name.imageName }}" alt="{{ hed_alt }}" title="{{ head_title }}" style="border-top-left-radius: 18px;" height="300" width="485"/>
+                {% endfor %}
+                <img src="{{ asset('web/Image/EusphenopterisStriata.jpg') }}" alt="carbon kori tájkép" title="carbon kori tájkép" height="300" width="263" style="border-top-right-radius: 18px;"/>
+        </header>
+{% endblock %}

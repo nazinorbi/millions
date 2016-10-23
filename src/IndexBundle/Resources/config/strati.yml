@@ -1,0 +1,7 @@
+services:
+  strati:
+    public:    true
+    class:     IndexBundle\Controller\StratiController
+    shared: true
+    arguments: ['@service_container']
+

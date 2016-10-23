@@ -1,0 +1,6 @@
+services:
+  header:
+    public:    true
+    class:     IndexBundle\Model\Header
+    shared: true
+    arguments: ['@service_container', "@doctrine.orm.entity_manager"]

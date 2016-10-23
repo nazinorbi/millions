@@ -1,0 +1,5 @@
+services:
+    manual_forward:
+        class: IndexBundle\Libs\ManualForward
+        scope: request
+        arguments: ['@http_kernel']

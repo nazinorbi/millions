@@ -1,0 +1,51 @@
+
+    {% macro input(name, value, type) %}
+        <input type="{{ type|default('text') }}" class="loginName" name="{{ name|default('loginName') }}" value="{{ value|e }}" />
+    {% endmacro %}
+
+    {% macro form(action, method) %}
+        <form action="{{ action|default('index.php') }}" class="loginPass" method="{{ method|default('post') }}"  />
+    {% endmacro %}
+
+    {% macro password(name, type) %}
+        <input name="{{'password' }}" class="loginPassword" type="{{ type|default('password') }}"  />
+    {% endmacro %}
+
+    {% macro but(id, type, name, value) %}
+        <input id="{{ id|default('but') }}"  translate="LOGIN" instance='login' type="{{ type|default('submit') }}" name="{{ name|default('login') }}"  value="{{ value|default('login')|e|raw }}" />
+    {% endmacro %}
+
+    {% import _self as forms %}
+
+
+
+    {# {{ forms.form() }} #}
+
+
+
+{% block login %}
+  {#  <form action="{{ path('index') }} " class="loginPass" method="POST"  /> #}
+    <div class="login" id="login" >
+        <p id="login">
+            <caption id="login">Beléptető rendszer:</caption>
+        </p>
+        <ul>
+            <li translate="NICNAME" id="login_felirat">{{ nicname }}</li>
+            <li id="login_input">{{ forms.input}}</li>
+            <li translate="PASSWORD" id="login_felirat">{{ password }}</li>
+            <li id="login_input">{{ forms.password}}</li>
+            <li id="login_submit">
+                <div class="ajaxBut" instance="login">
+                    <a id="but" herf='login' translate="LOGIN" instance='login' name="login">{{ lang_login }}</a>
+                </div>
+                <div>
+                    <a href="Reg" translate="REGISTRATION" id="but"> {{ lang_reg }} </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    {#   </form> #}
+{% endblock %}
+
+
+
