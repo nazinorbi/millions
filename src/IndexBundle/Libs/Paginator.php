@@ -117,20 +117,7 @@
            if($this->num_pages > 10) {
                 if(($this->current_page > 1 And $this->total_items >= 10)) {
                     $this->return = $this->twig->render('Paginate.twig', array("tag" => array(
-                        "1" => array(
-                            "params" => array(
-                                "tagName"  =>"span",
-                                "odd_even" => "odd",
-                                "transparency" => 'true',
-                                "instance" => $this->instance,
-                                "class"    => "paginBut active pointer",
-                                "href"     => array(
-                                    "url"  => $this->url,
-                                    "ipp"  => $this->items_per_page,
-                                    "page" => $this->current_page - 1
-                                ),
-                                "html"     => $this->lang['Previous'],
-                            )),
+
                     )));
                 } else {
                     $this->return = $this->twig->render("Paginate.twig", array("tag" => array(
