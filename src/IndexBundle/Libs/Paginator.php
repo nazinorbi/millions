@@ -116,21 +116,12 @@
 
            if($this->num_pages > 10) {
                 if(($this->current_page > 1 And $this->total_items >= 10)) {
-                    $this->return = $this->twig->render('Paginate.twig', array("tag" => array(
-
-                    )));
+                    $this->return->prev->status = true;
+                    $this->return->prev->url = $this->url;
+                    $this->return->perv->page = $this->current_page - 1;
+                    $this->return->prev->ipp = $this->querystring;
                 } else {
-                    $this->return = $this->twig->render("Paginate.twig", array("tag" => array(
-                            "1" => array(
-                                "params" => array(
-                                    "tagName"  =>"span",
-                                    "odd_even" => "odd",
-                                    "transparency" => 'true',
-                                    "instance" => $this->instance,
-                                    "class"    => "paginBut inactive",
-                                    "html"     => $this->lang['Previous']
-                                ))))
-                    );
+                   $this->return->prev->status = false;
                 }
                 $this->start_range = $this->current_page - floor($this->mid_range / 2);
                 $this->end_range = $this->current_page + floor($this->mid_range / 2);
@@ -145,125 +136,38 @@
                 $this->range = range($this->start_range, $this->end_range);
                 for ($i = 1; $i <= $this->num_pages; $i++) {
                     if($this->range[0] > 2 And $i == $this->range[0]) {
-                        $this->return .= $this->twig->render('Paginate.twig', array("tag" => array(
-                            "1" => array(
-                                "params" => array(
-                                    "odd_even" => "odd",
-                                    "tagName"  => "span",
-                                    "class"    => "point",
-                                    "html"     => "..."
-                                ))
-                        )));
+                        $this->return->pages->$i->dots = true;
                     }
                     if($i == 1 Or $i == $this->num_pages Or in_array($i, $this->range)) {
                         if($i == $this->current_page And $this->items_per_page != "All") {
-                            $this->return .= $this->twig->render('Paginate.twig', array("tag" => array(
-                                "1" => array(
-                                    "params" => array(
-                                        "odd_even" => "odd",
-                                        "tagName"  =>"span",
-                                        "transparency" => 'true',
-                                        "instance" => $this->instance,
-                                        "class"    => "current paginBut",
-                                        "title"    => "Go to page" . $i . "of" . $this->num_pages,
-                                        "html"     => $i,
-                                    )),
-                            )));
+
+                            $this->return->pages->$i->title = $this->num_pages;
+                            $this->return->pages->$i->i = $i;
                         } else {
-                            $this->return .= $this->twig->render('Paginate.twig', array("tag" => array(
-                                "1" => array(
-                                    "params" => array(
-                                        "odd_even" => "odd",
-                                        "tagName"  =>"span",
-                                        "transparency" => 'true',
-                                        "instance" => $this->instance,
-                                        "class"    => "paginBut pointer",
-                                        "title"    => "Go to page " . $i . " of " . $this->num_pages,
-                                        "href"     => array(
-                                            "url"  => $this->url,
-                                            "ipp"  => (int)$this->items_per_page,
-                                            "page" => $i
-                                        ),
-                                        "html"     => $i,
-                                    )),
-                            )));
+                            $this->return->pages->$i->url = $this->url;
+                            $this->return->pages->$i->ipp = (int)$this->items_per_page;
+                            $this->return->pages->$i->i = $i;
+                            $this->return->pages->$i->title = $this->num_pages;
                         }
                     }
                     if($this->range[ $this->mid_range - 1 ] < $this->num_pages - 1 And $i == $this->range[ $this->mid_range - 1 ]) {
-                        $this->return .= $this->twig->render('Paginate.twig', array("tag" => array(
-                            "1" => array(
-                                "params" => array(
-                                    "odd_even" => "odd",
-                                    "tagName"  => "span",
-                                    "class"    => "point paginBut",
-                                    "html"     => "...",
-                                )),
-                        )));
+                        $this->return->page->$i->dots = true;
                     }
                 } //end for
                 if($this->current_page < $this->num_pages And $this->total_items >= 10 And $this->items_per_page != "All" And $this->current_page > 0) {
-                    $this->return .= $this->twig->render('Paginate.twig', array("tag" => array(
-                        "1" => array(
-                            "params" => array(
-                                "odd_even" => "odd",
-                                "tagName"  =>"span",
-                                "transparency" => 'true',
-                                "instance" => $this->instance,
-                                "class"    => "paginBut active pointer",
-                                "title"    => "Go to page " . ($this->current_page + 1) . " of " . $this->num_pages,
-                                "href"     => array(
-                                    "url"  => $this->url,
-                                    "ipp"  => (int)$this->items_per_page,
-                                    "page" => $this->current_page + 1,
-                                ),
-                                "html"     => "Next",
-                            )),
-                    )));
+                    $this->return->next->status = true;
+                    $this->return->next->url = $this->url;
+                    $this->return->next->page = $this->current_page + 1;
+                    $this->return->next->ipp = (int)$this->items_per_page;
                 } else {
-                    $this->return .= $this->twig->render('Paginate.twig', array("tag" => array(
-                        "1" => array(
-                            "params" => array(
-                                "odd_even" => "odd",
-                                "tagName"  =>"span",
-                                "transparency" => 'true',
-                                "instance" => $this->instance,
-                                "class"    => "paginBut inactive",
-                                "title"    => "The last page is",
-                                "html"     => "Next",
-                            )),
-                    )));
+                    $this->return->prev->status = false;
                 }
                 if($this->items_per_page == "All") {
-                    $this->return .= $this->twig->render('Paginate.twig', array("tag" => array(
-                        "1" => array(
-                            "params" => array(
-                                "odd_even" => "odd",
-                                "tagName"  =>"span",
-                                "transparency" => 'true',
-                                "instance" => $this->instance,
-                                "class"    => "paginBut current",
-                                "style"    => "margin-left:10px",
-                                "html"     => "All",
-                            )),
-                    )));
+                    $this->return->all->status = true;
                 } else {
-                    $this->return .= $this->twig->render('Paginate.twig', array("tag" => array(
-                        "1" => array(
-                            "params" => array(
-                                "odd_even" => "odd",
-                                "tagName"  =>"span",
-                                "transparency" => 'true',
-                                "instance" => $this->instance,
-                                "class"    => "paginBut inactive",
-                                "style"    => "margin-left:10px",
-                                "html"     => "All",
-                                "href"     => array(
-                                    "url"  => $this->url,
-                                    "ipp"  => "All",
-                                    "page" => "1"
-                                )
-                            )),
-                    )));
+                    $this->return->all->url = $this->url;
+                    $this->return->all->ipp = 'All';
+                    $this->return->all->page = '1';
                 }
                 // if($this->num_pages < 10)
             } else {

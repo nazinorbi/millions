@@ -1,0 +1,27 @@
+{% block paginatoer %}
+    {% if prev.status %}
+        <a class="paginate" href={{ perv.url }} page={{ prev.page }} ipp="{{ prev.ipp }}">Previous</a>
+    {% else %}
+        <span class="inactive" href="#">Previous</span>
+    {% endif %}
+
+    {% for pages in page %}
+        {% if page.dots %}
+            <span>...</span>
+        {% else %}
+            <a class="paginate" title="Go to page {{ page.i }} of {{ page.title }}" href={{ page.url }}?page={{ page.i }}&ipp={{ page.ipp }}>{{ page.i }}</a>;
+        {% endif %}
+    {% endfor %}
+
+    {% if next.status %}
+        <a class="paginate" href={{ next.url }} page={{ next.page }} ipp="{{ next.ipp }}">Next</a>
+    {% else %}
+        <span class="inactive" title="The last page is" href="#">Next</span>
+    {% endif %}
+
+    {% if all.status %}
+        <a class="current" href="#">All</a>
+     {% else %}
+         <a class="paginate" href={{ all.url }}?page=1&ipp=All$this->querystring\">All</a>
+
+{% endblock %}
