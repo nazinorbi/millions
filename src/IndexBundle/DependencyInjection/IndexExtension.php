@@ -30,6 +30,7 @@ class IndexExtension extends Extension
         $loader->load('login.yml');
         $loader->load('user.yml');
         $loader->load('manual_forward.yml');
+        $loader->load('paginate.yml');
 
       //  print $container->get('head')->getHedOk();
   /*      $request = Request::createFromGlobals();
