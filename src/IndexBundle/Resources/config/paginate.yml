@@ -1,0 +1,14 @@
+services:
+  paginate:
+    public:    true
+    class:     IndexBundle\Libs\Paginator
+    shared: true
+    arguments: ['%config%', '@service_container']
+
+parameters:
+    config:
+        midRange: 9
+        'ippArray': [6, 9, 12, 25, 50, 100, 250, 'All']
+        current_page: 1
+        items_per_page: 3
+        defaultModelName: model_1
