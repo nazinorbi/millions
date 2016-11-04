@@ -1,0 +1,65 @@
+
+.paginBut {
+    margin-left: 5px;
+    font: bolder 12px Tohoma, Helvetica, sans-serif;
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: #fff;
+    background: linear-gradient(#4A81D3, #0e4eb3);
+    opacity: 0.8;
+}
+
+.inactive {
+    width: auto;
+    background: radial-gradient(#191919, #979185);
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.active, .paginateToGo {
+    font: bolder 12px Tohoma, Helvetica, sans-serif;
+    padding: 7px 10px 7px 10px;
+    background:linear-gradient(#8A2BE2, #8e28ab);
+    color:   #DDE8FE;
+    border-radius: 6px;
+}
+
+.paginate:hover {
+    background: linear-gradient(#684BA6, #643EB3);
+    color: #FFFAFA;
+    text-decoration: none;
+    border: 1px #355DDD;
+    opacity: 1;
+}
+.active:hover {
+    background: radial-gradient(#666159, #0b0b0b);
+    color: snow;
+}
+.current {
+    opacity: 1;
+    border-radius: 6px;
+    color: #fc8c95;
+    background-image: linear-gradient(#7c142e, #6b2140);
+    font: bold 12px Tohoma,Helvetica,sans-serif;
+    padding: 8px 10px;
+    margin-left: 5px;
+}
+
+.point {
+    padding: 7px 3px 7px 3px;
+    font-size: 16px;
+    width: auto;
+    display: inline;
+}
+
+.inactive, .current {
+    cursor: not-allowed;
+}
+
+.paginate{
+    display: flex;
+    margin: 0 0 0 0 ;
+    justify-content: center;
+}
