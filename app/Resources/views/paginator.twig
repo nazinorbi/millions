@@ -1,38 +1,50 @@
 {% block paginator %}
-
-    {% if num_pages > 10 %}
-        {% if prev.status %}
-            <a class="paginate" href={{ perv.url }} page={{ prev.page }} ipp="{{ prev.ipp }}">Previous</a>
+<div class="paginator">
+    {% if pagin.all.status == true %}
+        <a class="active paginate" title="All recods" href="#">All</a>
+        <select>
+            {% for items in pagin.all.ipp %}
+                <option value={{ items }}>{{ items }}</option>
+            {% endfor %}
+        </select>
+        <label>per Page</label>
+    {% elseif pagin.numPages > 10 %}
+        {% if pagin.prev.status %}
+            <a class="active paginate" href={{ pagin.prev.url }}?page={{ pagin.prev.page }}&ipp="{{ pagin.prev.ipp }}">Previous</a>
         {% else %}
             <span class="inactive" href="#">Previous</span>
         {% endif %}
 
-        {% for pages in page %}
-            {% if page.dots %}
+
+        {% for key, value in pagin.pages %}
+            {% if value.dots %}
                 <span>...</span>
             {% else %}
-                <a class="paginate" title="Go to page {{ page.i }} of {{ page.title }}" href={{ page.url }}?page={{ page.i }}&ipp={{ page.ipp }}>{{ page.i }}</a>;
+                <a class="{{ value.class }}" title="Go to page {{ value.i }} of {{ value.title }}" href={{ value.url }}?page={{ value.i }}&ipp={{ value.ipp }}>{{ value.i }}</a>
             {% endif %}
         {% endfor %}
 
-        {% if next.status %}
-            <a class="paginate" href={{ next.url }} page={{ next.page }} ipp="{{ next.ipp }}">Next</a>
+        {% if  pagin.next.status %}
+            <a class="active paginate" href={{ pagin.next.url }}?page={{ pagin.next.page }}&ipp="{{ pagin.next.ipp }}">Next</a>
         {% else %}
             <span class="inactive" title="The last page is" href="#">Next</span>
         {% endif %}
 
-        {% if all.status %}
+        {% if  pagin.all.status %}
             <a class="current" href="#">All</a>
         {% else %}
-            <a class="paginate" href={{ all.url }}?page=1&ipp=All$this->querystring\">All</a>
+            <select>
+                {% for items in pagin.all.ipp %}
+                    <option value={{ items }}>{{ items }}</option>
+                {% endfor %}
+            </select>
+            <label>per Page</label>
          {% endif %}
     {% else %}
-        {% for pages in page %}
-            {% if page.dots %}
-                <a class="paginate" title="Go to page {{ page.i }} of {{ page.title }}" href={{ page.url }}?page={{ page.i }}&ipp={{ page.ipp }}>{{ page.i }}</a>;
-            {% endif %}
+        {% for page in pagin.pages %}
+                <a class="{{ page.class }}" title="Go to pages {{ page.i }} of {{ page.title }}" href={{ page.url }}?page={{ page.i }}&ipp={{ page.ipp }}>{{ page.i }}</a>
         {% endfor %}
-            <a class="paginate" href={{ all.url }}?page=1&ipp=All$this->querystring\">All</a>
+            <a class="paginate" href={{ pagin.all.url }}?page=1&ipp=All">All</a>
     {% endif %}
-
+</div>
 {% endblock %}

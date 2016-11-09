@@ -4,7 +4,9 @@ namespace IndexBundle\Controller;
 
 use IndexBundle\Libs\AbsBootstrap;
 use IndexBundle\Libs\ManualLoader;
+use IndexBundle\Libs\Paginator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -21,10 +23,23 @@ class StratiController extends AbsBootstrap
         return $this->bootstrapRun($center);
     }
     /**
-     * @Route("/strati", name="strati_index")
+     * @Route("/strati", name="strati")
      * @Method({"GET", "POST"})
      */
-    public function indexAction() {
+    public function indexAction(Request $request) {
+
+        $parameters = [
+            'totalItems' => 9,
+            'midRange' => 7,
+            'current_page' => 6,
+            'items_per_page' => 'All',
+            'defaultModelName' => 'model_1'
+        ];
+        $pagin = $this->get('paginate')->paginate($parameters, $request);
+        echo $this->renderView('Paginator.twig', [
+            'pagin' => $this->objectToArray($pagin)
+            ]);
+
         $this->createPath();
 
         if (!isset($_POST['data']["StratiMap"])) {
@@ -48,6 +63,19 @@ class StratiController extends AbsBootstrap
                 "path" => $this->maps
             ]));
         }
+    }
+
+    public function objectToArray($data)
+    {
+        if (is_object($data)) {
+            $data = get_object_vars($data);
+        }
+
+        if (is_array($data)) {
+            return array_map(array($this, 'objectToArray'), $data);
+        }
+
+        return $data;
     }
 
     public function createPath(){

@@ -13,6 +13,7 @@
 
     class Paginator
     {
+
         private $current_page;
         private $items_per_page;
         private $mid_range;
@@ -23,7 +24,7 @@
 
         private $limit_end;
         private $limit_start;
-        private $num_pages;
+        private $numPages;
         private $limit;
         private $querystring;
 
@@ -50,14 +51,19 @@
         public function paginate(array $parameters, $request) {
 
             $this->url = $request->get('_route');
-            print_r($parameters);
 
             foreach ($parameters as $key => $parameter) {
                 switch ($key) {
                     case 'totalItems';
-                        if(is_int($parameter)) {
+                        if( $parameters['items_per_page'] == 'All') {
+                            $this->numPages = 1;
+                            $this->current_page = 1;
                             $this->total_items = $parameter;
-                            $this->num_pages = ceil($this->total_items / $this->items_per_page);
+                            $this->items_per_page = 'All';
+                        }
+                        elseif(is_int($parameter) ) {
+                            $this->total_items = $parameter;
+                            $this->numPages = ceil($this->total_items / $this->items_per_page);
                         } else {
                             $this->total_items = $this->getEntityManager()
                                 ->createQuery('
@@ -65,7 +71,7 @@
                                     FROM '.$parameters['tableName'].': tableName
                                     WHERE tabbleName = :tableName
                                     ')->setParameter('tableName', $parameters['tableName']);
-                            $this->num_pages = ceil($this->total_items / $this->items_per_page);
+                            $this->numPages = ceil($this->total_items / $this->items_per_page);
                         }
                     break;
                     case 'midRange':
@@ -75,13 +81,16 @@
                         $this->ipp_array = $parameter;
                     break;
                     case 'current_page':
-                        $this->current_page = $parameter;
+                        if($parameters['items_per_page'] !== 'All') {
+                            $this->current_page = $parameter;
+                        }
                     break;
                     case 'defaultModelName':
                         $this->defaultModelName = $parameter;
                     break;
                 }
             }
+
             return call_user_func([$this, $this->defaultModelName]);
         }
 
@@ -97,79 +106,86 @@
                 exit("Unable to paginate: Invalid ipp_array value");
             }
 
-
-            $this->return->num_pages = $this->num_pages;
-            if($this->num_pages > 10) {
-                if($this->current_page > 1 && $this->total_items >= 10) {
-                    $this->return->prev->status = true;
-                    $this->return->prev->page = $this->current_page - 1;
-                    $this->return->prev->url = $this->url;
-                    $this->return->prev->ipp = $this->querystring;
-                } else {
-                   $this->return->prev->status = false;
-                }
-                $this->start_range = $this->current_page - floor($this->mid_range / 2);
-                $this->end_range = $this->current_page + floor($this->mid_range / 2);
+            $this->return->numPages = $this->numPages;
+            if($this->numPages == 1 && $this->current_page == 1) {
+                $this->return->all->title = 'all';
+                $this->return->all->status = true;
+                $this->return->all->ipp = $this->ipp_array;
+            }
+            else if($this->numPages > 10) {
+                $this->start_range = $this->current_page - floor($this->mid_range / 2);//1
+                $this->end_range = $this->current_page + floor($this->mid_range / 2);//7
                 if($this->start_range <= 0) {
                     $this->end_range += abs($this->start_range) + 1;
                     $this->start_range = 1;
                 }
-                if($this->end_range > $this->num_pages) {
-                    $this->start_range -= $this->end_range - $this->num_pages;
-                    $this->end_range = $this->num_pages;
+                if($this->end_range > $this->numPages) {
+                    $this->start_range -= $this->end_range - $this->numPages;
+                    $this->end_range = $this->numPages;
                 }
                 $this->range = range($this->start_range, $this->end_range);
-                for ($i = 1; $i <= $this->num_pages; $i++) {
-                    $this->return->pages->$i = new \stdClass();
-                    if($this->range[0] > 2 && $i == $this->range[0]) {
+
+                if($this->current_page-($this->mid_range-1)/2 <= 2) {
+                    $this->return->prev->status = false;
+                } else {
+                    $this->return->prev->status = true;
+                    $this->return->prev->page = $this->current_page - 1;
+                    $this->return->prev->url = $this->url;
+                    $this->return->prev->ipp = $this->items_per_page;
+                }
+                for ($i = 1; $i <= $this->numPages; $i++) {
+                    if($this->range[0] > 2 && $i == $this->range[0]-1) {
+                        $this->return->pages->$i = new \stdClass();
                         $this->return->pages->$i->dots = true;
                     }
-                    if($i == 1 || $i == $this->num_pages || in_array($i, $this->range)) {
+                    if($i == 1 || $i == $this->numPages || in_array($i, $this->range)) {
+                        $this->return->pages->$i = new \stdClass();
+                        $this->return->pages->$i->i = $i;
+                        $this->return->pages->$i->dots = false;
+                        $this->return->pages->$i->url = $this->url;
+                        $this->return->pages->$i->ipp = $this->items_per_page;
+                        $this->return->pages->$i->title = $this->numPages;
+
                         if($i == $this->current_page && $this->items_per_page != "All") {
-                            $this->return->pages->$i->title = $this->num_pages;
-                            $this->return->pages->$i->i = $i;
+                            $this->return->pages->$i->class = 'current';
                         } else {
-                            $this->return->pages->$i->url = $this->url;
-                            $this->return->pages->$i->ipp = $this->items_per_page;
-                            $this->return->pages->$i->i = $i;
-                            $this->return->pages->$i->title = $this->num_pages;
+                            $this->return->pages->$i->class = 'paginate active';
                         }
                     }
-                    if($this->range[ $this->mid_range - 1 ] < $this->num_pages - 1 && $i == $this->range[ $this->mid_range - 1 ]) {
+                    if($i == $this->numPages-1 && $i > end($this->range) ) {
+                        $this->return->pages->$i = new \stdClass();
                         $this->return->pages->$i->dots = true;
                     }
                 } //end for
-                if($this->current_page < $this->num_pages && $this->total_items >= 10 && $this->items_per_page != "All" && $this->current_page > 0) {
-                    $this->return->next->status = true;
+                if($this->current_page + ($this->mid_range-1)/2 >= $this->numPages-1) {
+                    $this->return->next->status = false;
+                } else {$this->return->next->status = true;
                     $this->return->next->url = $this->url;
                     $this->return->next->page = $this->current_page + 1;
                     $this->return->next->ipp = (int)$this->items_per_page;
-                } else {
-                    $this->return->prev->status = false;
                 }
                 if($this->items_per_page == "All") {
                     $this->return->all->status = true;
                 } else {
-                    $this->return->all->url = $this->url;
-                    $this->return->all->ipp = 'All';
-                    $this->return->all->page = '1';
+                    $this->return->all->status = false;
+                    $this->return->all->ipp = $this->ipp_array;
                 }
-                // if($this->num_pages < 10)
+                // if($this->numPages < 10)
             } else {
-                for ($i = 1; $i <= $this->num_pages; $i++) {
+                for ($i = 1; $i <= $this->numPages; $i++) {
                     $this->return->pages->$i = new \stdClass();
-                    if($i == $this->current_page) {
-                        $this->return->pages->$i->i = $i;
-                    } else {
-                        $this->return->pages->$i->url = $this->url;
-                        $this->return->pages->$i->ipp = (int)$this->items_per_page;
-                        $this->return->pages->$i->i = $i;
-                        $this->return->pages->$i->title = $this->num_pages;
+                    $this->return->pages->$i->url = $this->url;
+                    $this->return->pages->$i->ipp = (int)$this->items_per_page;
+                    $this->return->pages->$i->title = $this->numPages;
+                    $this->return->pages->$i->i = $i;
+
+                    if($i == $this->current_page && $this->items_per_page != "All") {
+                        $this->return->pages->$i->class = 'current';
+                    } else {$this->return->pages->$i->class = 'paginate active';
                     }
                 }
                 $this->return->all->url =  $this->url;
                 $this->return->all->ipp = 'All';
-                $this->return->all->page = '1';
             }
             //$this->return = str_replace("&", "&amp;", $this->return);
             $this->limit_start = ($this->current_page <= 0) ? 0 : ($this->current_page - 1) * $this->items_per_page;
@@ -181,7 +197,8 @@
             }
             $this->limit_end = ($this->items_per_page == "All") ? (int)$this->total_items :$endPagePlus + (int)$this->items_per_page;
 
-            print_r( $this->return);
+            //print_r($this->return);
+            return  $this->return;
         }
 
         public function createReturnObj() {
@@ -211,10 +228,10 @@
             $this->items_per_page = $this->ipp_array[0];
 
             if($this->items_per_page == "All") {
-                $this->num_pages = 1;
+                $this->numPages = 1;
             } else {
                 if(!is_numeric($this->items_per_page) || $this->items_per_page <= 0) $this->items_per_page = $this->ipp_array[0];
-                $this->num_pages = ceil($this->total_items / $this->items_per_page);
+                $this->numPages = ceil($this->total_items / $this->items_per_page);
             }
         }
 
@@ -239,7 +256,7 @@
         {
             $option = NULL;
             return $this->renderView('display_jump_menu.twig', [
-                'num_pages' => $this->num_pages,
+                'numPages' => $this->numPages,
                 'url' => $this->url,
                 'items_per_page' => $this->items_per_page
             ]);
@@ -248,7 +265,7 @@
         public function  go_to_page()
         {
             return $this->renderView('go_to_page.twig', [
-                'max' => (int)$this->num_pages,
+                'max' => (int)$this->numPages,
                 'url' => $this->url,
                 'items_per_page' => $this->items_per_page
             ]);
