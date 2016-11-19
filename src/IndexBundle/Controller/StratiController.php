@@ -29,10 +29,11 @@ class StratiController extends AbsBootstrap
     public function indexAction(Request $request) {
 
         $parameters = [
-            'totalItems' => 9,
+            'totalItems' => 500,
             'midRange' => 7,
-            'current_page' => 6,
-            'items_per_page' => 'All',
+            'current_page' => 100 ,
+            'currentOfTotal' => true,
+            'items_per_page' => 5,
             'defaultModelName' => 'model_1'
         ];
         $pagin = $this->get('paginate')->paginate($parameters, $request);
