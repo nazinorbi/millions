@@ -12,3 +12,13 @@ parameters:
         current_page: 1
         items_per_page: 5
         defaultModelName: model_1
+    model:
+        modelName: model_1
+        midRange: 9
+        'ippArray': [6, 9, 12, 25, 50, 100, 250, 500, 'All']
+        current_page: 1
+        items_per_page: 5
+        fierstLast:
+            status: FontAwesome
+            name: angle-double
+            class: inactive

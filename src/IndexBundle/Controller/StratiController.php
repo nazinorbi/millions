@@ -31,7 +31,7 @@ class StratiController extends AbsBootstrap
         $parameters = [
             'totalItems' => 500,
             'midRange' => 7,
-            'current_page' => 100 ,
+            'current_page' => 98,
             'currentOfTotal' => true,
             'items_per_page' => 5,
             'defaultModelName' => 'model_1'

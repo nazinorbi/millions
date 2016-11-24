@@ -141,12 +141,10 @@
                     $this->end_range = $this->numPages;
                 }
                 $this->range = range($this->start_range, $this->end_range);
-                print_r($this->range);
 
-
-                if(!$this->current_page-($this->mid_range-1)/2 <= 2) {
+               /* if(!$this->current_page-($this->mid_range-1)/2 <= 2) {
                     $this->return->prev->page = $this->current_page - 1;
-                }
+                }*/
                 for ($i = 1; $i <= $this->numPages; $i++) {
                     if($this->range[0] > 2 && $i == $this->range[0]-1) {
                         $this->return->pages->$i = new \stdClass();
@@ -156,28 +154,28 @@
                     if($i == 1 || $i == $this->numPages || in_array($i, $this->range)) {
                         $this->return->pages->$i = new \stdClass();
                         $this->return->pages->$i->i = $i;
-
-                        if($i == $this->current_page && $this->items_per_page != "All") {
-                            $this->return->pages->$i->class = 'current';
-                        } else {
-                            $this->return->pages->$i->class = 'paginate active';
-                        }
                     }
                     if($i == $this->numPages-1 && $i > end($this->range) ) {
                         $this->return->pages->$i = new \stdClass();
                         $this->return->pages->$i->dots = true;
                         $this->dotsNumber[] = $i;
                     }
+                    if($this->current_page == $i) {
+                        $this->return->pages->$i->class = 'current';
+                    } else {
+                        $this->return->pages->$i->class = 'paginate active';
+                    }
+
                 } //end for
-                if($this->current_page + ($this->mid_range-1)/2 >= $this->numPages-1) {
+
+              /* if($this->current_page + ($this->mid_range-1)/2 >= $this->numPages-1) {
                     $this->return->next->status = false;
-                } else {$this->return->next->status = true;
-                    $this->return->next->page = $this->current_page + 1;
-                }
-                if($this->items_per_page != "All") {
+                } else {
+                    $this->return->next->status = true;
+
+                } else {
                     $this->return->all->status = false;
-                    $this->return->all->ipp = $this->ipp_array;
-                }
+                }*/
                 // if($this->numPages < 10)
             } else {
                 for ($i = 1; $i <= $this->numPages; $i++) {
@@ -203,13 +201,29 @@
 
             $this->controllerStr();
             $this>$this->go_to_page();
-            $this->firsLast();
-            print_r($this->return);
+            //$this->firsLast();
+            //print_r($this->return);
             return  $this->return;
         }
 
 
         public function controllerStr($param = 'arrow', $name ='angle-double' ) {
+
+            if($this->current_page > 1 ){
+                $this->return->prev->prevClass = 'active';
+            } else {
+                $this->return->prev->prevClass = 'inactive';
+            }
+
+            if(!$this->current_page < $this->numPages ||  $this->items_per_page != "All") {
+                $this->return->next->nextClass = "inactive";
+                $this->return->all->ipp = $this->ipp_array;
+
+            } else {
+                $this->return->next->nextClass = "active";
+                $this->return->next->page = $this->current_page + 1;
+            }
+
             $this->return->controller = new \stdClass();
             switch ($param) {
                 case 'arrow':
@@ -217,13 +231,18 @@
                     $this->return->controller->name = 'angle';
                 break;
                 case 'string':
+                    $this->return->controller->status = 'string';
                 break;
                 case 'arrowString':
+                    $this->return->controller->status = 'arrowString';
                 break;
             }
         }
 
-        public function firsLast($param = 'arrow', $name ='angle-double') {
+        public function firsLast($param = 'FontAwesome', $name ='angle-double') {
+            $firstClass = 'active';
+            $lastClass = 'active';
+
             if($this->first) {
                 if($this->return->pages->{1}->i == 1 && $this->current_page - ($this->mid_range-1/2) > 1){
                     unset($this->return->pages->{1});
@@ -236,19 +255,31 @@
                     unset($this->return->pages->{$this->dotsNumber[1]});
                 }
             }
-            if($this->current_page != $this->numPages) {
+            if($this->current_page == 1) {
+                $firstClass = 'inactive';
+            }
+            if($this->current_page ==  $this->numPages) {
+                $lastClass = 'inactive';
+            }
+            //if($this->current_page != $this->numPages) {
                 $this->return->firstLast = new \stdClass();
+                $this->return->firstLast->firstClass = $firstClass;
+                $this->return->firstLast->lastClass = $lastClass;
                 switch ($param) {
-                    case 'arrow':
+                    case 'FontAwesome':
                         $this->return->firstLast->status = 'FontAwesome';
                         $this->return->firstLast->name = 'angle-double';
                         break;
                     case 'string':
+                        $this->return->firstLast->status = 'string';
                         break;
                     case 'arrowString':
+                        $this->return->firstLast->status = 'arrowString';
+                        $this->return->firstLast->name = 'angle-double';
                         break;
                 }
-            }
+                $this->getClass();
+            //}
 
         }
 
@@ -283,5 +314,15 @@
         public function go_to_page()
         {
             $this->return->goto = new \stdClass();
+        }
+
+        public function getClass() {
+            if($this->current_page == $this->numPages) {
+                $this->return->firstLast->classLast = 'inactive';
+                $this->return->firstLast->classFirst = 'active';
+            } else if($this->current_page == 1) {
+                $this->return->firstLast->classLast = 'active';
+                $this->return->firstLast->classFirst = 'inactive';
+            }
         }
     }
