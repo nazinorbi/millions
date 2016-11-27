@@ -50,8 +50,8 @@
             {% endif %}
         {% endfor %}
 
-        {% if  pagin.next.nextClass is defined %}
-            <a class="{{ pagin.next.nextClass }} paginate" href="{{ pagin.url }}?page={{ pagin.page }}&ipp={{ pagin.ipp }}">
+        {% if  pagin.next.nextClass is defined and pagin.next.nextClass == 'active' %}
+            <a class="{{ pagin.next.nextClass }} paginate" href="{{ pagin.url }}?page={{ pagin.currentPage+1 }}&ipp={{ pagin.ipp }}">
                 Next <i class="{{ arrowRight }} aria-hidden=true"></i>
             </a>
         {% else %}
@@ -64,15 +64,17 @@
             </a>
         {% endif %}
 
-        {% if pagin.all.ipp is defined %}
+        {% if pagin.all.status is defined and pagin.all.status %}
+            <a class="active paginate" href="{{ pagin.url }}?page=1&ipp=All">All</a>
+         {% endif %}
+
+        {% if pagin.ippArray is defined %}
             <select>
-                {% for items in pagin.all.ipp %}
+                {% for items in pagin.ippArray %}
                     <option value={{ items }}>{{ items }}</option>
                 {% endfor %}
             </select>
             <label>per Page</label>
-        {% else %}
-            <a class="current" href="#">All</a>
         {% endif %}
     {% else %}
         {% for page in pagin.pages %}

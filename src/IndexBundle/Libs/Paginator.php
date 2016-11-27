@@ -36,6 +36,8 @@
         private $range;
         private $currentOfTotal = true;
         private $dotsNumber = [];
+        private $halfMidRange;
+        private $befAfterNum = 2;
 
         private $return;
         protected $container;
@@ -47,6 +49,7 @@
             $this->return->pages = new \stdClass();
             $this->return->next = new \stdClass();
             $this->return->all = new \stdClass();
+            $this->return->ippArray = new \stdClass();
 
             $this->container = $container;
             $this->ipp_array = $config['ippArray'];
@@ -54,6 +57,7 @@
             $this->mid_range = $config['midRange'];
             $this->current_page = $config['current_page'];
             $this->defaultModelName = $config['defaultModelName'];
+            $this->halfMidRange = ($this->mid_range-1)/2;
         }
 
         public function paginate(array $parameters, $request) {
@@ -84,6 +88,7 @@
                     break;
                     case 'midRange':
                         $this->mid_range = $parameter;
+                        $this->halfMidRange = ($this->mid_range-1)/2;
                     break;
                     case 'ippArray':
                         $this->ipp_array = $parameter;
@@ -130,52 +135,30 @@
                 $this->return->all->ipp = $this->ipp_array;
             }
             else if($this->numPages > 10) {
-                $this->start_range = $this->current_page - floor($this->mid_range / 2);//1
-                $this->end_range = $this->current_page + floor($this->mid_range / 2);//7
-                if($this->start_range <= 0) {
-                    $this->end_range += abs($this->start_range) + 1;
-                    $this->start_range = 1;
-                }
-                if($this->end_range > $this->numPages) {
-                    $this->start_range -= $this->end_range - $this->numPages;
-                    $this->end_range = $this->numPages;
-                }
-                $this->range = range($this->start_range, $this->end_range);
+                $this->newPages();
+                $this->createDots();
 
-               /* if(!$this->current_page-($this->mid_range-1)/2 <= 2) {
-                    $this->return->prev->page = $this->current_page - 1;
-                }*/
-                for ($i = 1; $i <= $this->numPages; $i++) {
-                    if($this->range[0] > 2 && $i == $this->range[0]-1) {
-                        $this->return->pages->$i = new \stdClass();
-                        $this->return->pages->$i->dots = true;
-                        $this->dotsNumber[] = $i;
-                    }
-                    if($i == 1 || $i == $this->numPages || in_array($i, $this->range)) {
-                        $this->return->pages->$i = new \stdClass();
-                        $this->return->pages->$i->i = $i;
-                    }
-                    if($i == $this->numPages-1 && $i > end($this->range) ) {
-                        $this->return->pages->$i = new \stdClass();
-                        $this->return->pages->$i->dots = true;
-                        $this->dotsNumber[] = $i;
-                    }
-                    if($this->current_page == $i) {
-                        $this->return->pages->$i->class = 'current';
+                for ($i = 0; $i <= count($this->range)-1; $i++) {
+                    $n = $this->range[$i] ?? $this->range[$i];
+                    $dotsA = $this->range[$i] > 2 && $n < $this->current_page - $this->halfMidRange ? true : false;
+                    $dotsB = ($n == $this->current_page + $this->halfMidRange + 1 && $n < $this->numPages-2) == -1 ? true : false;
+
+                    if( $dotsA ||$dotsB ) {
+                        $this->return->pages->$n = new \stdClass();
+                        $this->return->pages->$n->dots = true;
+                        $this->dotsNumber[] = $this->range[$i];
+
                     } else {
-                        $this->return->pages->$i->class = 'paginate active';
+                        $this->return->pages->$n = new \stdClass();
+                        $this->return->pages->$n->i = $this->range[$i];
+
+                        if ($this->current_page == $n) {
+                            $this->return->pages->$n->class = 'current';
+                        } else {
+                            $this->return->pages->$n->class = 'paginate active';
+                        }
                     }
-
                 } //end for
-
-              /* if($this->current_page + ($this->mid_range-1)/2 >= $this->numPages-1) {
-                    $this->return->next->status = false;
-                } else {
-                    $this->return->next->status = true;
-
-                } else {
-                    $this->return->all->status = false;
-                }*/
                 // if($this->numPages < 10)
             } else {
                 for ($i = 1; $i <= $this->numPages; $i++) {
@@ -201,12 +184,61 @@
 
             $this->controllerStr();
             $this>$this->go_to_page();
+            $this->all();
+            $this->ipp();
+
+           // $this->newPages();
             //$this->firsLast();
             //print_r($this->return);
             return  $this->return;
         }
 
+        public function newPages() {
 
+            if($this->current_page <= $this->halfMidRange +1) {
+                $this->start_range = 1;
+                $this->end_range = $this->mid_range;
+            }
+
+            if($this->current_page-$this->halfMidRange > 2 && $this->current_page + $this->halfMidRange <= $this->numPages-2) {
+                $this->start_range = $this->current_page - $this->halfMidRange;
+                $this->end_range = $this->current_page + $this->halfMidRange;
+            }
+
+            if($this->current_page >= $this->numPages - ($this->halfMidRange+2)) {
+                $this->start_range = $this->numPages - ($this->mid_range-1);
+                $this->end_range = $this->numPages;
+            }
+
+            $this->range = range($this->start_range, $this->end_range);
+        }
+
+        public function createDots() {
+            $beforeAfterNumber = true;
+
+            if($beforeAfterNumber) {
+                if($this->current_page - $this->halfMidRange > $this->befAfterNum ) {
+                    array_unshift($this->range, $this->current_page - $this->halfMidRange -1);
+                    if($this->befAfterNum > 1) {
+                        for($i = $this->befAfterNum; $i >= 1; $i--) {
+                            array_unshift($this->range, $i);
+                        }
+                    } else {
+                        array_unshift($this->range, 1);
+                    }
+                }
+                if($this->current_page + $this->halfMidRange + 1 < $this->numPages-abs($this->befAfterNum) ) {
+                    array_push($this->range, $this->current_page + ($this->mid_range-1)/2 + 1);
+                    if($this->befAfterNum > 1) {
+                        for($i = $this->numPages - $this->befAfterNum+1; $i <= $this->numPages; $i++) {
+                            array_push($this->range, $i);
+                        }
+                    } else {
+                        array_push($this->range, $this->range);
+                    }
+                }
+            }
+        }
         public function controllerStr($param = 'arrow', $name ='angle-double' ) {
 
             if($this->current_page > 1 ){
@@ -215,13 +247,10 @@
                 $this->return->prev->prevClass = 'inactive';
             }
 
-            if(!$this->current_page < $this->numPages ||  $this->items_per_page != "All") {
+            if($this->current_page == $this->numPages || $this->items_per_page == "All") {
                 $this->return->next->nextClass = "inactive";
-                $this->return->all->ipp = $this->ipp_array;
-
             } else {
                 $this->return->next->nextClass = "active";
-                $this->return->next->page = $this->current_page + 1;
             }
 
             $this->return->controller = new \stdClass();
@@ -281,6 +310,14 @@
                 $this->getClass();
             //}
 
+        }
+
+        public function all() {
+            $this->return->all->status = true;
+        }
+
+        public function ipp() {
+            $this->return->ippArray = $this->ipp_array;
         }
 
         public function setAjax() {
