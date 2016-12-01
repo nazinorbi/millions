@@ -24,7 +24,7 @@
 
 
     {% if pagin.currentOfTotal %}
-        <span class="active paginate currentOfTotal">1 of {{ pagin.numPages }} </span>
+        <span class="active paginate currentOfTotal"> {{ pagin.currentPage }} of {{ pagin.numPages }} </span>
     {% endif %}
 
     {% if pagin.firstLast.status is defined %}
@@ -33,54 +33,47 @@
         </a>
     {% endif %}
 
-    {% if pagin.numPages > 10 %}
-        {% if pagin.prev.prevClass is defined %}
-            <a class="{{ pagin.prev.prevClass }} paginate" href={{ pagin.url }}?page={{ pagin.currentPage -1 }}&ipp="{{ pagin.ipp }}">
-                <i class={{ arrowLeft }} aria-hidden=true></i> Previus
-            </a>
-        {% else %}
-            <span class="inactive" href="#">Previous</span>
-        {% endif %}
-
-        {% for key, value in pagin.pages %}
-            {% if value.dots is defined and value.dots %}
-                <span>...</span>
-            {% else %}
-                <a class="{{ value.class }}" title="Go to page {{ value.i }} of {{  pagin.numPages }}" href={{ pagin.url }}?page={{ value.i }}&ipp={{ pagin.ipp }}>{{ value.i }}</a>
-            {% endif %}
-        {% endfor %}
-
-        {% if  pagin.next.nextClass is defined and pagin.next.nextClass == 'active' %}
-            <a class="{{ pagin.next.nextClass }} paginate" href="{{ pagin.url }}?page={{ pagin.currentPage+1 }}&ipp={{ pagin.ipp }}">
-                Next <i class="{{ arrowRight }} aria-hidden=true"></i>
-            </a>
-        {% else %}
-            <span class="inactive" title="The last page is" href="#">Next</span>
-        {% endif %}
-
-        {% if pagin.firstLast.status is defined %}
-            <a class="{{ pagin.firstLast.lastClass }} paginate" href="{{ pagin.url }}?page={{ pagin.numPages }}&ipp={{ pagin.ipp }}">
-                Last <i class="{{ arrowDubleRight }} aria-hidden=true"></i>
-            </a>
-        {% endif %}
-
-        {% if pagin.all.status is defined and pagin.all.status %}
-            <a class="active paginate" href="{{ pagin.url }}?page=1&ipp=All">All</a>
-         {% endif %}
-
-        {% if pagin.ippArray is defined %}
-            <select>
-                {% for items in pagin.ippArray %}
-                    <option value={{ items }}>{{ items }}</option>
-                {% endfor %}
-            </select>
-            <label>per Page</label>
-        {% endif %}
+    {% if pagin.prev.prevClass is defined %}
+        <a class="{{ pagin.prev.prevClass }} paginate" href={{ pagin.url }}?page={{ pagin.currentPage -1 }}&ipp="{{ pagin.ipp }}">
+            <i class={{ arrowLeft }} aria-hidden=true></i> Previus
+        </a>
     {% else %}
-        {% for page in pagin.pages %}
-                <a class="{{ page.class }}" title="Go to pages {{ page.i }} of {{ page.title }}" href={{ page.url }}?page={{ page.i }}&ipp={{ page.ipp }}>{{ page.i }}</a>
-        {% endfor %}
-            <a class="paginate" href={{ pagin.url }}?page=1&ipp=All">All</a>
+        <span class="inactive" href="#">Previous</span>
+    {% endif %}
+
+    {% for key, value in pagin.pages %}
+        {% if value.dots is defined and value.dots %}
+            <span>...</span>
+        {% else %}
+            <a class="{{ value.class }}" title="Go to page {{ value.i }} of {{  pagin.numPages }}" href={{ pagin.url }}?page={{ value.i }}&ipp={{ pagin.ipp }}>{{ value.i }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if  pagin.next.nextClass is defined and pagin.next.nextClass == 'active' %}
+        <a class="{{ pagin.next.nextClass }} paginate" href="{{ pagin.url }}?page={{ pagin.currentPage+1 }}&ipp={{ pagin.ipp }}">
+            Next <i class="{{ arrowRight }} aria-hidden=true"></i>
+        </a>
+    {% else %}
+        <span class="inactive" title="The last page is" href="#">Next</span>
+    {% endif %}
+
+    {% if pagin.firstLast.status is defined %}
+        <a class="{{ pagin.firstLast.lastClass }} paginate" href="{{ pagin.url }}?page={{ pagin.numPages }}&ipp={{ pagin.ipp }}">
+            Last <i class="{{ arrowDubleRight }} aria-hidden=true"></i>
+        </a>
+    {% endif %}
+
+    {% if pagin.all.status is defined and pagin.all.status %}
+        <a class="active paginate" href="{{ pagin.url }}?page=1&ipp=All">All</a>
+     {% endif %}
+
+    {% if pagin.ippArray is defined %}
+        <select>
+            {% for items in pagin.ippArray %}
+                <option value={{ items }}>{{ items }}</option>
+            {% endfor %}
+        </select>
+        <label>per Page</label>
     {% endif %}
 
 
