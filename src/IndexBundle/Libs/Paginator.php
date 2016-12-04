@@ -22,11 +22,28 @@
          * */
         private $current_page;
 
+        /**
+         * @var integer
+         */
         private $items_per_page;
+
+        /**
+         * @var integer
+         */
         private $mid_range;
+
+        /**
+         * @var array
+         */
         private $ipp_array;
+
+        /**
+         * @var integer
+         */
         private $total_items;
-        private $defaultModelName;
+        /**
+         * @var string
+         */
         private $url;
 
         /**
@@ -34,20 +51,41 @@
          * @var integer
          */
         private $numPages;
-        private $limit;
-        private $querystring;
 
-        private $get_ipp;
+        /**
+         * @var bool
+         *
+         */
         private $first = true;
-        private $start_range;
-        private $end_range;
+
+        /**
+         * @var array
+         */
         private $range;
+
+        /**
+         * @var bool
+         */
         private $currentOfTotal = true;
+
+        /**
+         * @var array
+         */
         private $dotsNumber = [];
+
+        /**
+         * @var integer
+         */
         private $halfMidRange;
-        private $befAfterNum = 1;
+
+        /**
+         * @var bool
+         */
         private $createDots = true;
 
+        /**
+         * @var \stdClass
+         */
         private $return;
         protected $container;
 
@@ -61,17 +99,13 @@
             $this->return->ippArray = new \stdClass();
 
             $this->container = $container;
-            $this->ipp_array = $config['ippArray'];
-            $this->items_per_page = $config['items_per_page'];
-            $this->mid_range = $config['midRange'];
-            $this->current_page = $config['current_page'];
-            $this->defaultModelName = $config['defaultModelName'];
-            $this->halfMidRange = ($this->mid_range-1)/2;
+            $this->trans();
+            $this->paginate($config, $request = null, $construct = false);
         }
 
-        public function paginate(array $parameters, $request) {
+        public function paginate(array $parameters, $request, $construct = true) {
 
-            $this->url = $request->get('_route');
+            $this->url = $request != null ? $request->get('_route'): false;
 
             foreach ($parameters as $key => $parameter) {
                 switch ($key) {
@@ -89,14 +123,27 @@
                             $this->current_page = $parameter;
                         }
                     break;
+                    case 'items_per_page':
+                        $this->items_per_page = $parameter;
+                    break;
+                    case 'ipp';
+                        $parameter ? $this->ipp(): false;
+                    break;
+                    case 'goTo':
+                        $parameter ? $this->go_to_page(): false;
+                    break;
+                    case 'createDots':
+                        $parameter ? $this->createDots = true : $this->createDots = false;
+                    break;
+                    case 'all':
+                        $parameter ? $this->all(): false;
+                    break;
                     case 'defaultModelName':
                         $this->defaultModelName = $parameter;
                     break;
                     case 'currentOfTotal':
-                        if($parameter || $this->currentOfTotal) {
-                            $this->return->currentOfTotal = new \stdClass();
-                            $this->return->currentOfTotal = true;
-                        }
+                        $parameter ? $this->return->currentOfTotal = true : false;
+                    break;
                 }
             }
 
@@ -105,7 +152,7 @@
             $this->return->ipp = $this->items_per_page;
             $this->return->currentPage = $this->current_page;
 
-            return call_user_func([$this, $this->defaultModelName]);
+            return $construct ? $this->model_1() : false;
         }
 
         public function paramTotalItems($parameters, $parameter) {
@@ -159,11 +206,7 @@
             }
             else {
                 $this->newPages();
-                ($this->createDots) ? $this->createDots(): false;
-                $this->controllerStr();
-                $this->go_to_page();
-                $this->all();
-                $this->ipp();
+                $this->createDots ? $this->controllerStr(): false;
 
                 for ($i = 0; $i <= count($this->range)-1; $i++) {
                     $n = $this->range[$i] ?? $this->range[$i];
@@ -183,29 +226,31 @@
                     }
                 }
             }
-           // print_r($this->return);
+            //print_r($this->return);
             $this->firsLast();
             return  $this->return;
         }
 
         public function newPages() {
+            $start_range = null;
+            $end_range = null;
 
             if($this->current_page <= $this->halfMidRange +2) {
-                $this->start_range = 1;
-                $this->end_range = $this->mid_range;
+                $start_range = 1;
+                $end_range = $this->mid_range;
             }
 
             if($this->current_page-$this->halfMidRange > 2 && $this->current_page + $this->halfMidRange <= $this->numPages-2) {
-                $this->start_range = $this->current_page - $this->halfMidRange;
-                $this->end_range = $this->current_page + $this->halfMidRange;
+                $start_range = $this->current_page - $this->halfMidRange;
+                $end_range = $this->current_page + $this->halfMidRange;
             }
 
             if($this->current_page >= $this->numPages - ($this->halfMidRange+1)) {
-                $this->start_range = $this->numPages - ($this->mid_range-1);
-                $this->end_range = $this->numPages;
+                $start_range = $this->numPages - ($this->mid_range-1);
+                $end_range = $this->numPages;
             }
 
-            $this->range = range($this->start_range, $this->end_range);
+            $this->range = range($start_range, $end_range);
         }
 
         public function createDots() {
@@ -233,7 +278,6 @@
                  * Az végén van a dots;
                  */
                 if($this->current_page <= $this->halfMidRange + 2) {
-                  //  array_push($this->range, $this->current_page + ($this->mid_range-1)/2 + 1);
                     if($this->befAfterNum > 1) {
                         for($i = $this->numPages - $this->befAfterNum+1; $i <= $this->numPages; $i++) {
                             array_push($this->range, $i);
@@ -411,6 +455,20 @@
 
         public function ipp() {
             $this->return->ippArray = $this->ipp_array;
+        }
+
+        public function trans() {
+            $this->return->trans = new \stdClass();
+
+            $this->return->trans->of = $this->container->get('translator')->trans('OF');
+            $this->return->trans->first = $this->container->get('translator')->trans('FIRST');
+            $this->return->trans->previus = $this->container->get('translator')->trans('PREVIUS');
+            $this->return->trans->goTo = $this->container->get('translator')->trans('GOTO');
+            $this->return->trans->next = $this->container->get('translator')->trans('NEXT');
+            $this->return->trans->last = $this->container->get('translator')->trans('LAST');
+            $this->return->trans->all = $this->container->get('translator')->trans('ALL');
+            $this->return->trans->perPage = $this->container->get('translator')->trans('PERPAGE');
+            $this->return->trans->go = $this->container->get('translator')->trans('GO');
         }
 
         public function setAjax() {

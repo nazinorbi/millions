@@ -23,48 +23,48 @@
     {% endif %}
 
 
-    {% if pagin.currentOfTotal %}
-        <span class="active paginate currentOfTotal"> {{ pagin.currentPage }} of {{ pagin.numPages }} </span>
+    {% if  pagin.currentOfTotal is defined and pagin.currentOfTotal %}
+        <span class="active paginate currentOfTotal"> {{ pagin.currentPage }} {{ pagin.trans.of  }} {{ pagin.numPages }} </span>
     {% endif %}
 
     {% if pagin.firstLast.status is defined %}
         <a class="{{ pagin.firstLast.firstClass }} paginate" href="{{ pagin.url }}?page=1&ipp={{ pagin.ipp }}">
-            <i class="{{ arrowDubleLeft }} aria-hidden=true"> First</i>
+            <i class="{{ arrowDubleLeft }} aria-hidden=true"> {{ pagin.trans.first  }}</i>
         </a>
     {% endif %}
 
     {% if pagin.prev.prevClass is defined %}
         <a class="{{ pagin.prev.prevClass }} paginate" href={{ pagin.url }}?page={{ pagin.currentPage -1 }}&ipp="{{ pagin.ipp }}">
-            <i class={{ arrowLeft }} aria-hidden=true></i> Previus
+            <i class={{ arrowLeft }} aria-hidden=true></i> {{ pagin.trans.previus }}
         </a>
     {% else %}
-        <span class="inactive" href="#">Previous</span>
+        <span class="inactive" href="#">{{ pagin.trans.previus }}</span>
     {% endif %}
 
     {% for key, value in pagin.pages %}
         {% if value.dots is defined and value.dots %}
             <span>...</span>
         {% else %}
-            <a class="{{ value.class }}" title="Go to page {{ value.i }} of {{  pagin.numPages }}" href={{ pagin.url }}?page={{ value.i }}&ipp={{ pagin.ipp }}>{{ value.i }}</a>
+            <a class="{{ value.class }}" title="{{ pagin.trans.goTo }} {{ value.i }} {{ pagin.trans.of }} {{  pagin.numPages }}" href={{ pagin.url }}?page={{ value.i }}&ipp={{ pagin.ipp }}>{{ value.i }}</a>
         {% endif %}
     {% endfor %}
 
     {% if  pagin.next.nextClass is defined and pagin.next.nextClass == 'active' %}
         <a class="{{ pagin.next.nextClass }} paginate" href="{{ pagin.url }}?page={{ pagin.currentPage+1 }}&ipp={{ pagin.ipp }}">
-            Next <i class="{{ arrowRight }} aria-hidden=true"></i>
+            {{ pagin.trans.next }} <i class="{{ arrowRight }} aria-hidden=true"></i>
         </a>
     {% else %}
-        <span class="inactive" title="The last page is" href="#">Next</span>
+        <span class="inactive" title="The last page is" href="#">{{ pagin.trans.next }}</span>
     {% endif %}
 
     {% if pagin.firstLast.status is defined %}
         <a class="{{ pagin.firstLast.lastClass }} paginate" href="{{ pagin.url }}?page={{ pagin.numPages }}&ipp={{ pagin.ipp }}">
-            Last <i class="{{ arrowDubleRight }} aria-hidden=true"></i>
+            {{ pagin.trans.last }} <i class="{{ arrowDubleRight }} aria-hidden=true"></i>
         </a>
     {% endif %}
 
     {% if pagin.all.status is defined and pagin.all.status %}
-        <a class="active paginate" href="{{ pagin.url }}?page=1&ipp=All">All</a>
+        <a class="active paginate" href="{{ pagin.url }}?page=1&ipp=All">{{ pagin.trans.all }}</a>
      {% endif %}
 
     {% if pagin.ippArray is defined %}
@@ -73,7 +73,7 @@
                 <option value={{ items }}>{{ items }}</option>
             {% endfor %}
         </select>
-        <label>per Page</label>
+        <label>{{ pagin.trans.perPage }}</label>
     {% endif %}
 
 
@@ -82,7 +82,7 @@
         <input type="number" class="inputPage" min="1" max={{ pagin.numPages }}>
         <input type="hidden" value={{ pagin.url }}>
         <input type="hidden" class="ipp" value={{ pagin.ipp}}>
-        <span class="paginateToGo paginate">Go</span>
+        <span class="paginateToGo paginate">{{ pagin.trans.go }}</span>
     {% endif %}
 </div>
 {% endblock %}
