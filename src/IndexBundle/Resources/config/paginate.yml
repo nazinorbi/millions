@@ -7,18 +7,22 @@ services:
 
 parameters:
     config:
-        midRange: 9
-        'ippArray': [6, 9, 12, 25, 50, 100, 250, 500, 'All']
-        current_page: 1
-        items_per_page: 5
-        defaultModelName: model_1
-    model:
         modelName: model_1
-        midRange: 9
+        midRange: 7
         'ippArray': [6, 9, 12, 25, 50, 100, 250, 500, 'All']
         current_page: 1
-        items_per_page: 5
+        items_per_page: 10
+        ipp: true
+        goTo: true
+        createDots: true
+        all: false
+        currentOfTotal: false
         fierstLast:
+            view: true
+            status: FontAwesome
+            name: angle-double
+            class: inactive
+        controllerStr:
             status: FontAwesome
             name: angle-double
             class: inactive
