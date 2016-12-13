@@ -29,9 +29,9 @@ class StratiController extends AbsBootstrap
     public function indexAction(Request $request) {
 
         $parameters = [
-            'totalItems' => 120,
-            'midRange' => 9,
-            'current_page' => 2,
+            'totalItems' => 320,
+            'midRange' => 7,
+            'current_page' => 9,
             'currentOfTotal' => true,
             'items_per_page' => 5,
             'defaultModelName' => 'model_1'

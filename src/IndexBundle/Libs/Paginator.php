@@ -10,7 +10,7 @@
      * @copyright (c) admin@catchmyfame.com (www.catchmyfame.com)
      * @license CC Attribution-ShareAlike 3.0 Unp||ted (CC BY-SA 3.0) - http://creativecommons.||g/licenses/by-sa/3.0/
      */
-    use Millions\menuHtmlServices;
+
     use Symfony\Component\DependencyInjection\Container;
     use Doctrine\ORM\Query;
 
@@ -53,12 +53,6 @@
         private $numPages;
 
         /**
-         * @var bool
-         *
-         */
-        private $first = true;
-
-        /**
          * @var array
          */
         private $range;
@@ -86,6 +80,23 @@
         /**
          * @var \stdClass
          */
+
+        /**
+         * @var array
+         */
+
+        private $controllerStr;
+
+        /**
+         * @var array
+         */
+        private $firstLast;
+
+        /**
+         * @var integer
+         */
+        private $befAfterNum;
+
         private $return;
         protected $container;
 
@@ -138,11 +149,17 @@
                     case 'all':
                         $parameter ? $this->all(): false;
                     break;
-                    case 'defaultModelName':
-                        $this->defaultModelName = $parameter;
-                    break;
                     case 'currentOfTotal':
                         $parameter ? $this->return->currentOfTotal = true : false;
+                    break;
+                    case 'controllerStr':
+                        $this->controllerStr = $parameter;
+                    break;
+                    case 'firstLast':
+                        $this->firstLast = $parameter;
+                    break;
+                    case 'befAfterNum':
+                        $this->befAfterNum = $parameter;
                     break;
                 }
             }
@@ -206,7 +223,8 @@
             }
             else {
                 $this->newPages();
-                $this->createDots ? $this->controllerStr(): false;
+                $this->createDots ? $this->createDots(): false;
+                $this->controllerStr();
 
                 for ($i = 0; $i <= count($this->range)-1; $i++) {
                     $n = $this->range[$i] ?? $this->range[$i];
@@ -320,46 +338,49 @@
                 }
             }
         }
-        public function controllerStr($param = 'arrow', $name ='angle-double' ) {
+        public function controllerStr() {
 
-            if($this->current_page > 1 ){
-                $this->return->prev->prevClass = 'active';
-            } else {
-                $this->return->prev->prevClass = 'inactive';
-            }
+            if($this->controllerStr['view']) {
+                if($this->current_page > 1 ){
+                    $this->return->prev->prevClass = 'active';
+                } else {
+                    $this->return->prev->prevClass = 'inactive';
+                }
 
-            if($this->current_page == $this->numPages || $this->items_per_page == "All") {
-                $this->return->next->nextClass = "inactive";
-            } else {
-                $this->return->next->nextClass = "active";
-            }
+                if($this->current_page == $this->numPages || $this->items_per_page == "All") {
+                    $this->return->next->nextClass = "inactive";
+                } else {
+                    $this->return->next->nextClass = "active";
+                }
 
-            $this->return->controller = new \stdClass();
-            switch ($param) {
-                case 'arrow':
-                    $this->return->controller->status = 'FontAwesome';
-                    $this->return->controller->name = 'angle';
-                break;
-                case 'string':
-                    $this->return->controller->status = 'string';
-                break;
-                case 'arrowString':
-                    $this->return->controller->status = 'arrowString';
-                break;
+                $this->return->controller = new \stdClass();
+                switch ($this->controllerStr['view']) {
+                    case 'arrow':
+                        $this->return->controller->status = $this->controllerStr['status'];
+                        $this->return->controller->name = $this->controllerStr['name'];
+                    break;
+                    case 'string':
+                        $this->return->controller->status = $this->controllerStr['status'];
+                    break;
+                    case 'arrowString':
+                        $this->return->controller->status = $this->controllerStr['status'];;
+                        $this->return->controller->name = $this->controllerStr['name'];
+                    break;
+                }
             }
         }
 
-        public function firsLast($param = 'FontAwesome', $name ='angle-double') {
+        public function firsLast() {
             $firstClass = 'active';
             $lastClass = 'active';
 
-            if($this->first) {
+            if($this->firstLast['view']) {
                 /**
                  * Az elején van a dots;
                  */
-                if($this->current_page >= $this->numPages - $this->halfMidRange){
-                    if($this->befAfterNum > 1) {
-                        for($i = $this->befAfterNum; $i >= 1; $i--) {
+                if ($this->current_page >= $this->numPages - $this->halfMidRange) {
+                    if ($this->befAfterNum > 1) {
+                        for ($i = $this->befAfterNum; $i >= 1; $i--) {
                             unset($this->return->pages->{$i});
                         }
                     } else {
@@ -369,9 +390,9 @@
                 /**
                  * Az végén van a dots;
                  */
-                if($this->current_page <= $this->halfMidRange + 2) {
-                    if($this->befAfterNum > 1) {
-                        for($i = $this->numPages - $this->befAfterNum; $i <= $this->numPages; $i++) {
+                if ($this->current_page <= $this->halfMidRange + 2) {
+                    if ($this->befAfterNum > 1) {
+                        for ($i = $this->numPages - $this->befAfterNum; $i <= $this->numPages; $i++) {
                             unset($this->return->pages->{$i});
                         }
                     } else {
@@ -381,13 +402,14 @@
                 /**
                  * Az elején és a végén van a dots;
                  */
-                if($this->current_page-$this->halfMidRange > $this->befAfterNum+1
-                    && $this->current_page+$this->halfMidRange < $this->numPages-($this->befAfterNum) ) {
-                    if($this->befAfterNum > 1) {
-                        for($i = $this->befAfterNum; $i >= 1; $i--) {
+                if ($this->current_page - $this->halfMidRange > $this->befAfterNum + 1
+                    && $this->current_page + $this->halfMidRange < $this->numPages - ($this->befAfterNum)
+                ) {
+                    if ($this->befAfterNum > 1) {
+                        for ($i = $this->befAfterNum; $i >= 1; $i--) {
                             unset($this->return->pages->{$i});
                         }
-                        for($i = $this->numPages - $this->befAfterNum; $i <= $this->numPages; $i++) {
+                        for ($i = $this->numPages - $this->befAfterNum; $i <= $this->numPages; $i++) {
                             unset($this->return->pages->{$i});
                         }
                     } else {
@@ -398,39 +420,40 @@
                 /**
                  * unset dots
                  */
-                if(isset($this->dotsNumber[0])) {
+                if (isset($this->dotsNumber[0])) {
                     unset($this->return->pages->{$this->dotsNumber[0]});
                 }
-                if(isset($this->dotsNumber[1]) ){
+                if (isset($this->dotsNumber[1])) {
                     unset($this->return->pages->{$this->dotsNumber[1]});
                 }
 
-                if($this->current_page == 1) {
+                if ($this->current_page == 1) {
                     $firstClass = 'inactive';
                 }
-                if($this->current_page ==  $this->numPages) {
+                if ($this->current_page == $this->numPages) {
                     $lastClass = 'inactive';
                 }
-                if(!$this->first) {
-                    $this->return->firstLast = new \stdClass();
-                    $this->return->firstLast->firstClass = $firstClass;
-                    $this->return->firstLast->lastClass = $lastClass;
-                    switch ($param) {
-                        case 'FontAwesome':
-                            $this->return->firstLast->status = 'FontAwesome';
-                            $this->return->firstLast->name = 'angle-double';
-                            break;
-                        case 'string':
-                            $this->return->firstLast->status = 'string';
-                            break;
-                        case 'arrowString':
-                            $this->return->firstLast->status = 'arrowString';
-                            $this->return->firstLast->name = 'angle-double';
-                            break;
-                    }
-                    $this->getClass();
+            }
+            if(!$this->firstLast['view']) {
+                $this->return->firstLast = new \stdClass();
+                $this->return->firstLast->firstClass = $firstClass;
+                $this->return->firstLast->lastClass = $lastClass;
+
+                switch ($this->firstLast['status']) {
+                    case 'arrow':
+                        $this->return->firstLast->status = $this->firstLast['status'];
+                        $this->return->firstLast->name =  $this->firstLast['name'];
+                        break;
+                    case 'string':
+                        $this->return->firstLast->status = $this->firstLast['status'];
+                        break;
+                    case 'arrowString':
+                        $this->return->firstLast->status = $this->firstLast['status'];
+                        $this->return->firstLast->name = $this->firstLast['name'];
+                    break;
                 }
 
+                $this->getClass();
             }
         }
 

@@ -6,20 +6,26 @@
     {% set arrowDubleLeft %} {% endset %}
 
 
-     {% if pagin.controller.status is defined and pagin.controller.status == 'FontAwesome' %}
+     {% if pagin.controller.status is defined and pagin.controller.status == 'arrow' %}
+         {% set arrowLeft = "fa fa-"~pagin.controller.name~"-left" %}
+         {% set arrowRight = "fa fa-"~pagin.controller.name~"-right"  %}
+     {% elseif pagin.controller.status is defined and pagin.controller.status == 'string' %}
+         {% set arrowLeft = "Previus" %}
+         {% set arrowRight = "Next" %}
+     {% elseif pagin.controller.status is defined and pagin.controller.status == 'arrowString' %}
          {% set arrowLeft = "fa fa-"~pagin.controller.name~"-left"  %}
          {% set arrowRight = "fa fa-"~pagin.controller.name~"-right"  %}
      {% endif %}
 
-    {% if pagin.firstLast.status is defined and pagin.firstLast.status == 'FontAwesome' %}
+    {% if pagin.firstLast.status is defined and pagin.firstLast.status == 'arrow'  or pagin.firstLast.status == 'arrowString'%}
         {% set arrowDubleLeft = "fa fa-"~pagin.firstLast.name~"-left" %}
         {% set arrowDubleRight = "fa fa-"~pagin.firstLast.name~"-right"  %}
     {% elseif pagin.firstLast.status is defined and pagin.firstLast.status == 'string' %}
         {% set arrowDubleLeft = "First" %}
         {% set arrowDubleRight = "Last" %}
-    {% elseif pagin.firstLast.status is defined and pagin.firstLast.status == 'arrowString' %}
+    {% if pagin.firstLast.status is defined and pagin.firstLast.status == 'arrowString'%}
+        {% set arrowDubleLeft = "fa fa-"~pagin.firstLast.name~"-left" %}
         {% set arrowDubleRight = "fa fa-"~pagin.firstLast.name~"-right"  %}
-        {% set arrowDubleLeft = "fa fa-"~pagin.firstLast.name~"-left"  %}
     {% endif %}
 
 
@@ -29,37 +35,50 @@
 
     {% if pagin.firstLast.status is defined %}
         <a class="{{ pagin.firstLast.firstClass }} paginate" href="{{ pagin.url }}?page=1&ipp={{ pagin.ipp }}">
-            <i class="{{ arrowDubleLeft }} aria-hidden=true"> {{ pagin.trans.first  }}</i>
+            <i class=" {{ arrowDubleLeft }} aria-hidden=true">
+                {% if pagin.firstLast.status != 'arrow' %}
+                    {{ pagin.trans.first }}
+                {% endif %}
+            </i>
         </a>
     {% endif %}
 
     {% if pagin.prev.prevClass is defined %}
-        <a class="{{ pagin.prev.prevClass }} paginate" href={{ pagin.url }}?page={{ pagin.currentPage -1 }}&ipp="{{ pagin.ipp }}">
-            <i class={{ arrowLeft }} aria-hidden=true></i> {{ pagin.trans.previus }}
+        <a class="{{ pagin.prev.prevClass }} paginate" href="{{ pagin.url }}?page={{ pagin.currentPage -1 }}&ipp="{{ pagin.ipp }}">
+            <i class="{{ arrowLeft }} aria-hidden=true"></i>
+            {% if pagin.controller.status != 'arrow' %}
+                {{ pagin.trans.previus }}
+            {% endif %}
         </a>
     {% else %}
-        <span class="inactive" href="#">{{ pagin.trans.previus }}</span>
+        <span class="inactive" href="#">{{ pagin.trans.previus }} </span>
     {% endif %}
 
     {% for key, value in pagin.pages %}
         {% if value.dots is defined and value.dots %}
-            <span>...</span>
+            <span> ... </span>
         {% else %}
-            <a class="{{ value.class }}" title="{{ pagin.trans.goTo }} {{ value.i }} {{ pagin.trans.of }} {{  pagin.numPages }}" href={{ pagin.url }}?page={{ value.i }}&ipp={{ pagin.ipp }}>{{ value.i }}</a>
+            <a class="{{ value.class }}" title="{{ pagin.trans.goTo }} {{ value.i }} {{ pagin.trans.of }} {{  pagin.numPages }}" href="{{ pagin.url }}?page={{ value.i }}&ipp={{ pagin.ipp }}">{{ value.i }} </a>
         {% endif %}
     {% endfor %}
 
     {% if  pagin.next.nextClass is defined and pagin.next.nextClass == 'active' %}
         <a class="{{ pagin.next.nextClass }} paginate" href="{{ pagin.url }}?page={{ pagin.currentPage+1 }}&ipp={{ pagin.ipp }}">
-            {{ pagin.trans.next }} <i class="{{ arrowRight }} aria-hidden=true"></i>
+            {% if pagin.controller.status != 'arrow' %}
+                {{ pagin.trans.next }}
+            {% endif %}
+            <i class="{{ arrowRight }} aria-hidden=true"></i>
         </a>
     {% else %}
-        <span class="inactive" title="The last page is" href="#">{{ pagin.trans.next }}</span>
+        <span class="inactive" title="The last page is" href="#">{{ pagin.trans.next }} </span>
     {% endif %}
 
     {% if pagin.firstLast.status is defined %}
-        <a class="{{ pagin.firstLast.lastClass }} paginate" href="{{ pagin.url }}?page={{ pagin.numPages }}&ipp={{ pagin.ipp }}">
-            {{ pagin.trans.last }} <i class="{{ arrowDubleRight }} aria-hidden=true"></i>
+        <a class="{{ pagin.firstLast.lastClass }} paginate" href="{{ pagin.url }}?page={{ pagin.numPages }}&ipp={{ pagin.ipp }}" >
+            {% if pagin.firstLast.status != 'arrow' %}
+                {{ pagin.trans.last }}
+            {% endif %}
+            <i class="{{ arrowDubleRight }} aria-hidden=true"></i>
         </a>
     {% endif %}
 
@@ -75,7 +94,6 @@
         </select>
         <label>{{ pagin.trans.perPage }}</label>
     {% endif %}
-
 
 
     {% if pagin.goto is defined %}

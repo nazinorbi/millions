@@ -12,17 +12,17 @@ parameters:
         'ippArray': [6, 9, 12, 25, 50, 100, 250, 500, 'All']
         current_page: 1
         items_per_page: 10
+        befAfterNum: 2
         ipp: true
         goTo: true
         createDots: true
         all: false
         currentOfTotal: false
-        fierstLast:
-            view: true
-            status: FontAwesome
+        firstLast:
+            view: false
+            status: arrow
             name: angle-double
-            class: inactive
         controllerStr:
-            status: FontAwesome
-            name: angle-double
-            class: inactive
+            view: true
+            status: arrow
+            name: angle
