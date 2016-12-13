@@ -6,6 +6,12 @@
  * Time: 10:34
  */
 
-class BlogHtml {
+
+namespace IndexBundle\Entity;
+
+
+class BlogHtml
+{
+
 
 }

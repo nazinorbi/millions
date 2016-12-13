@@ -1,0 +1,10 @@
+{% for key, pages in num_pages %}
+    {% if key == current_page %}
+        <option value={{ key }} selected>{{ key }}</option>
+    {% else %}
+        <option value={{ key }}>{{ key }}</option>
+    {% endif %}
+
+    <span class="paginate">Page:</span>
+    <select class="paginate" onchange="window.location='{{ url }}?page='+this[this.selectedIndex].value+'&amp;ipp='{{ items_per_page }};return false"></select>
+{% endfor %}

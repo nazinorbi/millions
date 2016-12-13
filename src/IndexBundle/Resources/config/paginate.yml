@@ -1,0 +1,28 @@
+services:
+  paginate:
+    public:    true
+    class:     IndexBundle\Libs\Paginator
+    shared: true
+    arguments: ['%config%', '@service_container']
+
+parameters:
+    config:
+        modelName: model_1
+        midRange: 7
+        'ippArray': [6, 9, 12, 25, 50, 100, 250, 500, 'All']
+        current_page: 1
+        items_per_page: 10
+        befAfterNum: 2
+        ipp: true
+        goTo: true
+        createDots: true
+        all: false
+        currentOfTotal: false
+        firstLast:
+            view: false
+            status: arrow
+            name: angle-double
+        controllerStr:
+            view: true
+            status: arrow
+            name: angle
