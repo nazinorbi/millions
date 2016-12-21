@@ -42,3 +42,7 @@ ajax:
 Strati:
     path:  /Strati
     defaults: { _controller: IndexBundle:Strati:index }
+
+Blog:
+    path:  /Blog
+    defaults: { _controller: IndexBundle:Blog:index }

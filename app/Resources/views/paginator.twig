@@ -23,7 +23,7 @@
     {% elseif pagin.firstLast.status is defined and pagin.firstLast.status == 'string' %}
         {% set arrowDubleLeft = "First" %}
         {% set arrowDubleRight = "Last" %}
-    {% if pagin.firstLast.status is defined and pagin.firstLast.status == 'arrowString'%}
+    {% elseif pagin.firstLast.status is defined and pagin.firstLast.status == 'arrowString'%}
         {% set arrowDubleLeft = "fa fa-"~pagin.firstLast.name~"-left" %}
         {% set arrowDubleRight = "fa fa-"~pagin.firstLast.name~"-right"  %}
     {% endif %}

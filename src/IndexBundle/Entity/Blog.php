@@ -1,4 +1,6 @@
 <?php
+namespace IndexBundle\Entity;
+
 /**
  * Created by IntelliJ IDEA.
  * User: nazinorbi
@@ -6,71 +8,118 @@
  * Time: 10:34
  */
 
-
-namespace IndexBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * User
- * @ORM\Entity(repositoryClass="IndexBundle\Repository\UserRepository")
- * @ORM\Table(name="user")
+ * Blog
+ * @ORM\Entity(repositoryClass="IndexBundle\Repository\BlogRepository")
+ * @ORM\Table(name="blog_html")
  * IgnoreAnnotation("fn")
  */
 
 class Blog
 {
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="blog_id")
+     * @ORM\Column(type="integer", name="Id")
      */
-    private $blog_id;
+    private $id;
 
     /**
-     * @ORM\Clumn(type='datetime', name='post_date')
+     * @ORM\Column(type="string", name="postDate")
      */
-    private $post_date;
+   /// private $postDate;
 
     /**
-     * @ORM\Clumn(type='string', name='prolog')
+     * @ORM\Column(type="string", name="prolog")
      */
     private $prolog;
 
     /**
-     * @ORM\Clumn(type='string', name='blog')
+     * @ORM\Column(type="string", name="blog")
      */
     private $blog;
 
     /**
-     * @ORM\Clumn(type='string', name='title')
+     * @ORM\Column(type="string", name="title")
      */
     private $title;
 
     /**
-     * @ORM\Clumn(type='string', name='author')
+     * @ORM\Column(type="string", name="author")
      */
     private $author;
 
     /**
-     * @ORM\Clumn(type='string', name='label')
+     * @ORM\Column(type="string", name="label")
      */
     private $label;
 
     /**
-     * @ORM\Clumn(type='string', name='imagePath')
+     * @ORM\Column(type="string", name="imagePath")
      */
     private $imagePath;
 
     /**
-     * @ORM\Clumn(type='string', name='post_status')
+     * @ORM\Column(type="string", name="post_status")
      */
     private $post_status;
 
     /**
-     * @ORM\Clumn(type='string', name='comment_status')
+     * @ORM\Column(type="string", name="comment_status")
      */
     private $comment_status;
 
+    public function getId() {
+        return $this->id;
+    }
+
+   /* public function getpostDate() {
+        return $this->postDate;
+    }*/
+
+    public function getProlog() {
+        return $this->prolog;
+    }
+
+    public function getBlog() {
+        return $this->blog;
+    }
+
+    public function getTitle() {
+        return $this->title;
+    }
+
+    public function getAuthor() {
+        return $this->author;
+    }
+
+    public function getLabel() {
+        return $this->label;
+    }
+
+    public function getImagePath() {
+        return $this->imagePath;
+    }
+
+    public function getPostStatus() {
+        return $this->post_status;
+    }
+
+    public function getCommentStatus() {
+        return $this->comment_status;
+    }
+
+    /**
+     * @param mixed $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    public function setProlog($prolog) {
+        $this->prolog = $prolog;
+    }
 }

@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityRepository;
 
 class HeaderRepository extends EntityRepository
 {
-    /*
+
     /**
      * @return Query
     */
