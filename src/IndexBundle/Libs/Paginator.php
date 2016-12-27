@@ -121,10 +121,11 @@
             foreach ($parameters as $key => $parameter) {
                 switch ($key) {
                     case 'totalItems';
+                        $this->total_items = $parameter;
                         $this->paramTotalItems($parameters, $parameter);
                     break;
                     case 'midRange':
-                        $this->paramMidRange($parameter);
+                        $this->mid_range = $parameter;
                     break;
                     case 'ippArray':
                         $this->ipp_array = $parameter;
@@ -173,31 +174,27 @@
         }
 
         public function paramTotalItems($parameters, $parameter) {
-            if( $parameters['items_per_page'] == 'All') {
+            isset($parameters['items_per_page']) ? $this->items_per_page = $parameters['items_per_page'] : false;
+
+            if(isset($parameters['items_per_page']) && $parameters['items_per_page'] == 'All') {
                 $this->numPages = 1;
                 $this->current_page = 1;
                 $this->total_items = $parameter;
                 $this->items_per_page = 'All';
             }
-            elseif(is_int($parameter) ) {
-                $this->total_items = $parameter;
+            else if(isset($parameters['items_per_page'])) {
+                $this->items_per_page = $parameters['items_per_page'];
                 $this->numPages = ceil($this->total_items / $this->items_per_page);
             } else {
-                $this->total_items = $this->getEntityManager()
-                    ->createQuery('
-                                    SELECT count(*) as total
-                                    FROM '.$parameters['tableName'].': tableName
-                                    WHERE tabbleName = :tableName
-                                    ')->setParameter('tableName', $parameters['tableName']);
                 $this->numPages = ceil($this->total_items / $this->items_per_page);
             }
+            $this->paramMidRange($this->mid_range);
         }
 
         public function paramMidRange($parameter) {
             if($parameter > $this->numPages) {
                 $this->mid_range = $this->numPages;
                 $this->createDots = false;
-                $this->first = false;
             } else {
                 $this->mid_range = $parameter;
                 $this->halfMidRange = ($this->mid_range-1)/2;
@@ -210,7 +207,8 @@
                 exit("Unable to paginate: Invalid total value (must be an integer > 0)");
             }
             if($this->mid_range % 2 == 0 || $this->mid_range < 1) {
-                exit("Unable to paginate: Invalid mid_range value (must be an odd integer >= 1)");
+                echo '---'.$this->mid_range.'----';
+                //exit("Unable to paginate: Invalid mid_range value (must be an odd integer >= 1)");
             }
             if(!is_array($this->ipp_array)) {
                 exit("Unable to paginate: Invalid ipp_array value");
@@ -269,6 +267,9 @@
             }
 
             $this->range = range($start_range, $end_range);
+            $this->return->startRange = $start_range;
+            $this->return->endRange = $end_range;
+
         }
 
         public function createDots() {
