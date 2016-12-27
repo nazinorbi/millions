@@ -1,0 +1,112 @@
+
+
+div#blog {
+    height: auto;  
+    max-height: 1200px;
+    overflow-y: auto;  
+}
+.blog, .blog a {
+    color: #FFFAFA;  
+  }
+div#blog_section {
+   height: auto;
+   position: relative;
+}
+div#blog_text {
+    font-size: 14px;
+    width: 1200px;
+}
+
+.pirobox_gall1 {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#blog_text:nth-child(2) {
+    -webkit-box-ordinal-group: 1;
+    -moz-box-ordinal-group: 1;
+    -webkit-order: 0;
+    -ms-flex-order: 0;
+    order: 0;
+    -webkit-box-flex: 0;
+    -moz-box-flex: 0;
+    -webkit-flex: 0 2 auto;
+    -ms-flex: 0 2 auto;
+    flex: 0 2 auto;
+    -webkit-align-self: auto;
+    -ms-flex-item-align: auto;
+    align-self: auto; 
+}
+
+
+#short_description {
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+#source{
+    font-style: italic;
+    font-size: 12px;
+}
+div#section_line {
+    display: flex; 
+    flex-direction: row; 
+    align-items: center;
+    justify-content:center;
+}
+div#section_line_short {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    display: flex; 
+    flex-direction: row; 
+    align-items: center;
+    justify-content:center;
+}
+
+div#line {
+    border: 2px solid #FFA500;
+    width: 90%;
+}
+h1#title{
+    font-size: 24px;
+    font-style:oblique;
+    text-align: center;
+}
+
+#prolog, #blog_text, #labels, #author {
+   text-align: justify;
+   padding-right: 5px;
+   padding-left: 5px;  
+}
+#newpic div {
+    text-align: left;
+    border-left: 10px solid #32163D;
+    overflow: hidden;
+    background-color: #403644;
+    padding: 7px 0;
+}
+
+div #newpic img {
+  zoom: 70%;
+}
+
+#blog::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #575555;
+}
+
+#blog::-webkit-scrollbar
+{
+    width: 8px;
+    background-color: #2A2826;
+}
+
+#blog::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    background-color: #2A2826;
+}
