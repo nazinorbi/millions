@@ -28,7 +28,7 @@ class User
 
     public function getOneUserData($userData)
     {
-        return $this->userData->$userData;
+        return isset($this->userData->$userData) ?? false;
     }
 
     public  function getUserData() {
