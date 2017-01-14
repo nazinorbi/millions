@@ -61,4 +61,9 @@
 .paginate{
     margin: 0 0 0 0 ;
     justify-content: center;
+    height: 10px;
+}
+
+.paginator {
+    display: flex;
 }
