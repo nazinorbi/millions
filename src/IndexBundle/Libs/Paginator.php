@@ -267,9 +267,22 @@
             }
 
             $this->range = range($start_range, $end_range);
-            $this->return->startRange = $start_range;
-            $this->return->endRange = $end_range;
 
+            $this->getStartEndRowNumber($start_range, $end_range);
+        }
+
+        public function getStartEndRowNumber($start_range, $end_range) {
+            if($this->current_page == 1) {
+                $this->return->startRange = 1;
+                $this->return->endRange = $this->items_per_page;
+            } elseif ($this->current_page == $this->numPages) {
+                $b = ($end_range-1) * $this->items_per_page;
+                $this->return->startRange =   $this->total_items - ($this->total_items - $b);
+                $this->return->endRange = $this->total_items;
+            } else {
+                $this->return->startRange = ($this->current_page * $this->items_per_page) + 1 - $this->items_per_page;
+                $this->return->endRange = $this->current_page * $this->items_per_page ;
+            }
         }
 
         public function createDots() {
