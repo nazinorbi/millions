@@ -20,50 +20,55 @@ class BlogRepository extends EntityRepository {
    }*/
 
     /**
-     * return Query
+     * @return Query
      */
     public function getCount() {
         $query = $this->getEntityManager()
             ->createQuery('
-            SELECT COUNT(*) AS total
-            FROM blog_html
-            ');
-      //  $this->totalBlogNumber = $query['total'];
-        return $query;
+            SELECT COUNT(b.id) as total
+            FROM IndexBundle:Blog b
+            WHERE b.post_status = :post_status
+            ')
+            ->setParameter('post_status', 'publish');
+
+        $this->totalBlogNumber = $query->getResult(Query::HYDRATE_ARRAY)[0]['total'];
+        return $this->totalBlogNumber;
     }
 
     public function getBlog($start, $end) {
         $query = $this->getEntityManager()
             ->createQuery('
-                SELECT * FROM blog_html
-                WHERE post_status = :post_status
-                ORDER by post_date  DESC
-                LIMIT :start, :end
+                SELECT b FROM IndexBundle:Blog b 
+                WHERE b.post_status = :post_status
+                ORDER by b.postDate  DESC
             ')
-            ->setParameters([
-                'start' => $start,
-                'end' => $end,
-                'post_status' => 'publish'
-            ]);
+            ->setFirstResult($start)
+            ->setMaxResults($end)
+            ->setParameter('post_status', 'publish')
+        ;
 
+        $query = $query->getResult(Query::HYDRATE_OBJECT);
         return $query;
     }
 
-    private function getLastBlog() {
+    public function getLastBlog() {
         if($this->totalBlogNumber <= 0) {
-            $this->getLastBlog();
+            $this->getCount();
         }
 
         $query = $this->getEntityManager()
             ->createQuery('
-                SELECT * 
-                FROM blog_html 
-                WHERE blog_id = :blog_id
+                SELECT b as blog
+                FROM IndexBundle:Blog b 
+                WHERE b.id = :id
             ')
             ->setParameter(
-                'blog_id', $this->totalBlogNumber
+                'id', $this->totalBlogNumber
             );
 
+           $query = $query->getResult(Query::HYDRATE_OBJECT)[0]['blog'];
+        //print_r($query);
         return $query;
     }
+
 }
