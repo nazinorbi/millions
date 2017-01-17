@@ -26,20 +26,7 @@ class StratiController extends AbsBootstrap
      * @Route("/strati", name="strati")
      * @Method({"GET", "POST"})
      */
-    public function indexAction(Request $request) {
-
-        $parameters = [
-            'totalItems' => 320,
-            'midRange' => 7,
-            'current_page' => 9,
-            'currentOfTotal' => true,
-            'items_per_page' => 5,
-            'defaultModelName' => 'model_1'
-        ];
-        $pagin = $this->get('paginate')->paginate($parameters, $request);
-        echo $this->renderView('Paginator.twig', [
-            'pagin' => $this->objectToArray($pagin)
-            ]);
+    public function indexAction() {
 
         $this->createPath();
 
