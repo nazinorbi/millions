@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="blogLabels")
  * IgnoreAnnotation("fn")
  */
-class BlogLabel
+class BlogLabels
 {
 
     /**
