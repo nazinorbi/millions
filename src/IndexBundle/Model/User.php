@@ -14,21 +14,23 @@ class User
 {
 
     protected $container;
-    public $userData;
+    public $userData = [];
+    public $proba;
 
     public function __construct(Container $container)
     {
         $this->container = $container;
+        $this->proba = 'sdgydv';
     }
 
     public function setUser($user)
     {
-        $this->userData = (object) $user;
+        $this->userData = $user;
     }
 
     public function getOneUserData($userData)
     {
-        return isset($this->userData->$userData) ?? false;
+        return !empty($this->userData->$userData) ? $this->userData->$userData : false;
     }
 
     public  function getUserData() {
