@@ -20,64 +20,75 @@ use Doctrine\ORM\Mapping as ORM;
 class Blog
 {
     /**
-     * @ORM\Id
+     * @ORM\id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="Id")
+     * @ORM\Column(type="integer", name="id")
      */
-    private $id;
+    public $id;
 
     /**
      * @ORM\Column(type="string", name="postDate")
      */
-   /// private $postDate;
+    public $postDate;
 
     /**
      * @ORM\Column(type="string", name="prolog")
      */
-    private $prolog;
+    public $prolog;
 
     /**
      * @ORM\Column(type="string", name="blog")
      */
-    private $blog;
+    public $blog;
 
     /**
      * @ORM\Column(type="string", name="title")
      */
-    private $title;
+    public $title;
 
     /**
      * @ORM\Column(type="string", name="author")
      */
-    private $author;
+    public $author;
 
     /**
      * @ORM\Column(type="string", name="label")
      */
-    private $label;
+    public $label;
 
     /**
      * @ORM\Column(type="string", name="imagePath")
      */
-    private $imagePath;
+    public $imagePath;
 
     /**
      * @ORM\Column(type="string", name="post_status")
      */
-    private $post_status;
+    public $post_status;
+
+    /**
+     * @ORM\Column(type="datetime", name="post_modified")
+     */
+    public $postModified;
 
     /**
      * @ORM\Column(type="string", name="comment_status")
      */
-    private $comment_status;
+    public $comment_status;
+
+    /**
+     * @ORM\Column(type="string", name="source")
+     */
+    public $source;
+
 
     public function getId() {
         return $this->id;
     }
 
-   /* public function getpostDate() {
+    public function getpostDate() {
         return $this->postDate;
-    }*/
+    }
 
     public function getProlog() {
         return $this->prolog;
@@ -109,6 +120,14 @@ class Blog
 
     public function getCommentStatus() {
         return $this->comment_status;
+    }
+
+    public function getPostModified() {
+        return $this->postModified;
+    }
+
+    public function getSource() {
+        return $this->source;
     }
 
     /**

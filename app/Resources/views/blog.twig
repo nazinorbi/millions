@@ -1,0 +1,63 @@
+
+{% block center %}
+
+
+
+    <div id="blog" class="blog">
+        <a href="#blog_section{{ lastBlog.id }}" rel="inline-1200-500"  >
+           <img src="{{ lastImage }}">
+            <div id="blog_text">
+                <h1 id="title">{{ lastBlog.title|raw }}</h1>
+
+                <h3 id="prolog">{{ lastBlog.prolog|raw }}</h3>
+            </div>
+        </a>
+
+        <div id="section_line_short">
+            <div id="line"></div>
+        </div>
+
+
+        {% for i in 0..blogs|length-2 %}
+            <a href="#blog_section{{ i }}" rel="inline-800-250"  class="pirobox_gall1">
+                <img src="{{ blogs[i].imagePath }}" style="max-width: 160px">
+                <div id="blog_text">
+                    <h1 id="title">{{ blogs[i].title|raw }}</h1>
+
+                    <h3 id="prolog">{{ blogs[i].prolog|raw }}</h3>
+                </div>
+            </a>
+            <div id="section_line_short">
+                <div id="line"></div>
+            </div>
+            {% if rank == 'owen' %}
+                <div class="blogEdit">
+                    <a href="BlogForms?blog_id={{ blogs[i].id }}">Szerkesztés</a>
+                </div>
+                <div id="section_line_short">
+                    <div id="line"></div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+
+    <div id="blog" style="display: none">
+        {% for j in 0..blogs|length-1 %}
+            <div id="blog_section{{ j }}" class="blog_section">
+                <h1 id="title">{{ blogs[j].title|raw }}</h1>
+                <h3 id="author">{{ blogs[j].author|raw }} | {{ date[j]|raw }} | {{ blogs[j].source }}</h3>
+                Címkék:
+                {% for label in labels[j] %}
+                      <h3 id="labels">{{ label|raw }}</h3>
+                {% endfor %}
+                <h3 id="prolog">{{ blogs[j].prolog|raw }}</h3>
+                <div id="blog_text">{{ blogs[j].blog|raw }}</div>
+                <div id="section_line_short" class="{{ j }}">
+                    <div id="line"></div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {{ pagin|raw }}
+{% endblock %}

@@ -12,6 +12,7 @@ class AjaxController extends AbsBootstrap {
 
     private $translated = [];
     private $logoutName = 'login';
+    private $data;
     private $response;
     protected $request;
 
@@ -23,27 +24,33 @@ class AjaxController extends AbsBootstrap {
 
         $this->request = $request;
 
-        $data = (object)($request->request->get('data'));
+        $this->data = (object)($request->request->get('data'));
         $instance = $request->request->get('instance');
         $right = (object)($request->request->get('right'));
 
         switch ($instance) {
             case 'login':
-                $this->login($data, $login = true);
+                $this->login($this->data, $login = true);
                 break;
             case 'lang':
-                $this->translated($data);
+                $this->translated($this->data);
                 break;
             case 'logout':
                 $this->logoutName = 'login';
                 unset($_SESSION['user']);
                 session_destroy();
-                $this->login($data, $login = false);
+                $this->login($this->data, $login = false);
                 break;
-            case ('strati') :
-                return $this->strati();
-                break;
+            default:
+                  $this->controllerCall($instance);
+               /* if($request instanceof Response) {
+                    echo 'fhfxgsd';
+                    return $request;
+                }*/
+
+             break;
         }
+
         return new Response($this->response,200);
     }
 
@@ -77,8 +84,15 @@ class AjaxController extends AbsBootstrap {
         ]);
     }
 
-    public function strati() {
-        return ($this->get('manual_forward')
-                     ->handleForward($this->request, $bundleName = 'IndexBundle', $className = 'Strati', $functionName = 'index'));
+    public function controllerCall($classNameValue) {
+        /*return ($this->get('manual_forward')
+                     ->handleForward( $this->request, $bundleName = 'IndexBundle', $classNameValue, $functionName = 'index', $this->data));
+*/
+
+        $this->response = $this->forward('IndexBundle:Blog:index', [
+            'data' => $this->data,
+            'ajax' => true
+        ]);
+
     }
 }

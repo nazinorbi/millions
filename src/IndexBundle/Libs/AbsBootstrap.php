@@ -22,7 +22,8 @@ abstract class AbsBootstrap extends Controller {
         $this->setTranslate();
 
         if(isset($_POST['login']) || isset($_SESSION['user'])) {
-            if($this->container->get('login')->loginRouting($data = null)) {
+            if($this->container->get('login')->loginRouting($_SESSION['user'])) {
+                $this->get('user')->setUser($_SESSION['user']);
                 $this->logoutName = 'logout';
             }
         }

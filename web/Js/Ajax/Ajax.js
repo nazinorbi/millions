@@ -67,7 +67,7 @@
                 ajax: true,
                 right: right,
                 instance: instance,
-                data: depend.get(instance).getData(select)
+                data: depend.get(instance).getData(href, select)
             },
             success: function(data) {
                 var status = true;
