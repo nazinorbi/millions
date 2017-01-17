@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Header
  * @ORM\Entity(repositoryClass="IndexBundle\Repository\HeaderRepository")
- * @ORM\Table(name="header")
+ * @ORM\Table(name="headerimage")
  * IgnoreAnnotation("fn")
  */
 
