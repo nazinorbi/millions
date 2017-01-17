@@ -18,14 +18,15 @@ class ManualForward {
     public function __construct(HttpKernelInterface $kernel)
     {
         $this->kernel  = $kernel;
-       // $this->request = $request;
+        //$this->request = $request;
     }
 
-    public function handleForward($request, $bundleName = 'IndexBundle', $className, $functionName)
+    public function handleForward($request, $bundleName = 'IndexBundle', $className, $functionName, $data)
     {
         $this->request = $request;
-        $controller = $bundleName.':'.$className.':'.$functionName;
+        $controller = $bundleName.':'.ucfirst($className).':'.$functionName;
         $path = [
+            'data' => $data,
             '_controller' => $controller
         ];
         $subRequest = $this->request->duplicate(array(), null, $path);
