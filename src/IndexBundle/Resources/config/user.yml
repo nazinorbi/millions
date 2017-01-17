@@ -3,4 +3,4 @@ services:
       public: true
       class:  IndexBundle\Model\User
       shared: true
-      arguments: [ '@service_container', "@doctrine.orm.entity_manager" ]
+      arguments: [ '@service_container' ]
