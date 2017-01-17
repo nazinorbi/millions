@@ -17,7 +17,7 @@ class Login {
     protected $container;
     private $em;
     private $errors = [];
-    private $userData;
+    public $userData;
 
     private $userPassword;
     private $userId;
@@ -32,7 +32,7 @@ class Login {
 
         if (isset($_SESSION['user']->user->userName) && ($_SESSION['user']->user->userLoggedIn)) {
             //$this->userPassword = $_SESSION ['user']['loginPassworld'];
-            //$this->sessionEntry();
+            $this->sessionEntry();
             return true;
         }
         if(isset($_POST["login"])) {
@@ -84,12 +84,12 @@ class Login {
     }
 
     public function sessionEntry() {
+        $this->container->get('user')->setUser($_SESSION['user']);
         $this->userData = $_SESSION['user'];
     }
 
     public function pusUserDataToUserObject(){
-        $user = $this->container->get('user');
-        $user->setUser($this->userData);
+        $this->container->get('user')->setUser($this->userData);
     }
 
     public function passwordValidator($userPostPassword, $userPassword)
