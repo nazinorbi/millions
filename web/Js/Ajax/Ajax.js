@@ -71,11 +71,12 @@
             },
             success: function(data) {
                 var status = true;
+                alert(status);
                 depend.get(instance).success(data, status, instance);
             },
             error: function(jqXHR) {
                 var status = false;
-                alert(status + ' error');
+                alert(status + ' error de 200ok');
                 depend.get(instance).error(jqXHR, status, instance);
             }
         });
@@ -85,7 +86,7 @@
         if(instance == 'login' || instance == 'logout') {
             return 'json';
         } else {
-            return 'json';
+            return 'html';
         }
     }
 
