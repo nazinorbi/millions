@@ -1,0 +1,31 @@
+<label>Évek</label>
+<select class="ev">
+    {% for i in 2000..2017 %}
+        {% if i == ev  %}
+            <option value="{{ i }}" selected>{{ i }}</option>
+        {% else %}
+            <option value="{{ i }}">{{ i }}</option>
+        {% endif %}
+    {% endfor %}
+</select>
+<label>Hónap</label>
+<select class="honap">
+    <option value="01" selected>Január</option>
+    <option value="02">Február</option>
+    <option value="03">Március</option>
+    <option value="04">Április</option>
+    <option value="05">Május</option>
+    <option value="06">Június</option>
+    <option value="07">Július</option>
+    <option value="08">Augusztus</option>
+    <option value="09">Szeptember</option>
+    <option value="10">Október</option>
+    <option value="11">November</option>
+    <option value="12">December</option>
+</select>
+<label>Nap</label>
+<select class="nap">
+    {% for i in 1..31 %}
+        <option value="{{ i }}">{{ i }}</option>
+    {% endfor %}
+</select>

@@ -57,7 +57,6 @@
             href = hrefF,
             dataType = this.dataType(instance),
             depend = dependency(instance, select);
-        //console.log(depend);
 
         $.ajax({
             type: 'POST',
@@ -71,12 +70,12 @@
             },
             success: function(data) {
                 var status = true;
-                alert(status);
+               // alert(status);
                 depend.get(instance).success(data, status, instance);
             },
             error: function(jqXHR) {
                 var status = false;
-                alert(status + ' error de 200ok');
+               // alert(status + ' error de 200ok');
                 depend.get(instance).error(jqXHR, status, instance);
             }
         });

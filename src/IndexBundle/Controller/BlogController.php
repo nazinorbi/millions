@@ -37,49 +37,41 @@ class BlogController extends AbsBootstrap
      * @Method({"GET", "POST"})
      */
     public function indexAction($data = null, $ajax = false, Request $request) {
-        $this->request = $request;
         $this->data = $data;
+         $this->request = $this->data->url ?? $request->get('_route');
 
-        $this->sqlQuery($this->request, $ajax);
+        $this->sqlQuery();
         $this->crateRandImage();
-        print_r($this->paginateObj->startRange);
 
         if($ajax) {
-            $data = new Response($this->response(), 200);
-            return $data;
-           // return $this->response();
+            return new Response($this->response(), 200);
         } else {
             return $this->run($this->response());
         }
-
     }
 
     public function response() {
         return $this->renderView('blog.twig', [
-            'total' => $this->total,
-            'pagin' => $this->paginRener,
-            'lastBlog' => $this->lastBlog,
-            'lastImage' => $this->lastImage(),
-            'blogs' => $this->blog,
-            "date" => $this->dateTimeConvert(),
-            "labels" => $this->blogsLabel($this->blog),
-            "rank" => $_SESSION['user']->user->userRank
+                'total' => $this->total,
+                'pagin' => $this->paginRener,
+                'lastBlog' => $this->lastBlog,
+                'lastImage' => $this->lastImage(),
+                'blogs' => $this->blog,
+                "date" => $this->dateTimeConvert(),
+                "labels" => $this->blogsLabel($this->blog),
+                "rank" => $_SESSION['user']->user->userRank ?? false
         ]);
     }
-    public function sqlQuery($request, $ajax) {
+    public function sqlQuery() {
         $this->total = $this->getDoctrine()
             ->getRepository('IndexBundle:Blog')
             ->getCount();
-
-        $this->paginate($this->total, $request, $data = null);
 
         $this->lastBlog = $this->getDoctrine()
             ->getRepository('IndexBundle:Blog')
             ->getLastBlog();
 
-        $this->paginate($this->total, $this->request, $this->data);
-        print_r('start--'.$this->paginateObj->startRange.'---');
-        print_r('end--'.$this->paginateObj->endRange.'---');
+        $this->paginate($this->total, $this->data, $this->request);
 
         $this->blog = $this->getDoctrine()
             ->getRepository('IndexBundle:Blog')
@@ -93,7 +85,7 @@ class BlogController extends AbsBootstrap
         return isset($result[$randNumber][0]) ?? false;
     }
 
-    public function paginate($total, $request, $data) {
+    public function paginate($total, $data, $request) {
 
         if(!empty($data)) {
             $parameters = [
@@ -137,10 +129,14 @@ class BlogController extends AbsBootstrap
     }
 
     private function blogsLabel($blogs) {
+
+        if(empty($this->blog->label)) {
+            return false;
+        }
         $labelJson = null;
         $labels = null;
 
-        foreach ($blogs as $index =>$blog) {
+        foreach ($blogs as $index => $blog) {
             $labelJson[$index] = $blog->label;
         }
 

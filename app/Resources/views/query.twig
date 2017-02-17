@@ -1,0 +1,38 @@
+    <div class="egyenleg">
+        <h3>Aktuális egyenleg</h3>
+        <h3>{{ aktual|number_format(2, '.', ',')|default('') }} Ft</h3>
+    </div>
+    <div class="waring">
+        <h2>
+            {% if waring == 'true' %}
+                <script type="text/javascript">
+                    alert('A kassza a küszöb alá esett tölsd fel a kasszát');
+                </script>
+            {% endif %}
+            {% if egyWaring == 'true' %}
+                <script type="text/javascript">
+                    alert('Nem költhetsz többet mint az egyenleged');
+                </script>
+            {% endif %}
+        </h2>
+    </div>
+    {% if datas is defined %}
+        <table>
+            <caption>Bevétel</caption>
+            <thead>
+                <tr>
+                    <th>Bevetél Ft</th><th>Kategória</th><th>Dátum</th><th>Megjegyzés</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for bev in datas %}
+                    <tr>
+                        <th>{{ bev.bevetel }} Ft</th><th>{{ bev.kat }}</th><th>{{ bev.datum }}</th><th>{{ bev.post }}</th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+

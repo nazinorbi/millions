@@ -10,7 +10,11 @@ parameters:
         Főmenu:
             url: Index
             'rank': [public]
-            display: INDEX
+            display: Index
+        Kassza:
+            url: Kassza
+            'rank': [owen, admin, bevetel, kiadas, riport]
+            display: Kassza
         Strati:
             url: Strati
             'rank': [owen, admin]

@@ -12,6 +12,7 @@
      */
 
     use Symfony\Component\DependencyInjection\Container;
+    use Symfony\Bundle\FrameworkBundle\Controller;
     use Doctrine\ORM\Query;
 
     class Paginator
@@ -44,7 +45,7 @@
         /**
          * @var string
          */
-        private $url;
+        public $url;
 
         /**
          * Total pages number in query
@@ -99,8 +100,9 @@
 
         private $return;
         protected $container;
+        protected $templating;
 
-        public function __construct($config, Container $container)
+        public function __construct($config, Container $container, $templating)
         {
             $this->return = new \stdClass();
             $this->return->prev = new \stdClass();
@@ -109,6 +111,8 @@
             $this->return->all = new \stdClass();
             $this->return->ippArray = new \stdClass();
 
+            $this->templating = $templating;
+
             $this->container = $container;
             $this->trans();
             $this->paginate($config, $request = null, $construct = false);
@@ -116,7 +120,6 @@
 
         public function paginate(array $parameters, $request, $construct = true) {
 
-            $this->url = $request != null ? $request->get('_route'): false;
 
             foreach ($parameters as $key => $parameter) {
                 switch ($key) {
@@ -166,7 +169,7 @@
             }
 
             $this->return->numPages = $this->numPages;
-            $this->return->url = $this->url;
+            $this->return->url = $request;
             $this->return->ipp = $this->items_per_page;
             $this->return->currentPage = $this->current_page;
 
@@ -268,20 +271,16 @@
 
             $this->range = range($start_range, $end_range);
 
-            $this->getStartEndRowNumber($start_range, $end_range);
+            $this->getStartEndRowNumber();
         }
 
-        public function getStartEndRowNumber($start_range, $end_range) {
+        public function getStartEndRowNumber() {
             if($this->current_page == 1) {
-                $this->return->startRange = 1;
+                $this->return->startRange = 0;
+                $this->return->endRange = $this->items_per_page; // max row
+            } else  {
+                $this->return->startRange =  $this->current_page * $this->items_per_page ;
                 $this->return->endRange = $this->items_per_page;
-            } elseif ($this->current_page == $this->numPages) {
-                $b = ($end_range-1) * $this->items_per_page;
-                $this->return->startRange =   $this->total_items - ($this->total_items - $b);
-                $this->return->endRange = $this->total_items;
-            } else {
-                $this->return->startRange = ($this->current_page * $this->items_per_page) + 1 - $this->items_per_page;
-                $this->return->endRange = $this->current_page * $this->items_per_page ;
             }
         }
 
@@ -352,6 +351,7 @@
                 }
             }
         }
+
         public function controllerStr() {
 
             if($this->controllerStr['view']) {
@@ -508,32 +508,11 @@
             $this->return->trans->go = $this->container->get('translator')->trans('GO');
         }
 
-        public function setAjax() {
-            $this->items_per_page = $this->ipp_array[0];
+        public function createHtml() {
 
-            if($this->items_per_page == "All") {
-                $this->numPages = 1;
-            } else {
-                if(!is_numeric($this->items_per_page) || $this->items_per_page <= 0) $this->items_per_page = $this->ipp_array[0];
-                $this->numPages = ceil($this->total_items / $this->items_per_page);
-            }
-        }
-
-        public function setGet(){
-            array_splice($_GET, 3);
-            if(isset($_GET["PaginateToGo"])) {
-                //  print_r($_GET["PaginateToGo"]);
-                $args[0] = "page=" . $_GET["page"];
-                $args[1] = "ipp=" . $_GET["ipp"];
-                $args[2] = "url=" . $_GET['url'];
-            } else {
-                $args = explode("&", $_SERVER["QUERY_STRING"]);
-            }
-            foreach ($args as $arg) {
-                $keyval = explode("=", $arg);
-                //   print_r($keyval);
-                if($keyval[0] != "page" && $keyval[0] != "ipp") $this->querystring .= "&" . $arg;
-            }
+           return $this->templating->render('paginator.twig', [
+                'pagin' => $this->return
+            ]);
         }
 
     }

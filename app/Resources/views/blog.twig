@@ -1,8 +1,5 @@
 
 {% block center %}
-
-
-
     <div id="blog" class="blog">
         <a href="#blog_section{{ lastBlog.id }}" rel="inline-1200-500"  >
            <img src="{{ lastImage }}">
@@ -20,19 +17,26 @@
 
         {% for i in 0..blogs|length-2 %}
             <a href="#blog_section{{ i }}" rel="inline-800-250"  class="pirobox_gall1">
-                <img src="{{ blogs[i].imagePath }}" style="max-width: 160px">
+                {% if blogs[i].imagePath is defined %}
+                    <img src="{{ blogs[i].imagePath }}" style="max-width: 160px">
+                 {% endif %}
                 <div id="blog_text">
+            {% if blogs[i].title is defined %}
                     <h1 id="title">{{ blogs[i].title|raw }}</h1>
-
+            {% endif %}
+            {% if blogs[i].prolog is defined %}
                     <h3 id="prolog">{{ blogs[i].prolog|raw }}</h3>
                 </div>
+            {% endif %}
             </a>
             <div id="section_line_short">
                 <div id="line"></div>
             </div>
             {% if rank == 'owen' %}
                 <div class="blogEdit">
+                {% if blogs[i].id is defined %}
                     <a href="BlogForms?blog_id={{ blogs[i].id }}">Szerkesztés</a>
+                {% endif %}
                 </div>
                 <div id="section_line_short">
                     <div id="line"></div>
@@ -41,18 +45,27 @@
         {% endfor %}
     </div>
 
-
     <div id="blog" style="display: none">
         {% for j in 0..blogs|length-1 %}
             <div id="blog_section{{ j }}" class="blog_section">
-                <h1 id="title">{{ blogs[j].title|raw }}</h1>
-                <h3 id="author">{{ blogs[j].author|raw }} | {{ date[j]|raw }} | {{ blogs[j].source }}</h3>
+                {% if blogs[j].title is defined %}
+                    <h1 id="title">{{ blogs[j].title|raw }}</h1>
+                {% endif %}
+                {% if blogs[j].author is defined %}
+                    <h3 id="author">{{ blogs[j].author|raw }} | {{ date[j]|raw }} | {{ blogs[j].source }}</h3>
+                {% endif %}
                 Címkék:
-                {% for label in labels[j] %}
-                      <h3 id="labels">{{ label|raw }}</h3>
-                {% endfor %}
-                <h3 id="prolog">{{ blogs[j].prolog|raw }}</h3>
-                <div id="blog_text">{{ blogs[j].blog|raw }}</div>
+                {% if label is defined %}
+                    {% for label in labels[j] %}
+                          <h3 id="labels">{{ label|raw }}</h3>
+                    {% endfor %}
+                {% endif %}
+                {% if blogs[j].author is defined %}
+                    <h3 id="prolog">{{ blogs[j].prolog|raw }}</h3>
+                {% endif %}
+                {% if blogs[j].blog is defined %}
+                    <div id="blog_text">{{ blogs[j].blog|raw }}</div>
+                {% endif %}
                 <div id="section_line_short" class="{{ j }}">
                     <div id="line"></div>
                 </div>

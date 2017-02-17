@@ -1,0 +1,25 @@
+<div class="waring">
+    <h2>
+        {% if zarWaring == 'true' %}
+            <script type="text/javascript">
+                alert('Ebben a {{ start }} -tól {{ end }}  időszakban nincsen lekérdezhető zárólás');
+            </script>
+        {% endif %}
+    </h2>
+</div>
+
+{% if zaras is defined and zaras != '' %}
+    <table>
+        <caption>Zárások reportjai</caption>
+        <thead>
+            <tr>
+                <th>Zárás összege</th><th>Zárás dátuma</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>{{ zaras }} Ft</th><th>{{ datum| default(' ') }}</th>
+            </tr>
+        </tbody>
+    </table>
+{% endif %}

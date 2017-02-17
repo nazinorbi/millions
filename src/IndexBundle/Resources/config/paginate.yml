@@ -3,7 +3,7 @@ services:
     public:    true
     class:     IndexBundle\Libs\Paginator
     shared: true
-    arguments: ['%config%', '@service_container']
+    arguments: ['%config%', '@service_container', '@templating']
 
 parameters:
     config:

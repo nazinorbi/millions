@@ -1,0 +1,21 @@
+{% if bevKiadReportWaring == 'true' %}
+    <script type="text/javascript">
+        alert('A keresett feltételekel nem találtam adatokat')
+    </script>
+{% endif %}
+<table>
+    <thead>
+    <tr>
+        <th>Sorszám</th><th>Összeg</th><th>Kategória</th><th>Dátum</th>
+    </tr>
+    </thead>
+    {% for key, rep in reports %}
+        <tr>
+                {% if rep.bevetel is defined %}
+                    <th>{{ key }}</th><th>{{ rep.bevetel }}</th><th>{{ rep.kateg }}</th><th>{{ rep.datum }}</th>
+                {% else %}
+                    <th>{{ key }}</th><th>{{ rep.kiadas }}</th><th>{{ rep.kateg }}</th><th>{{ rep.datum }}</th>
+                {% endif %}
+        </tr>
+    {% endfor %}
+</table>

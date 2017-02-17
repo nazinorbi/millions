@@ -1,20 +1,17 @@
 
      getBlog = function(href) {
          return {
-            'url':  $.url(href).param('url'),
+            'url':  $.url(href).param('url').toLowerCase(),
             'page':  $.url(href).param('page'),
             'ipp':   $.url(href).param('ipp')
         }
     };
 
-     blogAdd = function(data, instance) {
-
-        if(data !== '') {
-            $('.centerSide').children().remove();
-            $('.centerSide').append(data);
-        }
+     blogAdd = function(data, status, instance) {
+         $('.centerSide').children().remove();
+         $('.centerSide').prepend(data);
     };
 
-    function blogError() {
-
-    }
+     blogError = function() {
+        alert('szarvan a blogon');
+    };

@@ -54,7 +54,7 @@ class Menu {
                     foreach ($elem as $key => $val) {
                         switch ($val) {
                             case ($key == 'sub' && is_array($val)):
-                                $attrLi = 'id="almenu"';
+                                $attrLi = " class='menuBut' id='almenu'";
                                 $this->aTeg = $id;
                                 $this->sub = true;
                                 $sub = $this->menuFactory($val, true);
@@ -67,17 +67,17 @@ class Menu {
                                 $this->name = $val;
 
                                 if (!$this->sub && $attrLi == 'id="fomenu"') {
-                                    $this->aTeg = "<a class='ajaxBut' instance='$this->name' href= $this->url>" .$this->name."</a>";
+                                    $this->aTeg = "<p class='menuBut' instance='$this->name' href= $this->url>" .$this->name."</p>";
                                 } else {
                                     $this->aTeg = $this->name;
                                 }
                                 break;
                             default :
-                                $attrLi = 'id="fomenu"';
+                                $attrLi = ' id="fomenu"';
                                 break;
                         }
                     }
-                    $menu .= "<li " . $attrLi . ">" . $this->aTeg . $sub . "</li>\n";
+                    $menu .= "<li" . $attrLi . ">" . $this->aTeg . $sub . "</li>\n";
 
                     unset ($sub);
                     if ($is_sub) {

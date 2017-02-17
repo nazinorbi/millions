@@ -42,10 +42,10 @@ class BlogRepository extends EntityRepository {
                 WHERE b.post_status = :post_status
                 ORDER by b.postDate  DESC
             ')
-            ->setFirstResult($start)
-            ->setMaxResults($end)
             ->setParameter('post_status', 'publish')
-        ;
+            ->setFirstResult($start)
+            ->setMaxResults($end);
+
 
         $query = $query->getResult(Query::HYDRATE_OBJECT);
         return $query;

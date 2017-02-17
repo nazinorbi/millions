@@ -15,6 +15,7 @@ class AjaxController extends AbsBootstrap {
     private $data;
     private $response;
     protected $request;
+    private  $zarWaring = 'false';
 
     /**
      * @Route("/ajax", name="ajax")
@@ -25,7 +26,8 @@ class AjaxController extends AbsBootstrap {
         $this->request = $request;
 
         $this->data = (object)($request->request->get('data'));
-        $instance = $request->request->get('instance');
+        $instance = $request->request->get('instance') ?? $request->get('_route');
+        $this->data->url = $instance ?? $request->get('_route');
         $right = (object)($request->request->get('right'));
 
         switch ($instance) {
@@ -41,6 +43,25 @@ class AjaxController extends AbsBootstrap {
                 session_destroy();
                 $this->login($this->data, $login = false);
                 break;
+            case 'kassza':
+                $this->controllerCall('Kassza');
+                break;
+            case 'kuszob':
+                $this->getDoctrine()->getRepository('IndexBundle:Kuszob')
+                    ->updateKuszob($this->data->kuszob);
+                break;
+            case 'kategoria':
+                $this->kategoria();
+                break;
+            case 'zarReport':
+                $this->zarReport();
+                break;
+            case 'bevKiadReport':
+                $this->bevKiadReport();
+                break;
+            case 'checkTransNum':
+                $this->controllerCall('Index');
+                break;
             default:
                   $this->controllerCall($instance);
                /* if($request instanceof Response) {
@@ -51,7 +72,7 @@ class AjaxController extends AbsBootstrap {
              break;
         }
 
-        return new Response($this->response,200);
+        return new Response($this->response);
     }
 
     public function translated($data) {
@@ -85,14 +106,79 @@ class AjaxController extends AbsBootstrap {
     }
 
     public function controllerCall($classNameValue) {
-        /*return ($this->get('manual_forward')
-                     ->handleForward( $this->request, $bundleName = 'IndexBundle', $classNameValue, $functionName = 'index', $this->data));
-*/
-
-        $this->response = $this->forward('IndexBundle:Blog:index', [
+        $this->response = $this->forward('IndexBundle:'.ucfirst($classNameValue).':index', [
             'data' => $this->data,
             'ajax' => true
+        ])->getContent();
+
+    }
+
+    public function kategoria() {
+        if($this->data->action == 'insert') {
+            $katObj = new Kategoria();
+
+            $katObj->kateg = $this->data->kategoria;
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($katObj);
+            $em->flush();
+        }
+        elseif ($this->data->action == 'delete') {
+            $em = $this->getDoctrine()->getEntityManager();
+            $repository = $em->getRepository('IndexBundle:Kategoria');
+
+            $product = $repository->findOneBy(array('id' => $this->data->katId));
+            $em->remove($product);
+            $em->flush();
+        }
+    }
+
+    public function zarReport() {
+        $query = $this->getDoctrine()->getRepository('IndexBundle:Zaras')
+            ->getBeatwinZaras($this->data->whereStart, $this->data->whereEnd);
+
+        if(empty($query)) {
+            $this->zarWaring = 'true';
+        }
+
+        $this->response = $this->renderView('zarReport.twig', [
+            'zaras' => $query['osszeg'],
+            'datum' => $query['datum'],
+            'zarWaring' => $this->zarWaring,
+            'start' => $this->data->whereStart,
+            'end' => $this->data->whereEnd
         ]);
 
+    }
+
+    public function bevKiadReport() {
+        $bevKiadReportWaring = 'false';
+        $kateg = $this->data->kateg ?? false;
+
+        if($this->data->bevKiadType == 0) {
+            $query = $this->getDoctrine()->getRepository('IndexBundle:Bevetel')
+                ->getBevetel($this->data->start, $this->data->end, $kateg);
+
+            if(empty($query)) {
+                $bevKiadReportWaring = 'true';
+            }
+
+            $this->response = $this->renderView('bevKiadReport.twig', [
+                'reports' => $query,
+                'bevKiadReportWaring' => $bevKiadReportWaring
+            ]);
+        } else {
+            $query = $this->getDoctrine()->getRepository('IndexBundle:Kiadas')
+                ->getKiadas($this->data->start, $this->data->end, $this->data->kateg);
+
+            if(empty($query)) {
+                $bevKiadReportWaring = 'true';
+            }
+
+            $this->response = $this->renderView('bevKiadReport.twig', [
+                'reports' => $query,
+                'bevKiadReportWaring' => $bevKiadReportWaring
+            ]);
+        }
     }
 }

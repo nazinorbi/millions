@@ -1,0 +1,124 @@
+{% block center %}
+    <h2>Házi pénztár</h2><br>
+
+    <div class="egyenleg keret">
+        <h4>Utolsó egyenleg</h4>
+        <h4>{{ aktual|number_format(2, '.', ',')|default('') }} Ft</h4>
+    </div>
+
+    <div class="kassza keret">
+        <label>Kategória</label>
+        <select class="kat">
+            {% if kategorias is defined  %}
+                {% for kat in kategorias %}
+                    <option value="{{ kat.id }}">{{ kat.kateg }}</option>
+                {% endfor %}
+            {% endif %}
+        </select><br>
+            <label>Összeg</label>
+
+        <input class="osszeg" type="number" min="1"><br>
+        <label>Forgalom típusa</label>
+        <select class="type">
+            <option value="Bevétel" selected>Bevétel</option>
+            <option value="Kiadás">Kiadás</option>
+        </select><br>
+        <label>Megjegyzés</label><textarea class="comment"></textarea><br><br>
+
+        <div class="jelszo" style="display: none">Jelszó
+            <ul>
+                <label translate="NICNAME" id="login_felirat">Login name: </label>
+                <input type="text" class="checkName"  />
+                <label translate="PASSWORD" id="login_felirat">Passworld: </label>
+                <input class="checkPassworld" type="text" />
+            </ul>
+        </div>
+        <div class="button"><a class="checkBut" id="but" translate="kassza" instance='kassza' name="Bevitel">Bevitel{# {{ lang_penzar }} #}</a></div>
+        <div class="query"></div>
+    </div>
+
+
+
+    <div class="kuszobDiv keret">
+        <label>Figyelmezetési küszöb</label><input class="kuszob" type="number" min="1"><br>
+        <div class="button"><a class="ajaxBut" id="but" translate="kuszob" instance='kuszob' name="Bevitel">Módósít</a></div>
+    </div>
+
+
+    <div class="keret">
+        <label>Új kategória hozzá adása</label><input class="katAddValue" type="text">
+        <div class="button"><a class="ajaxBut" id="but" value="katAdd" instance='kategoria'>Hozzá ad</a></div>
+    </div>
+
+    <div class="keret">
+        <table>
+            <caption>Kategória Karban tartó</caption>
+            <thead>
+            <tr>
+                <th>Sorszám</th><th>Kategória</th><th>Törlés</th>
+            </tr>
+            </thead>
+            {% for kat in kategorias %}
+                <tr>
+                    <th><input type="checkbox" value="{{ kat.id }}"></th><th>{{ kat.kateg }}</th><th><a class="ajaxBut" value="katDel" id="{{ kat.id }}"  instance='kategoria' name="katDel">Törlés</a></th>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div class="keret">
+        <div>Zárási riport készítése</div>
+        {% include 'datum.twig' %}
+        <div class="sendButt">
+            <a class="ajaxBut" id="but"  value="ev" instance='zarReport' name="Bevitel">Év </a>
+            <a class="ajaxBut" id="but" value="honap" instance='zarReport' name="Bevitel">Hónap</a>
+            <a class="ajaxBut" id="but"  value="datum" instance='zarReport' name="Bevitel">Dátum</a>
+        </div>
+        <div class="zarResult">Eredmény:</div>
+    </div>
+
+    <div class="keret">
+        <div>Kiadás Bevétel Lekérdezése</div>
+        <div>A riport időszaka
+            <div class="start">Tól
+                {% include 'datum.twig' %}
+            </div>
+            <div class="end"> Ig
+                {% include 'datum.twig' %}
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(function() {
+                $('#chkveg').multiselect({
+                    includeSelectAllOption: true
+                });
+                $('#btnget').click(function(){
+                    alert($('#chkveg').val());
+                });
+            });
+        </script>
+        <div class="row">Kategóriák
+            <div class="multiselect">
+                <select id="chkveg" multiple="multiple">
+                    {% for kat in kategorias %}
+                        <option value="{{ kat.id }}">{{ kat.kateg }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="row">Tranzakció típusa
+            <select class="bevKiadType">
+                <option value="0" selected>Bevétel</option>
+                <option value="1">Kiadás</option>
+            </select>
+        </div>
+
+        <div class="sendButt">
+            <a class="ajaxBut" id="but"  value="ev" instance='bevKiadReport' name="Bevitel">Év </a>
+            <a class="ajaxBut" id="but" value="honap" instance='bevKiadReport' name="Bevitel">Hónap</a>
+            <a class="ajaxBut" id="but"  value="datum" instance='bevKiadReport' name="Bevitel">Dátum</a>
+        </div>
+
+        <div class="katBevPrint">Lekérdezés riportja:</div>
+    </div>
+{% endblock %}

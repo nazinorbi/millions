@@ -46,3 +46,13 @@ Strati:
 Blog:
     path:  /Blog
     defaults: { _controller: IndexBundle:Blog:index }
+
+kassza:
+    resource: "@IndexBundle/Controller/"
+    type:     annotation
+    defaults: { _controller: IndexBundle:Kassza:index }
+
+Kassza:
+    resource: "@IndexBundle/Controller/"
+    type:     annotation
+    defaults: { _controller: IndexBundle:Kassza:index }

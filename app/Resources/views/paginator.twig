@@ -1,5 +1,5 @@
 {% block paginator %}
-<div class=" ajaxBut paginator">
+<div class="ajaxBut paginator">
     {% set arrowLeft %} {% endset %}
     {% set arrowRight %} {% endset %}
     {% set arrowDubleRight %} {% endset %}
@@ -17,7 +17,7 @@
          {% set arrowRight = "fa fa-"~pagin.controller.name~"-right"  %}
      {% endif %}
 
-    {% if pagin.firstLast.status is defined and pagin.firstLast.status == 'arrow'  or pagin.firstLast.status == 'arrowString'%}
+    {% if pagin.firstLast is defined and pagin.firstLast.status == 'arrow' or pagin.firstLast.status == 'arrowString'%}
         {% set arrowDubleLeft = "fa fa-"~pagin.firstLast.name~"-left" %}
         {% set arrowDubleRight = "fa fa-"~pagin.firstLast.name~"-right"  %}
     {% elseif pagin.firstLast.status is defined and pagin.firstLast.status == 'string' %}
@@ -34,7 +34,7 @@
     {% endif %}
 
     {% if pagin.firstLast.status is defined %}
-        <p class=" ajaxBut {{ pagin.firstLast.firstClass }} paginate" instance="{{ pagin.url }}" 0href="{{ pagin.url }}?url={{ pagin.url }}&page=1&ipp={{ pagin.ipp }}">
+        <p class=" ajaxBut {{ pagin.firstLast.firstClass }} paginate" instance="{{ pagin.url|lower }}" href="{{ pagin.url|lower }}?url={{ pagin.url|lower }}&page=1&ipp={{ pagin.ipp }}">
             <i class=" ajaxBut  {{ arrowDubleLeft }} aria-hidden=true">
                 {% if pagin.firstLast.status != 'arrow' %}
                     {{ pagin.trans.first }}
@@ -44,7 +44,7 @@
     {% endif %}
 
     {% if pagin.prev.prevClass is defined %}
-        <p class=" ajaxBut {{ pagin.prev.prevClass }} paginate" instance="{{ pagin.url }}" href="{{ pagin.url }}?url={{ pagin.url }}&page={{ pagin.currentPage -1 }}&ipp="{{ pagin.ipp }}">
+        <p class=" ajaxBut {{ pagin.prev.prevClass }} paginate" instance="{{ pagin.url|lower }}" href="{{ pagin.url|lower }}?url={{ pagin.url|lower }}&page={{ pagin.currentPage -1 }}&ipp="{{ pagin.ipp }}">
             <i class=" ajaxBut {{ arrowLeft }} aria-hidden=true"></i>
             {% if pagin.controller.status != 'arrow' %}
                 {{ pagin.trans.previus }}
@@ -58,12 +58,12 @@
         {% if value.dots is defined and value.dots %}
             <span> ... </span>
         {% else %}
-            <p class=" ajaxBut {{ value.class }}" instance="{{ pagin.url }}" title="{{ pagin.trans.goTo }} {{ value.i }} {{ pagin.trans.of }} {{  pagin.numPages }}" href="{{ pagin.url }}?url={{ pagin.url }}&page={{ value.i }}&ipp={{ pagin.ipp }}">{{ value.i }} </p>
+            <p class=" ajaxBut {{ value.class }}" instance="{{ pagin.url|lower }}" title="{{ pagin.trans.goTo }} {{ value.i }} {{ pagin.trans.of }} {{  pagin.numPages }}" href="{{ pagin.url|lower }}?url={{ pagin.url|lower }}&page={{ value.i }}&ipp={{ pagin.ipp }}">{{ value.i }} </p>
         {% endif %}
     {% endfor %}
 
     {% if  pagin.next.nextClass is defined and pagin.next.nextClass == 'active' %}
-        <p class=" ajaxBut {{ pagin.next.nextClass }} paginate" instance="{{ pagin.url }}" href="{{ pagin.url }}?url={{ pagin.url }}&page={{ pagin.currentPage+1 }}&ipp={{ pagin.ipp }}">
+        <p class=" ajaxBut {{ pagin.next.nextClass }} paginate" instance="{{ pagin.url|lower }}" href="{{ pagin.url|lower }}?url={{ pagin.url|lower }}&page={{ pagin.currentPage+1 }}&ipp={{ pagin.ipp }}">
             {% if pagin.controller.status != 'arrow' %}
                 {{ pagin.trans.next }}
             {% endif %}
@@ -74,7 +74,7 @@
     {% endif %}
 
     {% if pagin.firstLast.status is defined %}
-        <p class=" ajaxBut {{ pagin.firstLast.lastClass }} paginate" instance="{{ pagin.url }}" href="{{ pagin.url }}?url={{ pagin.url }}&page={{ pagin.numPages }}&ipp={{ pagin.ipp }}" >
+        <p class=" ajaxBut {{ pagin.firstLast.lastClass }} paginate" instance="{{ pagin.url|lower }}" href="{{ pagin.url|lower }}?url={{ pagin.url|lower }}&page={{ pagin.numPages }}&ipp={{ pagin.ipp }}" >
             {% if pagin.firstLast.status != 'arrow' %}
                 {{ pagin.trans.last }}
             {% endif %}
@@ -83,7 +83,7 @@
     {% endif %}
 
     {% if pagin.all.status is defined and pagin.all.status %}
-        <p class=" ajaxBut active paginate" instance="{{ pagin.url }}"  href="{{ pagin.url }}?url={{ pagin.url }}&page=1&ipp=All">{{ pagin.trans.all }}</p>
+        <p class=" ajaxBut active paginate" instance="{{ pagin.url|lower|lower }}"  href="{{ pagin.url|lower }}?url={{ pagin.url|lower }}&page=1&ipp=All">{{ pagin.trans.all }}</p>
      {% endif %}
 
     {% if pagin.ippArray is defined %}
@@ -98,7 +98,7 @@
 
     {% if pagin.goto is defined %}
         <input type="number" class=" ajaxBut inputPage" min="1" max={{ pagin.numPages }}>
-        <input type="hidden" value={{ pagin.url }}>
+        <input type="hidden" value={{ pagin.url|lower }}>
         <input type="hidden" class=" ajaxBut ipp" value={{ pagin.ipp}}>
         <span class=" ajaxBut paginateToGo paginate">{{ pagin.trans.go }}</span>
     {% endif %}

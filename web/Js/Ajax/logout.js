@@ -21,7 +21,7 @@
         }*/
     };
 
-    var logoutError = function() {
+     logoutError = function() {
         alert('szarvan');
     };
 

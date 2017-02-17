@@ -9,6 +9,7 @@
 namespace IndexBundle\Libs;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -28,7 +29,7 @@ abstract class AbsBootstrap extends Controller {
             }
         }
 
-        return $this->render('index.html.twig'
+        return new Response($this->renderView('index.html.twig'
             ,[  'headNames' => $this->getHeader(),
                 'alt' => 'majd',
                 'title' => 'majd',
@@ -42,7 +43,7 @@ abstract class AbsBootstrap extends Controller {
                 ]),
                 'lang' => $this->renderView('lang.twig', []),
                 'center' => $center
-        ]);
+        ]), 200);
     }
 
     public function setTranslate() {

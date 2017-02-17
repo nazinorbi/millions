@@ -10,7 +10,7 @@
         <META name="author" content="Nazinorbi">
         <link rel="icon" href="{{ asset('web/Icon/yellow-icon-f.ico') }}" type="image/ico" sizes="32x32"/>
 
-        <script type="text/javascript" src="{{ asset('web/Js/jquery-3.1.0.min.js') }}"></script>
+        <script src="{{ asset('web/Js/jquery-3.1.1.js') }}"></script>
         <script type="text/javascript" src="{{ asset('web/Js/jquery-ui.min.js') }}"></script>
 
         <link class="css"/>
@@ -39,7 +39,9 @@
         <script type="text/javascript" src="{{ asset('web/Js/Ajax/ajax.js') }}"></script>
         <script type="text/javascript" src="{{ asset('web/Js/parsel.js') }}"></script>
         <script type="text/javascript" src="{{ asset('web/Js/Ajax/container.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('web/Js//menu.js') }}" class="menu" title="menu"></script>
+        <script type="text/javascript" src="{{ asset('web/Js/menu.js') }}" class="menu" title="menu"></script>
+
+        <script class="function"></script>
         <script type="text/javascript">
             $(document).ready(function() {
                 $(".single").fancybox({
@@ -51,15 +53,26 @@
                 })
             });
         </script>
-        <script class="function"></script>
-        <script>
+        <script type="text/javascript">
             $(document).ready(function() {
+                $(document).on('click','.ajaxBut', function() {
+                    var instance = $(this).attr('instance'),
+                        href = $(this).attr('href'),
+                        right = false,
+                        select = $(this);
 
-                var localozation = window.location.pathname;
-                var pathName= localozation.split("/");
-                var instanceName = pathName[2];
-
-                loadCss(instanceName);
+                        loadJS(instance);
+                        loadCss(instance);
+                        ajaxLoad(right, instance, href, select);
+                });
+                $(document).on('click','.menuBut', function() {
+                    var instance = $(this).attr('instance'),
+                        href = $(this).attr('href'),
+                        right = false,
+                        select = $(this);
+                    console.log('fooo');
+                    ajaxLoad(right, instance, href, select);
+                });
 
                 $.fn.ucFirst = function () {
                     $.each(this, function () {
@@ -69,18 +82,9 @@
                     });
                     return this;
                 };
-
-                $("body").on('click','.ajaxBut', function() {
-                    var instance = $(this).attr('instance').toLowerCase(),
-                            href = $(this).attr('href'),
-                            right = false,
-                            select = $(this);
-
-                    loadJS(instance);
-                    ajaxLoad(right, instance, href, select);
-                });
             });
         </script>
+
         {% block javascripts %}{% endblock %}
     </head>
     <body>
@@ -89,11 +93,14 @@
             <header>
                 {% block header %}
                     <header>
-                        <img src="{{ asset('web/Image/medullosa_noei.jpg') }}" title="Medullosa noei" height="300" width="260" style="border-top-right-radius: 18px;"/>
-                        {% for headName in headNames %}6
+                        <img src="{{ asset('web/Image/pénztár.jpg') }}"  height="300" width="260" style="width: 33%;"/>
+                        <img src="{{ asset('web/Image/antik_penztargep005.jpg') }}"  height="300" width="260" style="width: 33%;"/>
+                        <img src="{{ asset('web/Image/erme.jpg') }}"  height="300" width="260" style="width: 33%;"/>
+                       {# <img src="{{ asset('web/Image/medullosa_noei.jpg') }}" title="Medullosa noei" height="300" width="260" style="border-top-right-radius: 18px;"/>
+                        {% for headName in headNames %}
                             <img src="{{ asset(headName.imagePath) }}{{ headName.imageName }}" alt="{{ alt }}" title="{{ title }}" style="border-top-left-radius: 18px;" height="300" width="485"/>
                         {% endfor %}
-                        <img src="{{ asset('web/Image/EusphenopterisStriata.jpg') }}" alt="carbon kori tájkép" title="carbon kori tájkép" height="300" width="263" style="border-top-right-radius: 18px;"/>
+                        <img src="{{ asset('web/Image/EusphenopterisStriata.jpg') }}" alt="carbon kori tájkép" title="carbon kori tájkép" height="300" width="263" style="border-top-right-radius: 18px;"/> #}
                     </header>
                 {% endblock %}
             </header>
