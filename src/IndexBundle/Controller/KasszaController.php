@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Controller used to manage blog contents in the public part of the site.
  *
- * @Route("/index")
+ * @Route("/kassza")
  * @Route("/")
  *
  */
@@ -44,7 +44,7 @@ class KasszaController extends AbsBootstrap implements HeadCreaturInterface {
         return $this->bootstrapRun($center);
     }
     /**
-     * @Route("/", name="index")
+     * @Route("/", name="kassza")
      * @Method({"GET", "POST"})
      */
     public function indexAction($data = null, $ajax = false) {
@@ -52,12 +52,12 @@ class KasszaController extends AbsBootstrap implements HeadCreaturInterface {
 
         $this->date =  date('Y-m-d H:i:s');
         $this->data = $data;
+       
 
-        if($ajax ) {
+        if($ajax) {
             if(!empty($data->checkName)) {
 
-                $check = $this->container->get('login')->entryUser($data->checkName, $data->checkPassworld, $passworldStatus = true);
-
+                $check = $this->get('login')->entryUser($data->checkName, $data->checkPassworld, $checkPass = true);
                 if(!$check->passworldStatus) {
                     $this->tranzDateCalc();
                     return new Response(json_encode([
@@ -74,11 +74,11 @@ class KasszaController extends AbsBootstrap implements HeadCreaturInterface {
                 }
             } else if($this->tranz->sumTranz+1 <= $this->tranz->tranzNumber) {
                 $this->tranzDateCalc();
-                return new  Response(json_encode([
+               /* return new Response(json_encode([
                     'data' => ['error' => null,
                         'html_' => $this->tranz(),
                         'passworldStatus' => false
-                    ]] ));
+                    ]] ));*/
             }
             else {
                 return new Response(json_encode([

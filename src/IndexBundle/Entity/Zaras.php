@@ -10,17 +10,21 @@ namespace IndexBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * User
+/** 
+ * Zaras
+ *
  * @ORM\Entity(repositoryClass="IndexBundle\Repository\ZarasRepository")
  * @ORM\Table(name="zaras")
  * IgnoreAnnotation("fn")
  */
 class Zaras {
+
     /**
-     * @ORM\id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer", name="id")
+     * @var integer
+     *
+     * @ORM\Column(type="integer",name="id")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     public $id;
 
@@ -34,6 +38,11 @@ class Zaras {
      */
     public $osszeg;
 
+    /**
+     * Get id
+     *
+     * @return integer
+     */
     public function getId() {
         return $this->id;
     }
