@@ -1,10 +1,16 @@
 
      getBlog = function(href) {
-         return {
-            'url':  $.url(href).param('url').toLowerCase(),
-            'page':  $.url(href).param('page'),
-            'ipp':   $.url(href).param('ipp')
+        if(href == '') {
+            return false;
         }
+        else {
+            return {
+                'url':  $.url(href).param('url'),
+                'page':  $.url(href).param('page'),
+                'ipp':   $.url(href).param('ipp')
+            }
+        }
+
     };
 
      blogAdd = function(data, status, instance) {
@@ -13,5 +19,5 @@
     };
 
      blogError = function() {
-        alert('szarvan a blogon');
+        alert('Hiba van a blogon');
     };

@@ -2,6 +2,7 @@
 
 namespace IndexBundle\Controller;
 
+use IndexBundle\Entity\Kategoria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ class AjaxController extends AbsBootstrap {
      * @Method({"GET", "POST"})
      */
     public function ajaxAction(Request $request)  {
-
+        
         $this->request = $request;
 
         $this->data = (object)($request->request->get('data'));
@@ -39,8 +40,10 @@ class AjaxController extends AbsBootstrap {
                 break;
             case 'logout':
                 $this->logoutName = 'login';
-                unset($_SESSION['user']);
-                session_destroy();
+                if(isset($_SESSION['user'])) {
+                    unset($_SESSION['user']);
+                    session_destroy();
+                }
                 $this->login($this->data, $login = false);
                 break;
             case 'kassza':
@@ -122,14 +125,26 @@ class AjaxController extends AbsBootstrap {
             $em = $this->getDoctrine()->getManager();
             $em->persist($katObj);
             $em->flush();
-        }
-        elseif ($this->data->action == 'delete') {
-            $em = $this->getDoctrine()->getEntityManager();
-            $repository = $em->getRepository('IndexBundle:Kategoria');
 
-            $product = $repository->findOneBy(array('id' => $this->data->katId));
-            $em->remove($product);
+            $query = $this->getDoctrine()->getRepository('IndexBundle:Kategoria')
+                ->getLastKateg();
+            $this->response = json_encode(['data' => [
+                                            'id' => $query->id,
+                                            'kateg' => $query->kateg]]);
+        }
+        else if($this->data->action == 'delete') {
+            $em = $this->getDoctrine()->getEntityManager();
+            $repository = $em->getRepository('IndexBundle:Kategoria')->findOneBy(array('id' => $this->data->katId));
+            $em->remove($repository);
             $em->flush();
+
+            if($repository) {
+                $this->response = json_encode(['data' => [
+                    'delete' => 'true'
+                ]]);
+            }
+
+
         }
     }
 

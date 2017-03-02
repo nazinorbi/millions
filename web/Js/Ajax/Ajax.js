@@ -71,7 +71,7 @@
             success: function(data) {
                 var status = true;
                // alert(status);
-                depend.get(instance).success(data, status, instance);
+                depend.get(instance).success(data, status, instance, select);
             },
             error: function(jqXHR) {
                 var status = false;
@@ -84,6 +84,10 @@
     function dataType(instance) {
         if(instance == 'login' || instance == 'logout') {
             return 'json';
+
+        } else if(instance == 'kassza') {
+            return 'json';
+
         } else {
             return 'html';
         }

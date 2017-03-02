@@ -53,14 +53,15 @@ class User
     private $avatarpath;
 
     /**
-     * @ORM\Column(type="string", name="userFailedLogins")
+     * @ORM\Column(type="string", name="userFailedLogin")
      */
-    private $userFailedLogins;
+    private $userFailedLogin;
 
     /**
      * @ORM\Column(type="string", name="userLastFailedLogin")
      */
     private $userLastFailedLogin;
+
 
     public function getId()
     {
@@ -94,6 +95,22 @@ class User
     public function getUserPasworld()
     {
         return $this->userPassword;
+    }
+
+    public function getUserFailedLogin() {
+        return $this->userFailedLogin;
+    }
+
+    public function setUserFailedLogin($userFailedLogin) {
+        $this->userFailedLogin = $userFailedLogin;
+    }
+
+    public function getUserLastFailedLogin() {
+        return $this->userLastFailedLogin;
+    }
+
+    public function setUserLastFailedLogin($userLastFailedLogin) {
+        $this->userLastFailedLogin = $userLastFailedLogin;
     }
 }
 

@@ -13,7 +13,7 @@ parameters:
             display: Index
         Kassza:
             url: Kassza
-            'rank': [owen, admin, bevetel, kiadas, riport]
+            'rank': [public]
             display: Kassza
         Strati:
             url: Strati

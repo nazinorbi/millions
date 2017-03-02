@@ -87,7 +87,8 @@ class BlogController extends AbsBootstrap
 
     public function paginate($total, $data, $request) {
 
-        if(!empty($data)) {
+
+        if(!empty($data) && isset($data->page)) {
             $parameters = [
                 'totalItems' => (int)$total,
                 'current_page' => $data->page,

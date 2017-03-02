@@ -20,5 +20,5 @@
         }
     };
     langError = function() {
-        alert('szar van');
+        alert('Hiba van a lang ban');
     };

@@ -22,6 +22,6 @@
     };
 
      logoutError = function() {
-        alert('szarvan');
+        alert('Hiba van a logoutban');
     };
 

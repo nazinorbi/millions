@@ -24,6 +24,9 @@ function ServicesCreatur(instance) {
         return this.services;
     };
 }
+function ucFirst(string) {
+    return string.substr(0, 1).toUpperCase() + string.substr(1).toLowerCase();
+}
 
 var BaseClass = function() {
     this.name = null;

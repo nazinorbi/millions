@@ -1,4 +1,5 @@
-    <div class="egyenleg">
+{% block center %}
+<div class="egyenleg">
         <h3>Aktuális egyenleg</h3>
         <h3>{{ aktual|number_format(2, '.', ',')|default('') }} Ft</h3>
     </div>
@@ -35,4 +36,4 @@
             </tbody>
         </table>
     {% endif %}
-
+{% endblock %}

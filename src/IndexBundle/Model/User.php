@@ -15,12 +15,10 @@ class User
 
     protected $container;
     public $userData = [];
-    public $proba;
 
     public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->proba = 'sdgydv';
     }
 
     public function setUser($user)

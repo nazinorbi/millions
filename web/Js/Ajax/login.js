@@ -22,7 +22,7 @@
         };
 
          loginError = function() {
-            alert('szarvan');
+            alert('Hiba a login ban');
         };
 
 

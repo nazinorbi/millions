@@ -23,6 +23,16 @@ class KategoriaRepository extends EntityRepository {
         return $query->getResult(Query::HYDRATE_OBJECT);
     }
 
+    public function getLastKateg() {
+        return  $this->getEntityManager()->createQuery('
+            SELECT k
+            FROM IndexBundle:Kategoria k
+            ORDER BY k.id DESC 
+           ')
+            ->setMaxResults(1)
+            ->getResult(Query::HYDRATE_OBJECT)[0];
+    }
+
     public function insertKat($kat) {
 
         $query =  $this->getEntityManager()->createQuery('

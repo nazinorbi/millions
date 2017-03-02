@@ -21,11 +21,13 @@ class Login {
 
     private $userPassword;
     private $userId;
+    protected $translated;
 
     public function __construct(Container $container, EntityManager $em)
     {
         $this->container = $container;
         $this->em = $em;
+        $this->translated = $container->get('translator');
     }
 
     public function loginRouting($data) {
@@ -50,7 +52,7 @@ class Login {
         return false;
     }
 
-    public function entryUser($userName, $userPostPassword) {
+    public function entryUser($userName, $userPostPassword, $checkPass = false) {
 
         if (empty($userName)) {
             $this->errors [] = $this->translated->trans('MESSAGE_USERNAME_EMPTY');
@@ -59,26 +61,37 @@ class Login {
         } else {
                 $this->userData = $this->em->getRepository('IndexBundle:User')
                     ->getUserFromLogin($userName);
+                
+                $this->userData->userLoggedIn = true;
 
-            $this->userData->user->userLoggedIn = true;
-
-            if (!isset($this->userData->user->id)) {
+            if (!isset($this->userData->id)) {
                 $this->errors [] = $this->translated->trans('MESSAGE_LOGIN_FAILED');
-            } else if ($this->userData->user->userFailedLogins >= 3 && $this->userData->userLastFailedLogin > (time() - 30)) {
+            } else if ($this->userData->userFailedLogin >= 3 && $this->userData->userLastFailedLogin > (time() - 30)) {
                 $this->errors [] = $this->translated->trans('MESSAGE_PASSWORD_WRONG_3_TIMES');
-            } else if (!$this->passwordValidator($this->userPassword, $this->userData->user->userPassword)) {
+
+            } else if (!$this->passwordValidator($this->userPassword, $this->userData->userPassword)) {
 
                 $this->em->getRepository('IndexBundle:User')->failedLogin($userName);
 
                 $this->errors [] = $this->translated->trans('MESSAGE_PASSWORD_WRONG');
-            } else if ($this->userData->user->userActive < 1) {
+            } else if ($this->userData->userActive < 1) {
                 $this->errors [] = $this->translated->trans('MESSAGE_ACCOUNT_NOT_ACTIVATED');
-            } else {
+            } else if(!$checkPass) {
                 // write user data into PHP SESSION [a file on your server]
                 $_SESSION['user'] = $this->userData;
 
                 $this->em->getRepository('IndexBundle:User')->succesLogin($this->userId);
                 $this->pusUserDataToUserObject();
+            }
+            else {
+                $passworldStatus = empty($this->errors) ? false : true;
+                $this->em->getRepository('IndexBundle:User')->succesLogin($this->userId);
+
+                $data = new \stdClass();
+                $data->passworldStatus = $passworldStatus;
+                $data->error =  $this->errors;
+
+                return $data;
             }
         }
     }

@@ -89,6 +89,7 @@ aside.centerSide {
     border-bottom-width: 2px;
     border-right-width: 2px;
     border-left-width: 2px;
+    overflow-x: scroll;
 }
 
 aside.rightSide {
@@ -383,6 +384,14 @@ div#jobb{
     margin: 0;
     height: auto;
 }
+.keret{
+    padding: 5px;
+    margin-left: 15px;
+    margin-bottom: 25px;
+    border: 1px solid;
+    width: 450px;
+    height: auto;
+}
 csop{
     display: inline-block;
     float: right;
@@ -392,13 +401,16 @@ csop{
 }
 
             /*  Gombok              */
+            legend {
+                color: #FFFAFA;
+            }
             input, #but , select{
-                width: auto;
+                width: 150px;
                 color: #9B9BCC;
                 font-family: Arial, sans-serif;
                 font-size:16px;
-                padding:5px 5px;
-                border:0px black none;
+                padding:5px 15px 5px;
+                border:0 black none;
                 cursor:pointer;
                 font-weight:bold;
                 -moz-border-radius: 5px;
@@ -406,7 +418,7 @@ csop{
                 }
             input[type="number"] {
                 color: #000000;
-                width: 55px;
+                width: 150px;
             }
             input[type="checkbox"] {
                 width: 20px;
@@ -675,7 +687,7 @@ csop_fugg{
 /* Autocomplet végződik*/
 /*Menü*/
 
-ul.menu{
+ul#menu{
     font-weight: bold;
     color: #fff;
 }
@@ -703,18 +715,18 @@ ul#menu  li  {
     min-width: 100px;
     text-align: center;
     border-top-left-radius: 10px;
-    border-top-right-radius: 10px; 
+    border-top-right-radius: 10px;
     padding: 5px 5px;
 }
  li#fomenu {
-	background-image: linear-gradient(to top, #a821b0 0%, #7d1783 100%) ;	
+	background-image: linear-gradient(to top, #a821b0 0%, #7d1783 100%) ;
 }
 
 li#almenu  {
     cursor: pointer;
     background-image: url(arrow_down.png), linear-gradient(to top, #a821b0 0%, #7d1783 100%);
     background-position: 95% 50%;
-    background-repeat: no-repeat; 
+    background-repeat: no-repeat;
 }
 ul#menu li#almenu:hover {
      background-color: #7d1783;
@@ -730,27 +742,27 @@ ul#almenu {
     display: none;
     position: absolute;
      -webkit-transform:translate( -5px, 5px);
-	border-top: 3px solid transparent;  
-    z-index: 8;   
+	border-top: 3px solid transparent;
+    z-index: 8;
 }
 
 ul#menu ul li {
-    opacity: 0.8;  
+    opacity: 0.8;
     background:  #1a1a1a;
     float: none;
     text-transform: capitalize;
     margin: 0;
     border-radius: 0;
-    box-shadow: none;     
+    box-shadow: none;
 }
 ul#menu ul li#almenu {
-	background: url(arrow_right.png) no-repeat #1a1a1a 5% 50%;   
+	background: url(arrow_right.png) no-repeat #1a1a1a 5% 50%;
 }
 
-ul#menu ul li#fomenu:hover {   
+ul#menu ul li#fomenu:hover {
     background: #444;
 }
-ul#menu ul li#almenu:hover {   
+ul#menu ul li#almenu:hover {
 	background: url(arrow_right_whithe.png) no-repeat  5% 50%;
 }
 /*Menü végződik*/
@@ -760,10 +772,10 @@ div#statistic  {
     width: 236px;
     font-size: 18px;
     font-style: italic ;
-    margin-left: 0px;    
-    border: 1px solid #fff;   
+    margin-left: 0px;
+    border: 1px solid #fff;
     text-transform: capitalize;
-    text-align: center;   
+    text-align: center;
 }
 div#statistic table tr td {
      width: 237px;
@@ -783,9 +795,9 @@ div#kijelnetkezés a {
     text-transform: capitalize;
     font-size: 22px;
     text-align: left;
-    position: absolute; left: 750px;   
+    position: absolute; left: 750px;
 }
-div#kijelnetkezés a form  {                 
+div#kijelnetkezés a form  {
     position: relative; top: -30px; left: -120px;
 }
 /*Statisztika Végződik*/
@@ -797,11 +809,11 @@ div#ora{
     position: relative; right: -850px; top: 95px;
     font-size: 18px;
     font-style: italic;
-    font: tohoma;  
+    font: tohoma;
 }
 div#ora div {
     float: right;
-    position: relative; 
+    position: relative;
 }
 
 /*Óra Vége*/
@@ -810,7 +822,7 @@ div#ora div {
 /*Regisztráció végződik*/
 /*Nyelv kezdődik*/
 ul#nyelv{
-     list-style: none; 
+     list-style: none;
     width: 100px;
     float: right;
 }
@@ -829,15 +841,15 @@ ul#nyelv li a{
     font-size: 22px;
     font-weight: bold;
     color: #fff;
-    -background: -o-radial-gradient(90% 0%, farthest-side, #777, #515151);       
-    -background: -moz-radial-gradient(90% 0%, farthest-side, #777, #515151);     
-    -background: -webkit-radial-gradient(90% 0%, farthest-side, #777, #515151);  
-    -background: -ms-radial-gradient(90% 0%, farthest-side, #777, #515151);  
+    -background: -o-radial-gradient(90% 0%, farthest-side, #777, #515151);
+    -background: -moz-radial-gradient(90% 0%, farthest-side, #777, #515151);
+    -background: -webkit-radial-gradient(90% 0%, farthest-side, #777, #515151);
+    -background: -ms-radial-gradient(90% 0%, farthest-side, #777, #515151);
 }
 
 /*ul#nyelv li a:hover{
     text-decoration: underline;
-    color: #FFA500;    
+    color: #FFA500;
 }*/
 /*Nyelv Végződik*/
 
@@ -855,7 +867,7 @@ div.message_error{
     border-radius: 12px;
     -background-image: -moz-linear-gradient(#800000 5%, #FF0000 10%, #FA8072 15%, #FF0000 20%,#800000 25%,#FF8C00 30%, #FFD700 );
     -background-image: -webkit-linear-gradient(#800000 5%, #FF0000 10%, #FA8072 15%, #FF0000 20%,#800000 25%,#FF8C00 30%, #FFD700 );
-    -background-image: -o-linear-gradient(red, white 75%, green); 
+    -background-image: -o-linear-gradient(red, white 75%, green);
 }
 .message_hibamentes{
 	margin: -15px;

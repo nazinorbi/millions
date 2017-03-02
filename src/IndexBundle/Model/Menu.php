@@ -40,8 +40,9 @@ class Menu {
 
     public function menuFactory($menuArray, $is_sub = false)
     {
+        $attrLi = null;
         //print_r($menuArray);
-        (!$is_sub) ? $attrUL = 'id="menu" class="menu"' : $attrUL = 'id="almenu"';
+        (!$is_sub) ? $attrUL = 'id="menu" class="fomenu"' : $attrUL = 'id="almenu"';
 
         $menu = "<ul " . $attrUL . ">\n";
         if(is_array($menuArray) || is_object($menuArray)) {
@@ -49,41 +50,34 @@ class Menu {
                 $rank = ($menuArray[$id]['rank']);
 
                 if ($this->chechkRank($rank)) {
-
                     $sub = "";
                     foreach ($elem as $key => $val) {
                         switch ($val) {
                             case ($key == 'sub' && is_array($val)):
-                                $attrLi = " class='menuBut' id='almenu'";
-                                $this->aTeg = $id;
                                 $this->sub = true;
                                 $sub = $this->menuFactory($val, true);
-                                break;
+                            break;
                             case ($key == 'display') :
-                                $this->sub = false;
                                 if(isset($elem['url'])) {
                                     $this->url = $elem['url'];
                                 }
                                 $this->name = $val;
 
-                                if (!$this->sub && $attrLi == 'id="fomenu"') {
-                                    $this->aTeg = "<p class='menuBut' instance='$this->name' href= $this->url>" .$this->name."</p>";
-                                } else {
+                                if($this->sub && !empty($elem['sub'])) {
+                                    $attrLi = "id='almenu'";
+                                    $this->aTeg = $this->name;
+                                } else  {
+                                    $attrLi = "class='menuBut' id='fomenu' instance=".lcfirst($this->name);
                                     $this->aTeg = $this->name;
                                 }
-                                break;
-                            default :
-                                $attrLi = ' id="fomenu"';
-                                break;
+                            break;
                         }
                     }
-                    $menu .= "<li" . $attrLi . ">" . $this->aTeg . $sub . "</li>\n";
+                    $menu .= "<li " . $attrLi . ">" . $this->aTeg . $sub . "</li>\n";
 
-                    unset ($sub);
                     if ($is_sub) {
                         unset ($attrLi);
                         unset ($this->name);
-                        //unset ($this->url);
                     }
                 }
             }

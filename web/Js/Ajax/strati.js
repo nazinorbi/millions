@@ -24,5 +24,5 @@ stratiAdd = function(data) {
 
 
 stratiError = function() {
-    alert('szarvan');
+    alert('Hiba van a strati ban');
 };

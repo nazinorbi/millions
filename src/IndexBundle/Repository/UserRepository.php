@@ -27,16 +27,16 @@ class UserRepository extends AbsFetch  {
                 ')
             ->setParameter('userName', $userName);
 
-        return $this->fech_Obj('user', $query->getResult(Query::HYDRATE_ARRAY));
+        return (object)$query->getResult(Query::HYDRATE_ARRAY)[0];
     }
 
     public function failedLogin($userName) {
 
         $query = $this->getEntityManager()
             ->createQuery('
-                UPDATE user
-                SET userFailedLogins = userFailedLogins+1,
-                    userLastFailedLogin = :userLastFailedLogin
+                UPDATE IndexBundle:user u
+                SET u.userFailedLogin = u.userFailedLogin+1,
+                    u.userLastFailedLogin = :userLastFailedLogin
                 WHERE userName = :userName
             ')
             ->setParameters(['userName' => $userName,
@@ -46,14 +46,15 @@ class UserRepository extends AbsFetch  {
 
     public function succesLogin($userId) {
 
-        $this->getEntityManager()
+        $query =  $this->getEntityManager()
             ->createQuery('
-                UPDATE user
-                SET userFailedLogins = 0, 
-                    userLastFailedLogin = NULL
-                WHERE userId = :userId
+                UPDATE IndexBundle:user u
+                SET u.userFailedLogin = 0, 
+                    u.userLastFailedLogin = NULL
+                WHERE u.id = :id
             ')
-            ->setParameter('userId', $userId);
-    }
+            ->setParameter('id', $userId);
 
+    return $query->getResult(Query::HYDRATE_OBJECT)[0];
+    }
 }
