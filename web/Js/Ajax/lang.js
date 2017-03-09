@@ -8,12 +8,14 @@
     }
 
     langAdd = function(data, instanceUrl) {
+        var parse = JSON.parse(data);
+        console.log(parse);
         $.each($("[translate]"), function (index, value) {
-            $(this).html(data[index]);
+            $(this).html(parse[index]);
         });
     };
 
-    getLang = function (select) {
+    getLang = function (href, select) {
         return {
             'lang': $(select).attr('lang'),
             'trans': getTranslated($("[translate]"))

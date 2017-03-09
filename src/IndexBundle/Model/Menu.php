@@ -42,7 +42,7 @@ class Menu {
     {
         $attrLi = null;
         //print_r($menuArray);
-        (!$is_sub) ? $attrUL = 'id="menu" class="fomenu"' : $attrUL = 'id="almenu"';
+        (!$is_sub) ? $attrUL = 'id="menu" class="sf-menu sf-arrows"' : $attrUL = '';
 
         $menu = "<ul " . $attrUL . ">\n";
         if(is_array($menuArray) || is_object($menuArray)) {
@@ -64,16 +64,16 @@ class Menu {
                                 $this->name = $val;
 
                                 if($this->sub && !empty($elem['sub'])) {
-                                    $attrLi = "id='almenu'";
+                                    $attrLi = "id=''";
                                     $this->aTeg = $this->name;
                                 } else  {
-                                    $attrLi = "class='menuBut' id='fomenu' instance=".lcfirst($this->name);
+                                    $attrLi = "class='' id='' instance=".lcfirst($this->name);
                                     $this->aTeg = $this->name;
                                 }
                             break;
                         }
                     }
-                    $menu .= "<li " . $attrLi . ">" . $this->aTeg . $sub . "</li>\n";
+                    $menu .= "<li " . $attrLi . "><p>".$this->name."</p>" . $sub . "</li>\n";
 
                     if ($is_sub) {
                         unset ($attrLi);

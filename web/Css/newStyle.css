@@ -1,0 +1,78 @@
+* {
+    color: snow;
+    list-style: none;
+}/*nav k*/
+nav div {
+    background: linear-gradient(to top,#1d2624 0,#605b5f 100%);
+    font-size: 16px;
+}
+nav .row {
+    font-size: 18px;
+}
+/*nav v*/
+/**
+Menu kezdődik
+ */
+
+menu li {
+    padding: 5px 5px;
+    box-shadow: 1px 0 3px rgba(255,255,255,.1);
+}
+
+/*
+Menu végződik*/
+
+/*Lang kezdődik*/
+/*.langMenu ul {
+    margin-top: 5px;
+    transform: translateX(-40px);
+    transform: translateY(-15px);
+}
+.langMenu li {
+    background: linear-gradient(to top,#1d2624 0, #454244 100%);
+    width: 100%;
+    padding: 5px 15px;
+    cursor: pointer;
+    box-shadow: inset 0 8px 12px 0 #3e3e3e;
+}
+.fa-language {
+    padding: 5px;
+}
+.almenu:hover {
+    position: absolute;
+}*/
+/*Lang végződik*/
+
+/*headrImege kezdődik*/
+.headerImage {
+    padding: 0px;
+}
+.headerImage img {
+    max-height: 300px;
+
+}
+.headerImage img:nth-child(1) {
+    width: 260px;
+    float: left;
+}
+.headerImage img:nth-child(n+2):nth-child(-n+3) {
+    width: 510px;
+    float: left;
+}
+.headerImage img:last-child {
+    width: 260px;
+    float: right;
+}
+/*headerImage Végződik*/
+
+/*Login k*/
+.login {
+    padding: 5px 15px 5px 15px;
+}
+.login p {
+    float: right;
+}
+.login i {
+    padding-left: 30px;
+}
+/*Login v*/

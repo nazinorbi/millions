@@ -1,6 +1,11 @@
 {% block lang %}
-    <ul>
-        <li class="lang ajaxBut" instance='lang' lang="hu">Magyar</li>
-        <li class="lang ajaxBut" instance='lang' lang="en">English</li>
-    </ul>
+        <ul id="langMenu" class="sf-menu col-sm-1 langMenu ">
+            <li>
+            <i class="fa fa-language" aria-hidden="true"></i>
+                <ul >
+                    <li class="lang ajaxBut fomenu" instance='lang' lang="hu">Magyar</li>
+                    <li class="lang ajaxBut fomenu" instance='lang' lang="en">English</li>
+                </ul>
+            </li>
+        </ul>
 {% endblock %}

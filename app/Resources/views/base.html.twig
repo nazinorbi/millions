@@ -10,68 +10,65 @@
         <META name="author" content="Nazinorbi">
         <link rel="icon" href="{{ asset('web/Icon/yellow-icon-f.ico') }}" type="image/ico" sizes="32x32"/>
 
+       {# <script src="{{ asset('web/Js/jquery-3.1.1.js') }}"></script>#}
+
         <script src="{{ asset('web/Js/jquery-3.1.1.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('web/Js/jquery-ui.min.js') }}"></script>
-        <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/bootstrap-3.3.2.min.css') }}"  />
+        <script type="text/javascript" src="{{ asset('web/Js/superfish.js') }}" ></script>
+
+        <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/bootstrap-grid.css') }}"  />
         <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/bootstrap-multiselect.css') }}" />
         <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/font-awesome-4.7.0/css/font-awesome.min.css') }}">
         <link class="css"/>
         <!-- Add fancybox plugin -->
-        <script type="text/javascript" src="{{ asset('web/Js/fancybox/lib/jquery.mousewheel.js') }}"></script>
-
-        <!-- Add fancyboxBox -->
-        <link rel="stylesheet" href="{{ asset('web/Js/fancybox/source/jquery.fancybox.css') }}" type="text/css" media="screen" />
-        <script type="text/javascript" src="{{ asset('web/Js/fancybox/source/jquery.fancybox.pack.js') }}"></script>
-
-        <!-- Optionally add helpers - button, thumbnail and/or media -->
-        <link rel="stylesheet" href="{{ asset('web/JS/fancybox/source/helpers/jquery.fancybox-buttons.css') }}" type="text/css" media="screen" />
-        <script type="text/javascript" src="{{ asset('web/Js/fancybox/source/helpers/jquery.fancybox-buttons.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('web/Js/fancybox/source/helpers/jquery.fancybox-media.js') }}"></script>
-
-        <link rel="stylesheet" href="{{ asset('web/Js/fancybox/source/helpers/jquery.fancybox-thumbs.css') }}" type="text/css" media="screen" />
-        <script type="text/javascript" src="{{ asset('web/Js/fancybox/source/helpers/jquery.fancybox-thumbs.js') }}"></script>
 
 
-        <link rel="stylesheet" href="{{ asset('web/Css/font-awesome-4.7.0/css/font-awesome.min.css') }}">
-        <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/style.css') }}"/>
-        <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/kassza.css') }}"/>
+        {# <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/style.css') }}"/>#}
+         <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/newStyle.css') }}"/>
+         <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/superfish.css') }}"/>
         <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/Paginate.css') }}"/>
         {#<link rel="stylesheet" type="text/css" href="{{ asset('web/css/jqueryUiThemes_1.11.2/ui-lightness/jquery-ui.css') }}"/>#}
-
 
         <script type="text/javascript" src="{{ asset('web/Js/Ajax/ajax.js') }}"></script>
         <script type="text/javascript" src="{{ asset('web/Js/parsel.js') }}"></script>
         <script type="text/javascript" src="{{ asset('web/Js/Ajax/container.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('web/Js/menu.js') }}" class="menu" title="menu"></script>
-        <script type="text/javascript" src="{{ asset('web/Js/bootstrap-3.3.2.min.js') }}" class="menu" title="menu"></script>
-        <script type="text/javascript" src="{{ asset('web/Js/bootstrap-multiselect.js') }}" class="menu" title="menu"></script>
 
+        <script type="text/javascript" src="{{ asset('web/Js/hoverIntent.js') }}" ></script>
 
         <script class="function"></script>
         <script type="text/javascript">
-            $(document).ready(function() {
-                $(".single").fancybox({
-                    helpers: {
-                        title : {
-                            type : 'float'
-                        }
-                    }
-                })
-            });
+            (function($) {
+                $(document).ready(function () {
+                    $('#langMenu').superfish({
+                        delay:       1000,                            // one second delay on mouseout
+                        animation:   {opacity:'show',height:'show'},  // fade-in and slide-down animation
+                        speed:       'fast',                          // faster animation speed
+                        autoArrows:  false                            // disable generation of arrow mark-up
+                    });
+                    $('nav').on('click', '#langMenu ul li', function () {
+                        $(this).parent().hide(1000);
+                    })
+                });
+
+            })(jQuery);
+        </script>
+        <script type="text/javascript">
+            (function($) {
+                $(document).ready(function () {
+                    $('#menu').superfish({  // fade-in and slide-down animation
+                        speed:       'fast',
+                        cssArrows:  true
+                    });
+
+                    $('nav').on('click', '#menu ul li', function () {
+                        $(this).parent().hide(1000);
+                    })
+                });
+
+            })(jQuery);
         </script>
         <script type="text/javascript">
             $(document).ready(function() {
-                $(document).on('click','.ajaxBut', function() {
-                    var instance = $(this).attr('instance'),
-                        href = $(this).attr('href'),
-                        right = false,
-                        select = $(this);
-
-                        loadJS(instance);
-                        loadCss(instance);
-                        ajaxLoad(right, instance, href, select);
-                });
-                $(document).on('click','.menuBut, .checkBut', function() {
+                $(document).on('click','.ajaxBut', '.menuBut, .checkBut', function() {
                     var instance = $(this).attr('instance'),
                         href = $(this).attr('href'),
                         right = false,
@@ -98,22 +95,35 @@
     <body>
         {% block body %} {% endblock %}
         <main>
-            <header>
-                {% block header %}
-                    <header>
-                        <img src="{{ asset('web/Image/medullosa_noei.jpg') }}" title="Medullosa noei" height="300" width="260" style="border-top-right-radius: 18px;"/>
-                        {% for headName in headNames %}
-                            <img src="{{ asset(headName.imagePath) }}{{ headName.imageName }}" alt="{{ alt }}" title="{{ title }}" style="border-top-left-radius: 18px;" height="300" width="485"/>
-                        {% endfor %}
-                        <img src="{{ asset('web/Image/EusphenopterisStriata.jpg') }}" alt="carbon kori tájkép" title="carbon kori tájkép" height="300" width="260" style="border-top-right-radius: 18px;"/>
-                    </header>
-                {% endblock %}
-            </header>
-            <nav>
-                <menu class="menuDiv">{% block menu %} {{ menu|raw }} {% endblock %}</menu>
-                {% block login %} {{ login|raw }} {% endblock %}<br><br><br><br><br><br><br><br><br>
-                {% block lang %} {{ lang|raw }} {% endblock %}
+            <nav class="container-fluid">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <h3 class="col-sm-2">Keresés</h3>
+                        {% block lang %} {{ lang|raw }} {% endblock %}
+                        <menu class="col-sm-8 menuDiv">{% block menu %} {{ menu|raw }} {% endblock %}</menu>
+                        {% block login %} {{ login|raw }} {% endblock %}
+                    </div>
+                </div>
+
+
+
             </nav>
+            {% block header %}
+                <header class="container-fluid">
+                    <div class="container">
+                        <div class="row">
+                            <div class="headerImage col-sm-12">
+                                <img src="{{ asset('web/Image/medullosa_noei.jpg') }}" title="Medullosa noei"  style="border-top-right-radius: 18px;"/>
+                                {% for headName in headNames %}
+                                    <img src="{{ asset(headName.imagePath) }}{{ headName.imageName }}" alt="{{ alt }}" title="{{ title }}" style="border-top-left-radius: 18px;"/>
+                                {% endfor %}
+                                <img src="{{ asset('web/Image/EusphenopterisStriata.jpg') }}" alt="carbon kori tájkép" title="carbon kori tájkép" style="border-top-right-radius: 18px;"/>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            {% endblock %}
+
             <article>
                 <aside class="leftSide"></aside>
                 <aside class="centerSide">

@@ -25,7 +25,11 @@
 
 {% block login %}
   {#  <form action="{{ path('index') }} " class="loginPass" method="POST"  /> #}
-    <div class="login" id="login" >
+  <div class="login col-sm-1">
+      <i class="fa fa-sign-in" aria-hidden="true"></i>
+      <P translate="LOGIN">{{ lang_login }}</P>
+  </div>
+  {#  <div class="login" id="login" >
         <ul>
             <li translate="NICNAME" id="login_felirat">{{ nicname }}</li>
             <li id="login_input">{{ forms.input}}</li>
