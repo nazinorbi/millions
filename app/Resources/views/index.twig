@@ -1,0 +1,79 @@
+{% block center %}
+    <div class="text" id="index">
+        <p>Ide fogom megírni az index tartalmat</p>
+        <p>Hamarosan...</p>
+    </div>
+
+    {% if visiable  %}
+        <br><br>
+        <div  class="ckeditor" >
+            <div id="indexEditorHead">
+                <textarea name="indexEditor" id="indexEditor" style="display: none;" rows="10" cols="80">
+
+            </textarea>
+                <div class="save">Mentés</div>
+            </div>
+
+            <script>
+                $(document).ready(function() {
+                    $('#textEditor').click(function () {
+                        let clicked = $(this);
+                       $.fancybox.open({
+                           src  :'#indexEditorHead',
+                           type : 'inline',
+                           opts : {
+                               afterShow : function (instance, current) {
+                                   let selected = $('#'+ clicked.attr('name'));
+                                   CKEDITOR.replace( 'indexEditor',{
+                                       extraPlugins: 'tableresize'
+                                   });
+                                   CKEDITOR.instances.indexEditor.setData(toHtmlString(selected.children() ));
+
+                                  /* CKEDITOR.instances["indexEditor"].on('change', function() {
+                                       console.log(this.getData());
+                                   });*/
+
+                                  function toHtmlString(element) {
+                                       let htmlString = '';
+
+                                       element.each(function () {
+                                           let element = $(this).get(0);
+
+                                           if (element.nodeType === Node.ELEMENT_NODE) {
+                                               htmlString += element.outerHTML;
+                                           }
+                                           else if (element.nodeType === Node.TEXT_NODE) {
+                                               htmlString += element.nodeValue;
+                                           }
+                                       });
+                                       return htmlString;
+                                  }
+                               },
+
+                               beforeClose	:	function() {
+                                   let text = '<div class="text" id="index">'+ CKEDITOR.instances.indexEditor.getData() + '</div>';
+                                   $('#index').replaceWith(text);
+                                   CKEDITOR.instances.indexEditor.destroy();
+                               }
+                           }
+                       })
+                    });
+                    // Replace the <textarea id="editor1"> with a CKEditor
+                    // instance, using default configuration.
+                    /*CKEDITOR.replace( 'indexEditor',{
+                        extraPlugins: 'tableresize'
+                    });*/
+                });
+            </script>
+        </div><br><br>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 align-self-end">
+                    <a id="textEditor" class="textEditor btn"  href="javascript:;" name='index' translate='TEXT_EDITOR'>{{ textEdior }}</a>
+                </div>
+            </div>
+        </div>
+
+
+     {% endif %}
+{% endblock %}
