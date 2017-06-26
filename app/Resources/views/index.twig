@@ -1,11 +1,9 @@
 {% block center %}
-    <div class="text" id="index">
-        <p>Ide fogom megírni az index tartalmat</p>
-        <p>Hamarosan...</p>
-    </div>
+    {{ text|raw }}
 
     {% if visiable  %}
         <br><br>
+
         <div  class="ckeditor" >
             <div id="indexEditorHead">
                 <textarea name="indexEditor" id="indexEditor" style="display: none;" rows="10" cols="80">
@@ -51,9 +49,10 @@
                                },
 
                                beforeClose	:	function() {
-                                   let text = '<div class="text" id="index">'+ CKEDITOR.instances.indexEditor.getData() + '</div>';
-                                   $('#index').replaceWith(text);
-                                   CKEDITOR.instances.indexEditor.destroy();
+                                   let text = {'indexText': '<div class="text" id="index">'+ CKEDITOR.instances.indexEditor.getData() + '</div>' },
+                                       select = {'ckeditor' : CKEDITOR.instances.indexEditor, 'text' : text};
+                                   loadJS('index');
+                                   ajaxLoad(false, 'index', false, select, text);
                                }
                            }
                        })
