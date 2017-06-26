@@ -13,75 +13,84 @@
        {# <script src="{{ asset('web/Js/jquery-3.1.1.js') }}"></script>#}
 
         <script src="{{ asset('web/Js/jquery-3.1.1.js') }}"></script>
-        <script type="text/javascript" src="{{ asset('web/Js/superfish.js') }}" ></script>
+        <script src="{{ asset('web/Js/jquery-ui.js') }}"></script>
 
-        <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/bootstrap-grid.css') }}"  />
-        <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/bootstrap-multiselect.css') }}" />
-        <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/font-awesome-4.7.0/css/font-awesome.min.css') }}">
-        <link class="css"/>
+        <div class="bootsrap_font-awesomeHead">
+            <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/bootstrap-grid.css') }}"  />
+            <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/bootstrap.css') }}" />
+            <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+            <link class="css"/>
+        </div>
+
         <!-- Add fancybox plugin -->
+        <script type="text/javascript" src="{{ asset('web/Js/fancybox/dist/jquery.fancybox.js') }}"></script>
+        <link rel="stylesheet" type="text/css" href="{{ asset('web/JS/fancybox/dist/jquery.fancybox.css') }}">
+        <!-- color -->
+        <div class="colorHead">
+            <script src="{{ asset('web/Js/KolorWheel.js') }}"></script>
+            <script src="{{ asset('web/Js/spectrum.js') }}"></script>
+            <script src="{{ asset('web/Js/jquery.create.js') }}"></script>
+            <script src="{{ asset('web/Js/jscolor.js') }}"></script>
+        </div>
+
 
 
         {# <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/style.css') }}"/>#}
-         <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/newStyle.css') }}"/>
-         <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/superfish.css') }}"/>
-        <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/Paginate.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/newStyle.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/mediaQuery.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('web/Css/menu.css') }}"/>
         {#<link rel="stylesheet" type="text/css" href="{{ asset('web/css/jqueryUiThemes_1.11.2/ui-lightness/jquery-ui.css') }}"/>#}
 
         <script type="text/javascript" src="{{ asset('web/Js/Ajax/ajax.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('web/Js/bootstrap.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('web/Js/ckeditor/ckeditor.js') }}"></script>
         <script type="text/javascript" src="{{ asset('web/Js/parsel.js') }}"></script>
         <script type="text/javascript" src="{{ asset('web/Js/Ajax/container.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('web/Js/menu.js') }}"></script>
 
         <script type="text/javascript" src="{{ asset('web/Js/hoverIntent.js') }}" ></script>
 
         <script class="function"></script>
-        <script type="text/javascript">
-            (function($) {
-                $(document).ready(function () {
-                    $('#langMenu').superfish({
-                        delay:       1000,                            // one second delay on mouseout
-                        animation:   {opacity:'show',height:'show'},  // fade-in and slide-down animation
-                        speed:       'fast',                          // faster animation speed
-                        autoArrows:  false                            // disable generation of arrow mark-up
-                    });
-                    $('nav').on('click', '#langMenu ul li', function () {
-                        $(this).parent().hide(1000);
-                    })
+        <script class="texteditor">
+
+
+            $(document).ready(function() {
+                let rank = $('.login p').attr('rank');
+
+                $('.save').on('click', function () {
+                    $('.fancybox-close-small').click();
+                    $(this).parent().find('.fancybox-close-small').trigger('click');
                 });
-
-            })(jQuery);
+            });
         </script>
-        <script type="text/javascript">
-            (function($) {
-                $(document).ready(function () {
-                    $('#menu').superfish({  // fade-in and slide-down animation
-                        speed:       'fast',
-                        cssArrows:  true
-                    });
-
-                    $('nav').on('click', '#menu ul li', function () {
-                        $(this).parent().hide(1000);
-                    })
-                });
-
-            })(jQuery);
+        <script class="langmMnuLoad" type="text/javascript">
+            $(document).ready(function () {
+                $('.langMenu').menu();
+            });
         </script>
-        <script type="text/javascript">
+        <script class="menuLoad" type="text/javascript">
+            $(document).ready(function () {
+                $('#menu').menu();
+            });
+        </script>
+
+        <script class="AjaxLoad" type="text/javascript">
             $(document).ready(function() {
                 $(document).on('click','.ajaxBut', '.menuBut, .checkBut', function() {
-                    var instance = $(this).attr('instance'),
+                    let instance = $(this).attr('instance'),
                         href = $(this).attr('href'),
                         right = false,
-                        select = $(this);
+                        select = $(this),
+                        data = false;
 
                     loadJS(instance);
-                    loadCss(instance);
-                    ajaxLoad(right, instance, href, select);
+                  //  loadCss(instance);
+                    ajaxLoad(right, instance, href, select, data);
                 });
 
                 $.fn.ucFirst = function () {
                     $.each(this, function () {
-                        var caps = this.value;
+                        let caps = this.value;
                         caps = caps.charAt(0).toUpperCase() + caps.slice(1);
                         this.value = caps;
                     });
@@ -93,20 +102,29 @@
         {% block javascripts %}{% endblock %}
     </head>
     <body>
+    <div class="meret visible-xl">xl</div>
+    <div class="meret visible-lg">lg</div>
+    <div class="meret visible-md">md</div>
+    <div class="meret visible-sm">sm</div>
+    <div class="meret visible-xs">xs</div>
+    <div class="color"></div>
+    <input id="1" class="jscolor {onFineChange:'first(this)'}" value="cc66ff"><br>
+    <!-- <p id="first" style="border:1px solid gray; width:161px; height:100px;"></p><br><br><br><br> -->
+   <input id="2" class="jscolor {onFineChange: 'second(this)'}" value="330066"><br>
+   <!-- <p id="second" style="border:1px solid gray; width:161px; height:100px;"></p> -->
+
         {% block body %} {% endblock %}
         <main>
             <nav class="container-fluid">
                 <div class="container">
-                    <div class="row align-items-center">
-                        <h3 class="col-sm-2">Keresés</h3>
+                    <div class="row align-items-center nav-bar">
+                        <div class="col-sm-1 search fa fa-search" aria-hidden="true"></div>
                         {% block lang %} {{ lang|raw }} {% endblock %}
-                        <menu class="col-sm-8 menuDiv">{% block menu %} {{ menu|raw }} {% endblock %}</menu>
+                        <i i class="fa fa-bars col-4 menuToggleBars" aria-hidden="true"></i>
+                        <menu class="col-sm-12 col-md-8 col-lg-7 menu menuDiv">{% block menu %} {{ menu|raw }} {% endblock %}</menu>
                         {% block login %} {{ login|raw }} {% endblock %}
                     </div>
                 </div>
-
-
-
             </nav>
             {% block header %}
                 <header class="container-fluid">
@@ -115,7 +133,7 @@
                             <div class="headerImage col-sm-12">
                                 <img src="{{ asset('web/Image/medullosa_noei.jpg') }}" title="Medullosa noei"  style="border-top-right-radius: 18px;"/>
                                 {% for headName in headNames %}
-                                    <img src="{{ asset(headName.imagePath) }}{{ headName.imageName }}" alt="{{ alt }}" title="{{ title }}" style="border-top-left-radius: 18px;"/>
+                                    <img src="{{ asset(headName.imagePath~headName.imageName) }}" title="Medullosa noei"/>
                                 {% endfor %}
                                 <img src="{{ asset('web/Image/EusphenopterisStriata.jpg') }}" alt="carbon kori tájkép" title="carbon kori tájkép" style="border-top-right-radius: 18px;"/>
                             </div>
@@ -126,13 +144,76 @@
 
             <article>
                 <aside class="leftSide"></aside>
-                <aside class="centerSide">
-                    {% block center %} {{ center|raw }} {% endblock %}
-                </aside>
+                <div class="container">
+                    <div class="row">
+                        <aside class="centerSide col-12 ">
+                            {% block center %} {{ center|raw }} {% endblock %}
+                        </aside>
+                    </div>
+                </div>
+
                 <aside class="rightSide"></aside>
             </article>
             <footer>
             </footer>
         </main>
+        <script class="colorPalett">
+            $(document).ready(function () {
+               color(null);
+            });
+
+            let first_ = getRandomColor(1) , last_ = getRandomColor(2);
+
+            function getRandomColor(id) {
+                let letters = '0123456789ABCDEF',
+                    color = '#';
+
+                for (let i = 0; i < 6; i++ ) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+
+                $(document).ready(function () {
+                    $('#'+id).css("background-color", color);
+                });
+
+                return color;
+            }
+
+            function first(jscolor) {
+                // 'jscolor' instance can be used as a string
+                //document.getElementById('first').style.backgroundColor = '#' + jscolor;
+                color('#' + jscolor, 0);
+            }
+            function second(jscolor) {
+                // 'jscolor' instance can be used as a string
+               // document.getElementById('second').style.backgroundColor = '#' + jscolor;
+                color('#' + jscolor, 1);
+            }
+
+            function color(hexa, sort) {
+
+               if(hexa !== null) {
+                   if (sort === 1) {
+                       first_ = hexa;
+                   } else {
+                       last_ = hexa;
+                   }
+               }
+
+               let base = new KolorWheel(first_),
+                   target = base.abs(last_, 100),
+                   colorArray = [];
+
+               for (let n = 0; n < 100; n++) {
+                    let div = '<div class = '+n+'></div>',
+                        color = target.get(n).getHex();
+
+                    colorArray.push(color);
+                    $('.color').append(div);
+                    $('.color div:nth-child('+n+')').css({float: 'left', width: '5px', height: '50px', backgroundColor: color });
+               } // for gradient
+            }
+
+        </script>
     </body>
 </html>
