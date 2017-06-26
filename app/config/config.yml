@@ -50,6 +50,8 @@ doctrine:
        user:     nazi
        password: 9821365
        charset:  UTF8
+       options:
+                       1002: "SET NAMES 'UTF8' COLLATE 'utf8_unicode_ci'"
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
