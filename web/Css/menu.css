@@ -1,0 +1,18 @@
+.langMenu li {
+    list-style: none;
+    padding: 5px 5px;
+}
+.langMenu {
+   padding-top: 5px;
+   padding-bottom: 5px;
+}
+.langMenu, .menu {
+    cursor: pointer;
+}
+.langMenu ul  {
+    display: none;
+    position: absolute;
+    top: 100%;
+    z-index: 10;
+    padding-left: 0;
+}
