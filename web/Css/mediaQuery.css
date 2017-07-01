@@ -1,0 +1,150 @@
+.meret {
+    color: #000;
+}
+.toggleBars {
+    display: none;
+}
+.visible-xl, .visible-lg, .visible-md, .visible-sm, .visible-xs {
+    display: none !important
+}
+/*xs*/
+@media (max-width: 575px) {
+    .visible-xs {
+        display: block !important
+    }
+
+    .search {
+        display: none;
+    }
+
+    .langMenu {
+        margin-bottom: 0;
+    }
+    .toggleBars {
+        display: flex;
+        justify-content: center;
+    }
+    .headerImage img {
+        height: 125px;
+    }
+
+}
+/*sm*/
+@media (min-width: 576px) and (max-width: 767px) {
+    .visible-md {
+        display: block !important
+    }
+    .headerImage img {
+        height: 150px;
+    }
+}
+@media (max-width: 767px)  {
+    #menu {
+        display: none;
+    }
+    .menuDiv {
+        display: none;
+        width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .menuDiv > ul {
+        width: 100%;
+        padding-left: 0;
+        flex-direction: column;
+    }
+
+    .menuDiv li {
+        position: relative;
+        float: none;
+        width: 100%;
+        padding-left: 15px;
+    }
+    .submenu ul {
+        display: none;
+    }
+
+    .menuDiv ul:hover {
+        /*display: inline;*/
+    }
+    .menuDiv li:before {
+        float: right;
+    }
+}
+/*md*/
+@media (min-width: 768px) {
+    .menuToggleBars {
+        display: none;
+    }
+    .menuDiv {
+        display: flex;
+        justify-content: center;
+        z-index: 10;
+    }
+    .active {
+        position: absolute;
+        top: 100%;
+    }
+    .submenu ul {
+        display: none;
+        z-index: 10;
+    }
+    .submenu p {
+        padding-left: 5px;
+    }
+    .menuDiv li {
+        display: flex;
+        line-height: 24px;
+    }
+
+    .menuDiv > ul {
+        display: flex;
+    }
+    .menuDiv ul {
+        padding-left: 0;
+        transform: translateX(-5px);
+    }
+}
+/*md*/
+@media (max-width: 991px) {
+    .search {
+        display: none;
+    }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+    .visible-md {
+        display: block !important
+    }
+
+    .toggleBars {
+        display: flex;
+        justify-content: center;
+    }
+
+    .sf-menu > li {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+    .headerImage img {
+        height: 150px;
+    }
+}
+/*lg*/
+@media (min-width: 992px)  and (max-width: 1199px){
+    .visible-lg {
+        display: block !important
+    }
+
+    .headerImage img {
+        height: 200px;
+    }
+}
+/*xl*/
+@media (min-width: 1200px) {
+    .visible-xl {
+        display: block !important
+    }
+    .headerImage img {
+        height: 250px;
+    }
+}
