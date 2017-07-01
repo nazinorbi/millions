@@ -6,19 +6,14 @@
             }
         };
 
-         loginAdd = function(data, instanceUrl) {
-            var parse = JSON.parse(data);
-            if(data.menu !== "") {
+         loginAdd = function(data, status, instance, select) {
+
+            if(data.menu !== '') {
                 $(".menuDiv").children().replaceWith(data.menu);
             }
-            $('.login').remove();
-            $('nav').prepend(parse.login);
 
-         /*   var pathName = window.location.pathname.split( '/' );
-
-            if(pathName[2] == "Blog") {
-                $('.blogEdit').show();
-            }*/
+            $('.login').replaceWith(data.login);
+            $('.login').toggleClass('login', 'logout');
         };
 
          loginError = function() {

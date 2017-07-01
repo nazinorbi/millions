@@ -1,5 +1,6 @@
 {% block login %}
-        <div class="logout" >
-            <p class="ajaxBut"  instance="logout" name="logout" translate='LOGOUT' id="but"  > {{ logout|default ('Logut') }} </p>
+        <div class="logout login col-5 col-md-3" >
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            <p class="ajaxBut" rank="{{ userRank }}" instance="logout" translate='LOGOUT' id="but" > {{ logout }} </p>
         </div>
 {% endblock %}

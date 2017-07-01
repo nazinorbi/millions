@@ -32,7 +32,7 @@ class Login {
 
     public function loginRouting($data) {
 
-        if (isset($_SESSION['user']->user->userName) && ($_SESSION['user']->user->userLoggedIn)) {
+        if (isset($_SESSION['user']->userName) && ($_SESSION['user']->userLoggedIn)) {
             //$this->userPassword = $_SESSION ['user']['loginPassworld'];
             $this->sessionEntry();
             return true;
@@ -77,6 +77,9 @@ class Login {
             } else if ($this->userData->userActive < 1) {
                 $this->errors [] = $this->translated->trans('MESSAGE_ACCOUNT_NOT_ACTIVATED');
             } else if(!$checkPass) {
+                if(!isset($_SESSION)) {
+                    session_start();
+                }
                 // write user data into PHP SESSION [a file on your server]
                 $_SESSION['user'] = $this->userData;
 
@@ -98,7 +101,7 @@ class Login {
 
     public function sessionEntry() {
         $this->container->get('user')->setUser($_SESSION['user']);
-        $this->userData = $_SESSION['user'];
+        //$this->userData = $_SESSION['user'];
     }
 
     public function pusUserDataToUserObject(){

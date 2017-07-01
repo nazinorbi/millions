@@ -4,6 +4,7 @@ function extend(ChildClass, ParentClass) {
     ChildClass.prototype.constructor = ChildClass;
 }
 
+// service készítő
 function ServicesCreatur(instance) {
     this.instance = instance;
     this.services = {};
@@ -28,7 +29,7 @@ function ucFirst(string) {
     return string.substr(0, 1).toUpperCase() + string.substr(1).toLowerCase();
 }
 
-var BaseClass = function() {
+let BaseClass = function() {
     this.name = null;
     // function-ok
     this.success  = null;
@@ -78,12 +79,12 @@ function container() {
 
     this.issetDefiniton = function(valueName, name) {
 
-        return(typeof(this[valueName][name]) != 'undefined');
+        return(typeof(this[valueName][name]) !== 'undefined');
     };
 
     this.get = function(name) {
 
-        if(typeof(this.services[name]) != 'undefined') {
+        if(typeof(this.services[name]) !== 'undefined') {
             return this.services[name];
         }
 
@@ -98,15 +99,15 @@ function container() {
     };
 
     this.createInstanceFromDefinition = function(name) {
-
-        var definition = this.definitions[name],
+        console.log(this.obj);
+        let definition = this.definitions[name],
             instance = new this.obj();
-
-        if(definition.params != 'undefined') {
+        console.log(instance);
+        if(definition.params !== 'undefined') {
             this.callSetters(instance, definition.params);
         }
 
-        if((definition.shared != 'undefined') && definition.shared) {
+        if((definition.shared !== 'undefined') && definition.shared) {
             this.store(name, instance);
         }
         return instance;
@@ -114,13 +115,13 @@ function container() {
 
     this.callSetters = function(object, params) {
         $.each(params, function( name, value ) {
-            var setterMethodeName = 'set' + (name);
+            let setterMethodeName = 'set' + (name);
 
             if(!$.isFunction(object[setterMethodeName])) {
                 alert('Az objektumnak nincsen ' +setterMethodeName +' nevű fügvénye')
             }
 
-            if(typeof(value) == 'string' && value.match('/^@\w+$/')) {
+            if(typeof(value) === 'string' && value.match('/^@\w+$/')) {
                 value = get(value.substr(1));
             }
             object[setterMethodeName](value);

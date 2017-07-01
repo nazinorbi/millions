@@ -38,7 +38,7 @@ class BlogController extends AbsBootstrap
      */
     public function indexAction($data = null, $ajax = false, Request $request) {
         $this->data = $data;
-         $this->request = $this->data->url ?? $request->get('_route');
+        $this->request = $this->data->url ?? $request->get('_route');
 
         $this->sqlQuery();
         $this->crateRandImage();

@@ -1,18 +1,93 @@
-* {
+
+body {
     color: snow;
     list-style: none;
-}/*nav k*/
-nav div {
-    background: linear-gradient(to top,#1d2624 0,#605b5f 100%);
-    font-size: 16px;
-}
-nav .row {
     font-size: 18px;
+    line-height: normal;
+}
+.dropdown-menu {
+    color: snow;
+}
+p, ul {
+    margin-bottom: 0;
+}
+li {
+    list-style: none;
+}
+.nav-bar, .fa {
+    line-height: 24px;
+}
+
+input {
+    margin-bottom: 15px;
+    background-color: #fff;
+}
+
+.centerSide {
+    background-image: url('/Millions/web/Css/black_stucco.jpg');
+    height: 1200px;
+}
+
+.button {
+    font-weight:bold;
+    padding:5px;
+    background:#bbb;
+    -moz-box-shadow:0 0 0 1px #333, inset 0 1px 2px #fff;
+    -webkit-box-shadow:0 0 0 1px #333, inset 0 1px 2px #fff;
+    box-shadow:0 0 0 1px #333, 0 0 0 4px transparent, inset 0 1px 2px #fff;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border-radius:5px;
+    width: auto;
+    background:-o-linear-gradient(top, #d1d1d1, #a1a1a1);
+    background:-moz-linear-gradient(top, #d1d1d1, #a1a1a1);
+    background:-webkit-linear-gradient(top, #d1d1d1, #a1a1a1);
+    background:-ms-linear-gradient(top, #d1d1d1, #a1a1a1);
+    background:linear-gradient(top, #d1d1d1 50%, #a1a1a1 50%);
+    z-index: 1;
+    margin-bottom: 15px;
+    justify-content: space-between;
+}
+.button:active {
+
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.25;
+    background-color: #fff;
+    background-image: none;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0.25rem;
+    -webkit-transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+    -o-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s, -webkit-box-shadow ease-in-out 0.15s;
+}
+
+
+
+/*nav k*/
+.nav-bar, li.lang, .menuDiv li, .login div {
+    background: linear-gradient(to top,#1d2624 0,#605b5f 100%);
+}
+li.lang:hover,  .menuDiv li:hover, div.login:hover {
+    background: linear-gradient(to top, #383d3a 0, #827c81 100%);
 }
 /*nav v*/
 /**
 Menu kezdődik
  */
+
+.toggleBars:before {
+    cursor: pointer;
+}
 
 menu li {
     padding: 5px 5px;
@@ -23,56 +98,115 @@ menu li {
 Menu végződik*/
 
 /*Lang kezdődik*/
-/*.langMenu ul {
-    margin-top: 5px;
-    transform: translateX(-40px);
-    transform: translateY(-15px);
-}
-.langMenu li {
-    background: linear-gradient(to top,#1d2624 0, #454244 100%);
-    width: 100%;
-    padding: 5px 15px;
-    cursor: pointer;
-    box-shadow: inset 0 8px 12px 0 #3e3e3e;
-}
-.fa-language {
-    padding: 5px;
-}
-.almenu:hover {
-    position: absolute;
-}*/
+
 /*Lang végződik*/
 
 /*headrImege kezdődik*/
 .headerImage {
     padding: 0px;
 }
-.headerImage img {
-    max-height: 300px;
 
-}
 .headerImage img:nth-child(1) {
-    width: 260px;
+    width: 16.884%;
     float: left;
 }
 .headerImage img:nth-child(n+2):nth-child(-n+3) {
-    width: 510px;
+    width: 33.116%;
     float: left;
 }
 .headerImage img:last-child {
-    width: 260px;
+    width: 16.884%;
     float: right;
 }
 /*headerImage Végződik*/
 
 /*Login k*/
-.login {
-    padding: 5px 15px 5px 15px;
+.login, .logout {
+    text-align: right;
+    cursor: pointer;
+    color: snow;
 }
-.login p {
+.login i, .logout i {
+    padding-right: 5px;
+}
+.dropdown {
+    display: inline-block;
+}
+.dropdown > * {
+    vertical-align: middle;
+}
+@media (min-width: 768px) {
+    .dropdown-menu {
+        right: 0;
+        left: auto;
+    }
+}
+.show > .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    z-index: 10;
+    left:auto;
+    right: 0;
+    min-width: 250px;
+    padding: 15px;
+    top: 100%;
+}
+.login p, .logout p {
     float: right;
 }
-.login i {
+.society i:first-child {
+    padding-left: 60px;
+}
+.society i:last-child {
+    padding-right: 60px;
+}
+.society i:nth-child(2) {
+    padding-right: 30px;
     padding-left: 30px;
 }
+.show > .dropdown-menu {
+    display: block;
+}
+.loginDrop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.loginDrop h4 {
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.society {
+    display: flex;
+    justify-content: space-between;
+    background-color: transparent;
+}
+.society i {
+        background-color: inherit;
+}
+.loginHr {
+    width: 90%;
+}
 /*Login v*/
+/*Ckeditor*/
+.ckeditor {
+    display: none;
+}
+.textEditor {
+    color: #0a94e3;
+    opacity: 0.3;
+    float: right;
+}
+.textEditor:hover {
+    color: #0a94e3;
+    opacity: 0.8;
+    float: right;
+}
+.fancybox-slide > * {
+    background-color: darkgrey;
+}

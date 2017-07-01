@@ -58,4 +58,4 @@ parameters:
                 User:
                     'rank': [public]
                     display: User
-            display: Adminisztráció
+            display: Admin.

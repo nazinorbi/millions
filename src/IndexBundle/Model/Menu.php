@@ -10,7 +10,7 @@ class Menu {
     private $menu;
     private $name;
     private $url;
-    private $aTeg = "";
+    private $pClass = "";
     private $sub = false;
     private $lang;
     private $em;
@@ -42,7 +42,7 @@ class Menu {
     {
         $attrLi = null;
         //print_r($menuArray);
-        (!$is_sub) ? $attrUL = 'id="menu" class="sf-menu sf-arrows"' : $attrUL = '';
+        (!$is_sub) ? $attrUL = 'id="menu" class="menu"' : $attrUL = '';
 
         $menu = "<ul " . $attrUL . ">\n";
         if(is_array($menuArray) || is_object($menuArray)) {
@@ -64,16 +64,16 @@ class Menu {
                                 $this->name = $val;
 
                                 if($this->sub && !empty($elem['sub'])) {
-                                    $attrLi = "id=''";
-                                    $this->aTeg = $this->name;
+                                    $attrLi = "class='fa fa-caret-down submenu'  aria-hidden='true'";
+                                    $this->pClass = 'sf-with-ul ajaxBut';
                                 } else  {
-                                    $attrLi = "class='' id='' instance=".lcfirst($this->name);
-                                    $this->aTeg = $this->name;
+                                    $attrLi = "class='' ";
+                                    $this->pClass = 'ajaxBut';
                                 }
                             break;
                         }
                     }
-                    $menu .= "<li " . $attrLi . "><p>".$this->name."</p>" . $sub . "</li>\n";
+                    $menu .= "<li " . $attrLi . "><p class=".$this->pClass." instance=".lcfirst($this->name)." >".$this->name."</p>" . $sub . "</li>\n";
 
                     if ($is_sub) {
                         unset ($attrLi);
@@ -87,7 +87,7 @@ class Menu {
 
     public function setUserRank() {
         if (isset($_SESSION['user']) ) {
-            $this->userRank = $_SESSION['user']->user->userRank;
+            $this->userRank = $_SESSION['user']->userRank;
         } else {
             $this->userRank = 'public';
         }

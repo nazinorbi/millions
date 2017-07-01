@@ -19,16 +19,19 @@ abstract class AbsBootstrap extends Controller {
     private $translated;
 
     public function bootstrapRun($center) {
-
+        $userRank = null;
         $this->setTranslate();
 
         if(isset($_POST['login']) || isset($_SESSION['user'])) {
             if($this->container->get('login')->loginRouting($_SESSION['user'])) {
-                $this->get('user')->setUser($_SESSION['user']);
+               // $this->get('user')->setUser($_SESSION['user']);
                 $this->logoutName = 'logout';
             }
         }
 
+        if(isset($_SESSION['user'])) {
+            $userRank = $_SESSION['user']->userRank;
+        }
         return new Response($this->renderView('index.html.twig'
             ,[  'headNames' => $this->getHeader(),
                 'alt' => 'majd',
@@ -40,6 +43,7 @@ abstract class AbsBootstrap extends Controller {
                     'lang_login' => $this->get('translator')->trans('LOGIN'),
                     'logout' => $this->get('translator')->trans('LOGOUT'),
                     'lang_reg' => $this->get('translator')->trans('REGISTRATION'),
+                    'userRank' => $userRank
                 ]),
                 'lang' => $this->renderView('lang.twig', []),
                 'center' => $center
@@ -48,12 +52,13 @@ abstract class AbsBootstrap extends Controller {
 
     public function setTranslate() {
         $this->translated = $this->container->get('translator');
-        $this->translated->setLocale('hu');
+        if(isset($_SESSION['local'])) {
+            $this->translated->setLocale($_SESSION['local']);
+        } else {
+            $this->translated->setLocale('hu');
+        }
     }
 
-    public function loginAction() {
-        return true;
-    }
 
     public function getHeader() {
         return $this->container->get('header')

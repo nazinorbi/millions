@@ -1,8 +1,9 @@
 
     function loadJS(instance, src) {
-        var jsLink;
+        let jsLink,
+            functionSelect = $(".function");
 
-        var head = $(".function").find("#"+instance);
+        let head = functionSelect.find("#"+instance);
         if (head.length <= 0 ) {
             if (src) {
                  jsLink = $("<script type='text/javascript' id=" + instance + " src='" + src + "'>");
@@ -11,14 +12,15 @@
                 src = ('/Millions/web/Js/Ajax/' + instance + '.js');
                 jsLink = $("<script type='text/javascript' id=" + instance + " src='" + src + "'>");
             }
-            $(".function").prepend(jsLink);
+            functionSelect.prepend(jsLink);
         }
     }
 
     function loadCss(instance, src) {
-        var cssLink;
+        let cssLink,
+            cssSelect =  $(".css");
 
-        var head = $(".css").find("#"+instance);
+        let head = cssSelect.find("#"+instance);
         if (head.length <= 0 ) {
             if (src) {
                 cssLink = $("<link rel='stylesheet' type='text/css' id=" + instance + " href='" + src + "'>");
@@ -27,65 +29,89 @@
                 src = ('/Millions/web/Css/' + instance + '.css');
                 cssLink = $("<link rel='stylesheet' type='text/css' id=" + instance + " href='" + src + "'>");
             }
-            $(".css").prepend(cssLink);
+            cssSelect.prepend(cssLink);
         }
     }
 
     function dependency(instance) {
         loadJS('ucFirst', '/Millions/web/Js/Functions/ucFirst.js');
 
-        var Services = new ServicesCreatur(instance);
-        extend( ExtendName = function() {}, BaseClass);
+        let Services = new serviceCreate(instance, true, null);
 
-        if(this.serviceContainer && instance != 'lang') {
-            this.serviceContainer.setObj(ExtendName);
+        if(this.serviceContainer && instance !== 'lang') {
+            this.serviceContainer.setObj(new BaseClass());
             this.serviceContainer.addDefinitions(Services.getServices());
             return this.serviceContainer;
         } else {
-            this.serviceContainer = new container();
-            this.serviceContainer.setObj(ExtendName);
+            this.serviceContainer = new Container();
+            this.serviceContainer.setObj(new BaseClass());
             this.serviceContainer.addDefinitions(Services.getServices());
             return this.serviceContainer;
         }
     }
 
+    function ajaxLoad(rightF, instanceF, href, select, data) {
 
-    function ajaxLoad(rightF, instanceF, hrefF, select) {
-
-        var right = setDefaultValue(rightF),
+        let right = setDefaultValue(rightF),
             instance = instanceF,
-            href = hrefF,
             dataType = this.dataType(instance),
-            depend = dependency(instance, select);
+            depend = dependency(instance, select),
+            dataIn;
+        if(data.length > 0) {
+            dataIn = data;
+        }
+        else {
+            dataIn = depend.get(instance).getData(data, href, select);
+        }
 
         $.ajax({
             type: 'POST',
             url: '/Millions/ajax',
             dataType: dataType,
-            data : {
+            data: {
                 ajax: true,
                 right: right,
                 instance: instance,
-                data: depend.get(instance).getData(href, select)
+                data: dataIn
             },
             success: function(data) {
-                var status = true;
-               // alert(status);
+                let status = true;
+                //alert(status);
                 depend.get(instance).success(data, status, instance, select);
             },
             error: function(jqXHR) {
-                var status = false;
+                let status = false;
                // alert(status + ' error de 200ok');
                 depend.get(instance).error(jqXHR, status, instance);
             }
         });
+
+        function realtypeof (obj) {
+            switch (typeof(obj)) {
+                // object prototypes
+                case 'object':
+                    if (obj instanceof Array)
+                        return '[object Array]';
+                    else if (obj instanceof Date)
+                        return '[object Date]';
+                    else if (obj instanceof RegExp)
+                        return '[object regexp]';
+                    else if (obj instanceof String)
+                        return '[object String]';
+                    else if (obj instanceof Number)
+                        return '[object Number]';
+
+                    else
+                        return 'object';
+                // object literals
+                default:
+                    return typeof(obj);
+            }
+        };
     }
 
     function dataType(instance) {
-        if(instance == 'login' || instance == 'logout') {
-            return 'json';
-
-        } else if(instance == 'kassza') {
+        if(instance === 'login' || instance === 'logout') {
             return 'json';
 
         } else {
@@ -94,15 +120,15 @@
     }
 
     function setDefaultValue(value) {
-        var values;
+        let values;
 
-        if(value == 'true' || value == true) {
+        if(value === 'true' || value === true) {
            values = value;
         } else {
            values = false;
         }
 
-        if(values == false || values.length <= 0){
+        if(values === false || values.length <= 0){
             return false;
         } else {
             return values;
@@ -112,20 +138,20 @@
     function print_r(obj, t) {
 
         // define tab spacing
-        var tab = t || '';
+        let tab = t || '';
 
         // check if it's array
-        var isArr = Object.prototype.toString.call(obj) === '[object Array]';
+        let isArr = Object.prototype.toString.call(obj) === '[object Array]';
 
         // use {} for object, [] for array
-        var str = isArr ? ('Array\n' + tab + '[\n') : ('Object\n' + tab + '{\n');
+        let str = isArr ? ('Array\n' + tab + '[\n') : ('Object\n' + tab + '{\n');
 
         // walk through it's properties
-        for (var prop in obj) {
+        for (let prop in obj) {
             if (obj.hasOwnProperty(prop)) {
-                var val1 = obj[prop];
-                var val2 = '';
-                var type = Object.prototype.toString.call(val1);
+                let val1 = obj[prop];
+                let val2 = '';
+                let type = Object.prototype.toString.call(val1);
                 switch (type) {
 
                     // recursive if object/array
@@ -149,5 +175,5 @@
         str = str.substring(0, str.length - 2) + '\n' + tab;
 
         return isArr ? (str + ']') : (str + '}');
-    };
+    }
 
