@@ -67,7 +67,6 @@ class StratiController extends AbsBootstrap
     }
 
     public function createPath(){
-        $loader = new ManualLoader();
-        $this->stratiPath = $loader->manualLoad('stratiPath');
+        $this->stratiPath = new ManualLoader('stratiPath');
     }
 }
