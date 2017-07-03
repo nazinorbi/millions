@@ -12,6 +12,9 @@ use Symfony\Component\Yaml\Parser;
 
 class ManualLoader
 {
+    public function _construct($instance) {
+        return $this->manualLoad($instance);
+    }
 
     public function manualLoad($instance)
     {
