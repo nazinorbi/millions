@@ -2,6 +2,7 @@
 
 namespace IndexBundle\Controller;
 
+use IndexBundle\Libs\GetAfterLogin;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,7 @@ class AjaxController extends AbsBootstrap {
     private $translated = [];
     private $logoutName = 'login';
     private $data;
+    private $afterLogin;
     private $response;
     protected $request;
 
@@ -59,6 +61,7 @@ class AjaxController extends AbsBootstrap {
     }
 
     public function translated($data) {
+
         if(isset($data->lang)) {
             $this->get('translator')->setLocale($data->lang);
             $_SESSION['local'] = $data->lang;
@@ -76,12 +79,23 @@ class AjaxController extends AbsBootstrap {
 
     public function login($data, $login) {
         $userRank = null;
+        $afterLogin = false;
+        $error = null;
 
         if($login) {
-            $this->container->get('login')->loginRouting($data);
+            try {
+                $this->container->get('login')->loginRouting($data);
                 $this->logoutName = 'logout';
+            } catch (\Exception $e) {
+                $this->response = json_encode([
+                    'error' => $e->getMessage()
+                ]);
+                return;
+            }
         }
-
+        if(empty($this->data->data->url) || $this->data->data->url == 'index' || $this->data->data->url == 'Index') {
+            $this->data->getUrl = 'index';
+        }
         if(isset($_SESSION['user'])) {
             $userRank = $_SESSION['user']->userRank;
         }
@@ -95,14 +109,18 @@ class AjaxController extends AbsBootstrap {
                         'lang_reg' => $this->get('translator')->trans('REGISTRATION'),
                         'userRank' => $userRank
                     ]),
-            'menu' => $this->getMenu()
+            'menu' => $this->getMenu(),
+            'data' => $this->get('getAfterLogin')->getHtmlAfterLogin($userRank, $this->data->getUrl)
         ]);
     }
 
-    public function controllerCall($classNameValue) {
+    public function controllerCall($classNameValue, $afterLogin = false) {
         $this->response = $this->forward('IndexBundle:'.ucfirst($classNameValue).':index', [
             'data' => $this->data,
-            'ajax' => true
+            'ajax' => true,
+            'afterLogin' => $afterLogin
         ])->getContent();
     }
+
+
 }
