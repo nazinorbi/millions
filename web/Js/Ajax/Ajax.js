@@ -53,27 +53,28 @@
     function ajaxLoad(rightF, instanceF, href, select, data) {
 
         let right = setDefaultValue(rightF),
+            processData = true,
+            contentType = true,
             instance = instanceF,
-            dataType = this.dataType(instance),
             depend = dependency(instance, select),
-            dataIn;
-        if(data.length > 0) {
-            dataIn = data;
-        }
-        else {
-            dataIn = depend.get(instance).getData(data, href, select);
-        }
+            ajaxData = setAjaxData(instance, setDataIn(depend, data, href, select));
 
         $.ajax({
+            xhr: function () {
+                let xhr = $.ajaxSettings.xhr();
+                xhr.upload.onprogress = function (e) {
+                    console.log(Math.floor(e.loaded / e.total * 100) + '%');
+                };
+                return xhr;
+            },
             type: 'POST',
             url: '/Millions/ajax',
-            dataType: dataType,
-            data: {
-                ajax: true,
-                right: right,
-                instance: instance,
-                data: dataIn
-            },
+            enctype: 'multipart/form-data',
+            dataType: 'json',
+            processData: processData,
+            contentType: contentType,
+            data: ajaxData,
+
             success: function(data) {
                 let status = true;
                 //alert(status);
@@ -86,7 +87,32 @@
             }
         });
 
-        function realtypeof (obj) {
+        function setDataIn(depend, data, href, select) {
+            if(data.length > 0) {
+                return data;
+            }
+            else {
+                return depend.get(instance).getData(data, href, select);
+            }
+        }
+
+        function setAjaxData(instance, dataIn) {
+            if(instance === 'reg') {
+                processData = false;
+                contentType = false;
+                return dataIn;
+            }
+            else {
+                return {
+                    ajax: true,
+                    right: right,
+                    instance: instance,
+                    data: dataIn
+                }
+            }
+        }
+
+       /* function realtypeof (obj) {
             switch (typeof(obj)) {
                 // object prototypes
                 case 'object':
@@ -107,17 +133,9 @@
                 default:
                     return typeof(obj);
             }
-        };
+        }*/
     }
 
-    function dataType(instance) {
-        if(instance === 'login' || instance === 'logout') {
-            return 'json';
-
-        } else {
-            return 'html';
-        }
-    }
 
     function setDefaultValue(value) {
         let values;
