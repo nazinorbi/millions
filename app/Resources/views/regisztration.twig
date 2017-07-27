@@ -1,0 +1,43 @@
+
+<fieldset>
+    <form method="POST" enctype="multipart/form-data" id="regForm">
+        <ol>
+            <li>
+                <label for="userName" translate="USERNAME">{{ lang_UserName }}</label> <em>&nbsp; *</em><br/>
+                <input id="userName" name="data[userName]"/>
+            </li>
+            <li>
+                <label for="nicName" translate="NICNAME">{{ lang_NicName }}</label><em>&nbsp; *</em><br/>
+                <input name="data[nicName]" id="nicName"/>
+            </li>
+            <li>
+                <label for="password1" translate="PASSWORD">{{ lang_password }}</label><em>&nbsp; *</em><br/>
+                <input id="password1" type="password" name="data[password1]"/>
+            </li>
+            <li>
+                <label for="password2" translate="PASSWORDAGEN">{{ lang_passwordAgen }}</label><em>&nbsp; *</em><br/>
+                <input id="password2" type="password" name="data[password2]"/>
+            </li>
+            <li>
+                <label for="email" translate="EMIL"> {{ lang_Email }}</label><em>&nbsp; *</em><br/>
+                <input type="email" name="data[email]" id="email"/>
+            </li>
+            <li>
+                <label for="emailAgen" translate="EMAILAGEN">{{ lang_EmilAgen }}</label><em>&nbsp; *</em><br/>
+                <input type="email" name="data[emailAgen]" id="emailAgen"/>
+            </li>
+            <li>
+                <label for="avatar">Avatar (100x100 px):</label><br/>
+                <small>JPG,GIF,PNG, max 20kbyte</small>
+                <input type="file" id="avatar" name="avatar" multiple>
+            </li>
+            <input type="hidden" value="reg" name="instance"/>
+            <input type="hidden" value="true" name="ajax"/>
+            <input type="hidden" value="false" name="right"/>
+            <div  id="'regBtn" class="button ajaxBut" instance="reg">Küldés</div>
+
+        </ol>
+    </form>
+
+    <div class="clear"></div>
+</fieldset>
